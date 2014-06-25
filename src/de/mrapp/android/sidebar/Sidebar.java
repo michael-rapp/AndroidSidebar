@@ -244,30 +244,6 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	public final boolean isHiddenOnBackButton() {
-		return hideOnBackButton;
-	}
-
-	public final void hideOnBackButton(final boolean hideOnBackButton) {
-		this.hideOnBackButton = hideOnBackButton;
-	}
-
-	public final boolean isHiddenOnContentClick() {
-		return hideOnContentClick;
-	}
-
-	public final void hideOnContentClick(final boolean hideOnContentClick) {
-		this.hideOnContentClick = hideOnContentClick;
-	}
-
-	public final boolean isShownOnSidebarClick() {
-		return showOnSidebarClick;
-	}
-
-	public final void showOnSidebarClick(final boolean showOnSidebarClick) {
-		this.showOnSidebarClick = showOnSidebarClick;
-	}
-
 	private void inflateSidebarView(Inflater inflater) {
 		mSidebarView = inflater.inflate(getContext(), null);
 		addView(mSidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -633,6 +609,30 @@ public class Sidebar extends ViewGroup {
 	public final void setDragSensitivity(final int dragSensitivity) {
 		ensureAtLeast(dragSensitivity, 1, "The sensitivity must be at least 1");
 		this.dragSensitivity = dragSensitivity;
+	}
+	
+	public final boolean isHiddenOnBackButton() {
+		return hideOnBackButton;
+	}
+
+	public final void hideOnBackButton(final boolean hideOnBackButton) {
+		this.hideOnBackButton = hideOnBackButton;
+	}
+
+	public final boolean isHiddenOnContentClick() {
+		return hideOnContentClick;
+	}
+
+	public final void hideOnContentClick(final boolean hideOnContentClick) {
+		this.hideOnContentClick = hideOnContentClick;
+	}
+
+	public final boolean isShownOnSidebarClick() {
+		return showOnSidebarClick;
+	}
+
+	public final void showOnSidebarClick(final boolean showOnSidebarClick) {
+		this.showOnSidebarClick = showOnSidebarClick;
 	}
 
 	public final void addSidebarListener(SidebarListener listener) {
