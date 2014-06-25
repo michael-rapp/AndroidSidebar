@@ -463,21 +463,21 @@ public class Sidebar extends ViewGroup {
 	@Override
 	protected final void measureChild(final View child, final int parentWSpec,
 			final int parentHSpec) {
-		super.measureChild(child, parentWSpec, parentHSpec);
-		int mode = MeasureSpec.getMode(parentWSpec);
-
 		if (child == sidebarView) {
 			sidebarWidth = Math.round(getMeasuredWidth()
 					* (sidebarMaxWidth / 100.0f));
-			sidebarWidth = Math.min(child.getMeasuredWidth(), sidebarWidth);
+			int mode = MeasureSpec.getMode(parentWSpec);
 			super.measureChild(child,
 					MeasureSpec.makeMeasureSpec(sidebarWidth, mode),
 					parentHSpec);
 		} else if (child == contentView) {
-			offset = (int) (getMeasuredWidth() * (sidebarOffset / 100.0f));
+			offset = Math.round(getMeasuredWidth() * (sidebarOffset / 100.0f));
 			width = getMeasuredWidth() - offset;
+			int mode = MeasureSpec.getMode(parentWSpec);
 			super.measureChild(child, MeasureSpec.makeMeasureSpec(width, mode),
 					parentHSpec);
+		} else {
+			super.measureChild(child, parentWSpec, parentHSpec);
 		}
 	}
 
