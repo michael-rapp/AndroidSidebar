@@ -20,13 +20,13 @@ import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
 
-	protected static final SidebarLocation DEFAULT_SIDEBAR_LOCATION = SidebarLocation.RIGHT;
+	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
 
 	protected static final long DEFAULT_ANIMATION_DURATION = 250;
 
-	protected static final int DEFAULT_SIDEBAR_WIDTH = 80;
+	protected static final int DEFAULT_WIDTH = 80;
 
-	protected static final int DEFAULT_SIDEBAR_OFFSET = 10;
+	protected static final int DEFAULT_OFFSET = 10;
 
 	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
@@ -38,9 +38,9 @@ public class Sidebar extends ViewGroup {
 
 	protected static final boolean DEFAULT_HIDE_ON_BACK_BUTTON = true;
 
-	protected static final boolean DEFAULT_HIDE_WHEN_CONTENT_IS_CLICKED = true;
+	protected static final boolean DEFAULT_HIDE_ON_CONTENT_CLICK = true;
 
-	protected static final boolean DEFAULT_SHOW_WHEN_SIDEBAR_IS_CLICKED = true;
+	protected static final boolean DEFAULT_SHOW_ON_SIDEBAR_CLICKED = true;
 
 	private Set<SidebarListener> listeners;
 
