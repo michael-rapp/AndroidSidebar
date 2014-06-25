@@ -10,6 +10,7 @@ import java.util.Set;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +24,7 @@ import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
 
-	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
+	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.LEFT;
 
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
@@ -484,20 +485,39 @@ public class Sidebar extends ViewGroup {
 	public final void showSidebar() {
 		if (!isSidebarShown()) {
 			if (location == SidebarLocation.LEFT) {
-				animateShowSidebar(mSidebarWidth - mOffset);
+				animateShowSidebar(calculateAnimationDistance());
 			} else {
-				animateShowSidebar(-mSidebarWidth + mOffset);
+				animateShowSidebar(calculateAnimationDistance());
+			}
+		}
+	}
+
+	private float calculateAnimationDistance() {
+		float distance = 0.0f;
+
+		if (mDragHelper.isDragging()) {
+			// TODO
+		} else {
+			distance = mSidebarWidth - mOffset;
+
+			if (!isSidebarShown()) {
+				distance = distance * -1;
 			}
 
+			if (getLocation() == SidebarLocation.LEFT) {
+				distance = distance * -1;
+			}
 		}
+
+		return distance;
 	}
 
 	public final void hideSidebar() {
 		if (isSidebarShown()) {
 			if (location == SidebarLocation.LEFT) {
-				animateHideSidebar(-mSidebarWidth + mOffset);
+				animateHideSidebar(calculateAnimationDistance());
 			} else {
-				animateHideSidebar(mSidebarWidth - mOffset);
+				animateHideSidebar(calculateAnimationDistance());
 			}
 		}
 	}
@@ -703,6 +723,30 @@ public class Sidebar extends ViewGroup {
 				mSidebarView.layout(mWidth, t, mWidth + mSidebarWidth, b);
 			}
 		}
+	}
+
+	private Pair<Integer, Integer> calculateSidebarPosition() {
+		int leftPos = 0;
+
+		if (mDragHelper.isDragging()) {
+			// TODO
+		} else {
+			if (isSidebarShown()) {
+				if (getLocation() == SidebarLocation.LEFT) {
+					leftPos = 0;
+				} else {
+					leftPos = getWidth() - mSidebarWidth;
+				}
+			} else {
+				if (getLocation() == SidebarLocation.LEFT) {
+					leftPos = mOffset - mSidebarWidth;
+				} else {
+					leftPos = getWidth() - mOffset;
+				}
+			}
+		}
+
+		return new Pair<Integer, Integer>(leftPos, leftPos + mSidebarWidth);
 	}
 
 	@Override
