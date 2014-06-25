@@ -134,7 +134,13 @@ public class Sidebar extends ViewGroup {
 		bringSidebarToFront();
 
 		if (sidebarView.getBackground() == null) {
-			sidebarView.setBackgroundResource(R.drawable.sidebar_right_light);
+			if (getLocation() == SidebarLocation.LEFT) {
+				sidebarView
+						.setBackgroundResource(R.drawable.sidebar_left_light);
+			} else {
+				sidebarView
+						.setBackgroundResource(R.drawable.sidebar_right_light);
+			}
 		}
 	}
 
