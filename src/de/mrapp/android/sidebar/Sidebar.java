@@ -752,15 +752,15 @@ public class Sidebar extends ViewGroup {
 	private Pair<Integer, Integer> calculateSidebarPosition(final boolean shown) {
 		int leftPos = 0;
 
-		if (shown) {
-			if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == SidebarLocation.LEFT) {
+			if (shown) {
 				leftPos = 0;
 			} else {
-				leftPos = getWidth() - mSidebarWidth;
+				leftPos = mOffset - mSidebarWidth;
 			}
 		} else {
-			if (getLocation() == SidebarLocation.LEFT) {
-				leftPos = mOffset - mSidebarWidth;
+			if (shown) {
+				leftPos = getWidth() - mSidebarWidth;
 			} else {
 				leftPos = getWidth() - mOffset;
 			}
@@ -772,15 +772,15 @@ public class Sidebar extends ViewGroup {
 	private Pair<Integer, Integer> calculateContentPosition() {
 		int leftPos = 0;
 
-		if (isSidebarShown()) {
-			if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == SidebarLocation.LEFT) {
+			if (isSidebarShown()) {
 				leftPos = Math.round((mSidebarWidth + mOffset) * scrollRatio);
 			} else {
-				leftPos = Math.round((-mSidebarWidth + mOffset) * scrollRatio);
+				leftPos = mOffset;
 			}
 		} else {
-			if (getLocation() == SidebarLocation.LEFT) {
-				leftPos = mOffset;
+			if (isSidebarShown()) {
+				leftPos = Math.round((-mSidebarWidth + mOffset) * scrollRatio);
 			} else {
 				leftPos = 0;
 			}
