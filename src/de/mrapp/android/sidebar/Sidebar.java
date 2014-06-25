@@ -20,35 +20,27 @@ import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
 
-	private AnimationListener createAnimationListener(final boolean show) {
-		return new AnimationListener() {
+	protected static final SidebarLocation DEFAULT_SIDEBAR_LOCATION = SidebarLocation.RIGHT;
 
-			@Override
-			public void onAnimationStart(Animation animation) {
-				return;
-			}
+	protected static final long DEFAULT_ANIMATION_DURATION = 250;
 
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				return;
-			}
+	protected static final int DEFAULT_SIDEBAR_WIDTH = 80;
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				contentView.clearAnimation();
-				sidebarView.clearAnimation();
-				requestLayout();
-				shown = show;
+	protected static final int DEFAULT_SIDEBAR_OFFSET = 10;
 
-				if (shown) {
-					notifyOnSidebarShown();
-				} else {
-					notifyOnSidebarHidden();
-				}
-			}
+	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
-		};
-	}
+	protected static final DragMode DEFAULT_DRAG_MODE = DragMode.BOTH;
+
+	protected static final float DEFAULT_DRAG_THRESHOLD = 0.33f;
+
+	protected static final int DEFAULT_DRAG_SENSITIVITY = 1;
+
+	protected static final boolean DEFAULT_HIDE_ON_BACK_BUTTON = true;
+
+	protected static final boolean DEFAULT_HIDE_WHEN_CONTENT_IS_CLICKED = true;
+
+	protected static final boolean DEFAULT_SHOW_WHEN_SIDEBAR_IS_CLICKED = true;
 
 	private Set<SidebarListener> listeners;
 
@@ -175,6 +167,36 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	private AnimationListener createAnimationListener(final boolean show) {
+		return new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+				return;
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				return;
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				contentView.clearAnimation();
+				sidebarView.clearAnimation();
+				requestLayout();
+				shown = show;
+
+				if (shown) {
+					notifyOnSidebarShown();
+				} else {
+					notifyOnSidebarHidden();
+				}
+			}
+
+		};
+	}
+
 	private long calculateAnimationDuration(final float distance) {
 		int total = width - offset - (width - sidebarWidth);
 		float ratio = Math.abs(distance) / total;
@@ -191,194 +213,6 @@ public class Sidebar extends ViewGroup {
 		for (SidebarListener listener : listeners) {
 			listener.onSidebarShown(this);
 		}
-	}
-
-	public Sidebar(Context context) {
-		this(context, null);
-	}
-
-	public Sidebar(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initialize(context, attrs);
-	}
-
-	public Sidebar(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		initialize(context, attrs);
-	}
-
-	public final boolean isShown() {
-		return shown;
-	}
-
-	public final void show() {
-		if (!isShown()) {
-			if (location == SidebarLocation.LEFT) {
-				animateShowSidebar(sidebarWidth - offset);
-			} else {
-				animateShowSidebar(-sidebarWidth + offset);
-			}
-
-		}
-	}
-
-	public final void hide() {
-		if (isShown()) {
-			if (location == SidebarLocation.LEFT) {
-				animateHideSidebar(-sidebarWidth + offset);
-			} else {
-				animateHideSidebar(sidebarWidth - offset);
-			}
-		}
-	}
-
-	public final void toggle() {
-		if (isShown()) {
-			hide();
-		} else {
-			show();
-		}
-	}
-
-	public final SidebarLocation getLocation() {
-		return location;
-	}
-
-	public final void setLocation(SidebarLocation location) {
-		ensureNotNull(location, "The location may not be null");
-		this.location = location;
-	}
-
-	public final void addSidebarListener(SidebarListener listener) {
-		ensureNotNull(listener, "The listener may not be null");
-		listeners.add(listener);
-	}
-
-	public final void removeSidebarListener(SidebarListener listener) {
-		listeners.remove(listener);
-	}
-
-	@Override
-	public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& event.getAction() == KeyEvent.ACTION_UP && isShown()
-				&& hideOnBackButton) {
-			hide();
-			return true;
-		}
-
-		return false;
-	}
-
-	// @Override
-	// protected final void onFinishInflate() {
-	// super.onFinishInflate();
-	// sidebarView = findViewById(R.id.sidebar_view);
-	// contentView = findViewById(R.id.content_view);
-
-	// PaintDrawable p = new PaintDrawable();
-	// p.setDither(true);
-	// p.setShape(new RectShape());
-	// p.setShaderFactory(new ShapeDrawable.ShaderFactory() {
-	//
-	// @Override
-	// public Shader resize(int width, int height) {
-	// LinearGradient lg = new LinearGradient(0, 0, width, 0,
-	// new int[] { 0xffAAAAAA, 0xffEFEFEF }, new float[] {
-	// 0.0f, 1.0f }, Shader.TileMode.CLAMP);
-	// return lg;
-	// }
-	//
-	// });
-	// sidebarView.setBackgroundDrawable(p);
-	// }
-
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		if (getLocation() == SidebarLocation.LEFT) {
-			if (isShown()) {
-				int contentViewX = (int) ((sidebarWidth + offset) * scrollRatio);
-				contentView.layout(contentViewX, t, contentViewX + width, b);
-				sidebarView.layout(0, t, sidebarWidth, b);
-			} else {
-				contentView.layout(offset, t, width + offset, b);
-				sidebarView.layout(-sidebarWidth + offset, t, offset, b);
-			}
-		} else {
-			if (isShown()) {
-				int contentViewX = (int) ((-sidebarWidth + offset) * scrollRatio);
-				contentView.layout(contentViewX, t, contentViewX + width, b);
-				sidebarView.layout(width + offset - sidebarWidth, t, width
-						+ offset, b);
-			} else {
-				contentView.layout(0, t, width, b);
-				sidebarView.layout(width, t, width + sidebarWidth, b);
-			}
-		}
-	}
-
-	@Override
-	protected final void onMeasure(final int w, final int h) {
-		super.onMeasure(w, h);
-		super.measureChildren(w, h);
-	}
-
-	@Override
-	protected final void measureChild(final View child, final int parentWSpec,
-			final int parentHSpec) {
-		super.measureChild(child, parentWSpec, parentHSpec);
-		int mode = MeasureSpec.getMode(parentWSpec);
-
-		if (child == sidebarView) {
-			sidebarWidth = Math.round(getMeasuredWidth()
-					* (sidebarMaxWidth / 100.0f));
-			sidebarWidth = Math.min(child.getMeasuredWidth(), sidebarWidth);
-			super.measureChild(child,
-					MeasureSpec.makeMeasureSpec(sidebarWidth, mode),
-					parentHSpec);
-		} else if (child == contentView) {
-			offset = (int) (getMeasuredWidth() * (sidebarOffset / 100.0f));
-			width = getMeasuredWidth() - offset;
-			super.measureChild(child, MeasureSpec.makeMeasureSpec(width, mode),
-					parentHSpec);
-		}
-	}
-
-	@Override
-	public final boolean onTouchEvent(final MotionEvent event) {
-		super.onTouchEvent(event);
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			return true;
-		case MotionEvent.ACTION_MOVE:
-			handleMove(event.getX(), event.getY());
-			return true;
-		case MotionEvent.ACTION_UP:
-			dragHelper.reset();
-
-			if (dragHelper.isDragging()) {
-				handleRelease();
-			} else {
-				handleClick(event.getX(), event.getY());
-			}
-
-			return true;
-		}
-
-		return false;
-	}
-
-	private boolean checkDragMode(float x, float y) {
-		if (dragMode == DragMode.DISABLED) {
-			return false;
-		} else if (dragMode == DragMode.SIDEBAR_ONLY) {
-			return isSidebarClicked(x, y);
-		} else if (dragMode == DragMode.CONTENT_ONLY) {
-			return isContentClicked(x, y);
-		}
-
-		return true;
 	}
 
 	private void handleMove(float x, float y) {
@@ -471,6 +305,18 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	private boolean checkDragMode(float x, float y) {
+		if (dragMode == DragMode.DISABLED) {
+			return false;
+		} else if (dragMode == DragMode.SIDEBAR_ONLY) {
+			return isSidebarClicked(x, y);
+		} else if (dragMode == DragMode.CONTENT_ONLY) {
+			return isContentClicked(x, y);
+		}
+
+		return true;
+	}
+
 	private boolean isSidebarClicked(float x, float y) {
 		return sidebarView.getLeft() < x && sidebarView.getRight() > x
 				&& sidebarView.getTop() < y && sidebarView.getBottom() > y;
@@ -480,6 +326,159 @@ public class Sidebar extends ViewGroup {
 		return contentView.getLeft() < x && contentView.getRight() > x
 				&& contentView.getTop() < y && contentView.getBottom() > y
 				&& !isSidebarClicked(x, y);
+	}
+
+	public Sidebar(Context context) {
+		this(context, null);
+	}
+
+	public Sidebar(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initialize(context, attrs);
+	}
+
+	public Sidebar(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		initialize(context, attrs);
+	}
+
+	public final boolean isShown() {
+		return shown;
+	}
+
+	public final void show() {
+		if (!isShown()) {
+			if (location == SidebarLocation.LEFT) {
+				animateShowSidebar(sidebarWidth - offset);
+			} else {
+				animateShowSidebar(-sidebarWidth + offset);
+			}
+
+		}
+	}
+
+	public final void hide() {
+		if (isShown()) {
+			if (location == SidebarLocation.LEFT) {
+				animateHideSidebar(-sidebarWidth + offset);
+			} else {
+				animateHideSidebar(sidebarWidth - offset);
+			}
+		}
+	}
+
+	public final void toggle() {
+		if (isShown()) {
+			hide();
+		} else {
+			show();
+		}
+	}
+
+	public final SidebarLocation getLocation() {
+		return location;
+	}
+
+	public final void setLocation(SidebarLocation location) {
+		ensureNotNull(location, "The location may not be null");
+		this.location = location;
+	}
+
+	public final void addSidebarListener(SidebarListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
+		listeners.add(listener);
+	}
+
+	public final void removeSidebarListener(SidebarListener listener) {
+		listeners.remove(listener);
+	}
+
+	@Override
+	public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_UP && isShown()
+				&& hideOnBackButton) {
+			hide();
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public final boolean onTouchEvent(final MotionEvent event) {
+		super.onTouchEvent(event);
+
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			return true;
+		case MotionEvent.ACTION_MOVE:
+			handleMove(event.getX(), event.getY());
+			return true;
+		case MotionEvent.ACTION_UP:
+			dragHelper.reset();
+
+			if (dragHelper.isDragging()) {
+				handleRelease();
+			} else {
+				handleClick(event.getX(), event.getY());
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		if (getLocation() == SidebarLocation.LEFT) {
+			if (isShown()) {
+				int contentViewX = (int) ((sidebarWidth + offset) * scrollRatio);
+				contentView.layout(contentViewX, t, contentViewX + width, b);
+				sidebarView.layout(0, t, sidebarWidth, b);
+			} else {
+				contentView.layout(offset, t, width + offset, b);
+				sidebarView.layout(-sidebarWidth + offset, t, offset, b);
+			}
+		} else {
+			if (isShown()) {
+				int contentViewX = (int) ((-sidebarWidth + offset) * scrollRatio);
+				contentView.layout(contentViewX, t, contentViewX + width, b);
+				sidebarView.layout(width + offset - sidebarWidth, t, width
+						+ offset, b);
+			} else {
+				contentView.layout(0, t, width, b);
+				sidebarView.layout(width, t, width + sidebarWidth, b);
+			}
+		}
+	}
+
+	@Override
+	protected final void onMeasure(final int w, final int h) {
+		super.onMeasure(w, h);
+		super.measureChildren(w, h);
+	}
+
+	@Override
+	protected final void measureChild(final View child, final int parentWSpec,
+			final int parentHSpec) {
+		super.measureChild(child, parentWSpec, parentHSpec);
+		int mode = MeasureSpec.getMode(parentWSpec);
+
+		if (child == sidebarView) {
+			sidebarWidth = Math.round(getMeasuredWidth()
+					* (sidebarMaxWidth / 100.0f));
+			sidebarWidth = Math.min(child.getMeasuredWidth(), sidebarWidth);
+			super.measureChild(child,
+					MeasureSpec.makeMeasureSpec(sidebarWidth, mode),
+					parentHSpec);
+		} else if (child == contentView) {
+			offset = (int) (getMeasuredWidth() * (sidebarOffset / 100.0f));
+			width = getMeasuredWidth() - offset;
+			super.measureChild(child, MeasureSpec.makeMeasureSpec(width, mode),
+					parentHSpec);
+		}
 	}
 
 }
