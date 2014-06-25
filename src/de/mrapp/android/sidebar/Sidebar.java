@@ -46,7 +46,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final boolean DEFAULT_SHOW_ON_SIDEBAR_CLICKED = true;
 
-	private SidebarLocation location = SidebarLocation.RIGHT;
+	private SidebarLocation location = SidebarLocation.LEFT;
 
 	private int animationDuration;
 
@@ -706,27 +706,8 @@ public class Sidebar extends ViewGroup {
 		Pair<Integer, Integer> sidebarPos = calculateSidebarPosition();
 		mSidebarView.layout(sidebarPos.first, t, sidebarPos.second, b);
 
-		if (getLocation() == SidebarLocation.LEFT) {
-			if (isSidebarShown()) {
-				int contentViewX = (int) ((mSidebarWidth + mOffset) * scrollRatio);
-				mContentView.layout(contentViewX, t, contentViewX + mWidth, b);
-				// mSidebarView.layout(0, t, mSidebarWidth, b);
-			} else {
-				mContentView.layout(mOffset, t, mWidth + mOffset, b);
-				// mSidebarView.layout(-mSidebarWidth + mOffset, t, mOffset, b);
-			}
-		} else {
-			if (isSidebarShown()) {
-				int contentViewX = (int) ((-mSidebarWidth + mOffset) * scrollRatio);
-				mContentView.layout(contentViewX, t, contentViewX + mWidth, b);
-				// mSidebarView.layout(mWidth + mOffset - mSidebarWidth, t,
-				// mWidth
-				// + mOffset, b);
-			} else {
-				mContentView.layout(0, t, mWidth, b);
-				// mSidebarView.layout(mWidth, t, mWidth + mSidebarWidth, b);
-			}
-		}
+		Pair<Integer, Integer> contentPos = calculateContentPosition();
+		mContentView.layout(contentPos.first, t, contentPos.second, b);
 	}
 
 	private Pair<Integer, Integer> calculateSidebarPosition() {
@@ -751,6 +732,32 @@ public class Sidebar extends ViewGroup {
 		}
 
 		return new Pair<Integer, Integer>(leftPos, leftPos + mSidebarWidth);
+	}
+
+	private Pair<Integer, Integer> calculateContentPosition() {
+		int leftPos = 0;
+
+		if (mDragHelper.isDragging()) {
+			// TODO
+		} else {
+			if (isSidebarShown()) {
+				if (getLocation() == SidebarLocation.LEFT) {
+					leftPos = Math.round((mSidebarWidth + mOffset)
+							* scrollRatio);
+				} else {
+					leftPos = Math.round((-mSidebarWidth + mOffset)
+							* scrollRatio);
+				}
+			} else {
+				if (getLocation() == SidebarLocation.LEFT) {
+					leftPos = getWidth() - mOffset;
+				} else {
+					leftPos = 0;
+				}
+			}
+		}
+
+		return new Pair<>(leftPos, leftPos + mWidth);
 	}
 
 	@Override
