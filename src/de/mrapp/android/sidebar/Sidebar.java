@@ -360,7 +360,7 @@ public class Sidebar extends ViewGroup {
 				int contentX = 0;
 
 				if (getLocation() == SidebarLocation.LEFT) {
-					if (isShown()) {
+					if (isSidebarShown()) {
 						sidebarX = mDragHelper.getDistance();
 					} else {
 						sidebarX = -mSidebarWidth + mOffset
@@ -372,7 +372,7 @@ public class Sidebar extends ViewGroup {
 					contentX = Math.round((sidebarX + mSidebarWidth + mOffset)
 							* scrollRatio);
 				} else {
-					if (isShown()) {
+					if (isSidebarShown()) {
 						sidebarX = (mWidth + mOffset - mSidebarWidth)
 								+ mDragHelper.getDistance();
 					} else {
@@ -409,7 +409,7 @@ public class Sidebar extends ViewGroup {
 				animateHideSidebar(toXDelta);
 			}
 		} else {
-			if (isShown()) {
+			if (isSidebarShown()) {
 				threshold = mWidth + mOffset - mSidebarWidth + mSidebarWidth
 						* dragThreshold;
 
@@ -431,11 +431,11 @@ public class Sidebar extends ViewGroup {
 	private void handleClick(float x, float y) {
 		if (isSidebarClicked(x, y)) {
 			if (showOnSidebarClick) {
-				show();
+				showSidebar();
 			}
 		} else if (isContentClicked(x, y)) {
 			if (hideOnContentClick) {
-				hide();
+				hideSidebar();
 			}
 		}
 	}
@@ -477,12 +477,12 @@ public class Sidebar extends ViewGroup {
 		initialize(context, attrs);
 	}
 
-	public final boolean isShown() {
+	public final boolean isSidebarShown() {
 		return mShown;
 	}
 
-	public final void show() {
-		if (!isShown()) {
+	public final void showSidebar() {
+		if (!isSidebarShown()) {
 			if (location == SidebarLocation.LEFT) {
 				animateShowSidebar(mSidebarWidth - mOffset);
 			} else {
@@ -492,8 +492,8 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	public final void hide() {
-		if (isShown()) {
+	public final void hideSidebar() {
+		if (isSidebarShown()) {
 			if (location == SidebarLocation.LEFT) {
 				animateHideSidebar(-mSidebarWidth + mOffset);
 			} else {
@@ -502,11 +502,11 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	public final void toggle() {
-		if (isShown()) {
-			hide();
+	public final void toggleSidebar() {
+		if (isSidebarShown()) {
+			hideSidebar();
 		} else {
-			show();
+			showSidebar();
 		}
 	}
 
@@ -647,9 +647,9 @@ public class Sidebar extends ViewGroup {
 	@Override
 	public boolean onKeyPreIme(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& event.getAction() == KeyEvent.ACTION_UP && isShown()
+				&& event.getAction() == KeyEvent.ACTION_UP && isSidebarShown()
 				&& hideOnBackButton) {
-			hide();
+			hideSidebar();
 			return true;
 		}
 
@@ -684,7 +684,7 @@ public class Sidebar extends ViewGroup {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		if (getLocation() == SidebarLocation.LEFT) {
-			if (isShown()) {
+			if (isSidebarShown()) {
 				int contentViewX = (int) ((mSidebarWidth + mOffset) * scrollRatio);
 				mContentView.layout(contentViewX, t, contentViewX + mWidth, b);
 				mSidebarView.layout(0, t, mSidebarWidth, b);
@@ -693,7 +693,7 @@ public class Sidebar extends ViewGroup {
 				mSidebarView.layout(-mSidebarWidth + mOffset, t, mOffset, b);
 			}
 		} else {
-			if (isShown()) {
+			if (isSidebarShown()) {
 				int contentViewX = (int) ((-mSidebarWidth + mOffset) * scrollRatio);
 				mContentView.layout(contentViewX, t, contentViewX + mWidth, b);
 				mSidebarView.layout(mWidth + mOffset - mSidebarWidth, t, mWidth
