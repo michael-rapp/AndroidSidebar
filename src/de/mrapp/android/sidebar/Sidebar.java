@@ -29,7 +29,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_SIDEBAR_WIDTH = 80;
 
-	protected static final int DEFAULT_OFFSET = 10;
+	protected static final int DEFAULT_SIDEBAR_OFFSET = 10;
 
 	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
@@ -51,7 +51,7 @@ public class Sidebar extends ViewGroup {
 
 	private int sidebarWidth;
 
-	private int offset;
+	private int sidebarOffset;
 
 	private float scrollRatio;
 
@@ -112,7 +112,7 @@ public class Sidebar extends ViewGroup {
 			obtainLocation(typedArray);
 			obtainAnimationDuration(typedArray);
 			obtainSidebarWidth(typedArray);
-			obtainOffset(typedArray);
+			obtainSidebarOffset(typedArray);
 			obtainScrollRatio(typedArray);
 			obtainDragMode(typedArray);
 			obtainDragThreshold(typedArray);
@@ -167,12 +167,12 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	private void obtainOffset(TypedArray typedArray) {
+	private void obtainSidebarOffset(TypedArray typedArray) {
 		if (typedArray != null) {
-			setOffset(typedArray.getInt(R.styleable.Sidebar_offset,
-					DEFAULT_OFFSET));
+			setSidebarOffset(typedArray.getInt(
+					R.styleable.Sidebar_sidebarOffset, DEFAULT_SIDEBAR_OFFSET));
 		} else {
-			setOffset(DEFAULT_OFFSET);
+			setSidebarOffset(DEFAULT_SIDEBAR_OFFSET);
 		}
 	}
 
@@ -563,14 +563,14 @@ public class Sidebar extends ViewGroup {
 		this.sidebarWidth = width;
 	}
 
-	public final int getOffset() {
-		return offset;
+	public final int getSidebarOffset() {
+		return sidebarOffset;
 	}
 
-	public final void setOffset(final int offset) {
-		ensureAtLeast(offset, 0, "The offset must be at least 0");
-		ensureAtMaximum(offset, 100, "The offset must be at maximum 100");
-		this.offset = offset;
+	public final void setSidebarOffset(final int sidebarOffset) {
+		ensureAtLeast(sidebarOffset, 0, "The offset must be at least 0");
+		ensureAtMaximum(sidebarOffset, 100, "The offset must be at maximum 100");
+		this.sidebarOffset = sidebarOffset;
 	}
 
 	public final float getScrollRatio() {
@@ -610,7 +610,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(dragSensitivity, 1, "The sensitivity must be at least 1");
 		this.dragSensitivity = dragSensitivity;
 	}
-	
+
 	public final boolean isHiddenOnBackButton() {
 		return hideOnBackButton;
 	}
@@ -722,7 +722,7 @@ public class Sidebar extends ViewGroup {
 					MeasureSpec.makeMeasureSpec(mSidebarWidth, mode),
 					parentHSpec);
 		} else if (child == mContentView) {
-			mOffset = Math.round(getMeasuredWidth() * (offset / 100.0f));
+			mOffset = Math.round(getMeasuredWidth() * (sidebarOffset / 100.0f));
 			mWidth = getMeasuredWidth() - mOffset;
 			int mode = MeasureSpec.getMode(parentWSpec);
 			super.measureChild(child,
