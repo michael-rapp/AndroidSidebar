@@ -113,6 +113,13 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	private void obtainSidebarView(TypedArray typedArray) {
+		if (typedArray != null) {
+			setSidebarView(typedArray.getResourceId(
+					R.styleable.Sidebar_sidebarView, -1));
+		}
+	}
+
 	private void obtainContentView(TypedArray typedArray) {
 		if (typedArray != null) {
 			setContentView(typedArray.getResourceId(
@@ -120,16 +127,15 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	public final View getContentView() {
-		return contentView;
-	}
+	private void inflateSidebarView(Inflater inflater) {
+		sidebarView = inflater.inflate(getContext(), null);
+		addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		bringSidebarToFront();
 
-	public final void setContentView(final int contentViewId) {
-		inflateContentView(InflaterFactory.createInflater(contentViewId));
-	}
-
-	public void setContentView(final View contentView) {
-		inflateContentView(InflaterFactory.createInflater(contentView));
+		if (sidebarView.getBackground() == null) {
+			sidebarView.setBackgroundResource(R.drawable.sidebar_right_light);
+		}
 	}
 
 	private void inflateContentView(Inflater inflater) {
@@ -142,33 +148,6 @@ public class Sidebar extends ViewGroup {
 	private void bringSidebarToFront() {
 		if (sidebarView != null) {
 			sidebarView.bringToFront();
-		}
-	}
-
-	public final View getSidebarView() {
-		return sidebarView;
-	}
-
-	public final void setSidebarView(final int sidebarViewId) {
-		inflateSidebarView(InflaterFactory.createInflater(sidebarViewId));
-	}
-
-	public final void setSidebarView(final View sidebarView) {
-		inflateSidebarView(InflaterFactory.createInflater(sidebarView));
-	}
-
-	private void inflateSidebarView(Inflater inflater) {
-		sidebarView = inflater.inflate(getContext(), null);
-		addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT);
-		sidebarView.setBackgroundResource(android.R.color.darker_gray);
-		bringSidebarToFront();
-	}
-
-	private void obtainSidebarView(TypedArray typedArray) {
-		if (typedArray != null) {
-			setSidebarView(typedArray.getResourceId(
-					R.styleable.Sidebar_sidebarView, -1));
 		}
 	}
 
@@ -406,6 +385,30 @@ public class Sidebar extends ViewGroup {
 		} else {
 			show();
 		}
+	}
+
+	public final View getSidebarView() {
+		return sidebarView;
+	}
+
+	public final void setSidebarView(final int sidebarViewId) {
+		inflateSidebarView(InflaterFactory.createInflater(sidebarViewId));
+	}
+
+	public final void setSidebarView(final View sidebarView) {
+		inflateSidebarView(InflaterFactory.createInflater(sidebarView));
+	}
+
+	public final View getContentView() {
+		return contentView;
+	}
+
+	public final void setContentView(final int contentViewId) {
+		inflateContentView(InflaterFactory.createInflater(contentViewId));
+	}
+
+	public void setContentView(final View contentView) {
+		inflateContentView(InflaterFactory.createInflater(contentView));
 	}
 
 	public final SidebarLocation getLocation() {
