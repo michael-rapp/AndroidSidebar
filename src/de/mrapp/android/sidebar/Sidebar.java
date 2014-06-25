@@ -24,7 +24,7 @@ import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
 
-	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
+	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.LEFT;
 
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
@@ -429,6 +429,26 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	private float calculateAnimationDistance() {
+		float distance = 0.0f;
+
+		if (mDragHelper.isDragging()) {
+			// TODO
+		} else {
+			distance = mSidebarWidth - mOffset;
+
+			if (!isSidebarShown()) {
+				distance = distance * -1;
+			}
+
+			if (getLocation() == SidebarLocation.LEFT) {
+				distance = distance * -1;
+			}
+		}
+
+		return distance;
+	}
+
 	private void handleClick(float x, float y) {
 		if (isSidebarClicked(x, y)) {
 			if (showOnSidebarClick) {
@@ -490,26 +510,6 @@ public class Sidebar extends ViewGroup {
 				animateShowSidebar(calculateAnimationDistance());
 			}
 		}
-	}
-
-	private float calculateAnimationDistance() {
-		float distance = 0.0f;
-
-		if (mDragHelper.isDragging()) {
-			// TODO
-		} else {
-			distance = mSidebarWidth - mOffset;
-
-			if (!isSidebarShown()) {
-				distance = distance * -1;
-			}
-
-			if (getLocation() == SidebarLocation.LEFT) {
-				distance = distance * -1;
-			}
-		}
-
-		return distance;
 	}
 
 	public final void hideSidebar() {
@@ -750,7 +750,7 @@ public class Sidebar extends ViewGroup {
 				}
 			} else {
 				if (getLocation() == SidebarLocation.LEFT) {
-					leftPos = getWidth() - mOffset;
+					leftPos = mOffset;
 				} else {
 					leftPos = 0;
 				}
