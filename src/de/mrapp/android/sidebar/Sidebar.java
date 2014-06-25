@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
+import de.mrapp.android.sidebar.inflater.Inflater;
+import de.mrapp.android.sidebar.inflater.InflaterFactory;
 import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
@@ -113,29 +115,60 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainContentView(TypedArray typedArray) {
 		if (typedArray != null) {
-			int contentViewId = typedArray.getResourceId(
-					R.styleable.Sidebar_contentView, -1);
-
-			LayoutInflater inflater = (LayoutInflater) getContext()
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			contentView = inflater.inflate(contentViewId, null);
-			addView(contentView, ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.MATCH_PARENT);
+			setContentView(typedArray.getResourceId(
+					R.styleable.Sidebar_contentView, -1));
 		}
+	}
+
+	public final View getContentView() {
+		return contentView;
+	}
+
+	public final void setContentView(final int contentViewId) {
+		inflateContentView(InflaterFactory.createInflater(contentViewId));
+	}
+
+	public void setContentView(final View contentView) {
+		inflateContentView(InflaterFactory.createInflater(contentView));
+	}
+
+	private void inflateContentView(Inflater inflater) {
+		contentView = inflater.inflate(getContext(), null);
+		addView(contentView, ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		bringSidebarToFront();
+	}
+
+	private void bringSidebarToFront() {
+		if (sidebarView != null) {
+			sidebarView.bringToFront();
+		}
+	}
+
+	public final View getSidebarView() {
+		return sidebarView;
+	}
+
+	public final void setSidebarView(final int sidebarViewId) {
+		inflateSidebarView(InflaterFactory.createInflater(sidebarViewId));
+	}
+
+	public final void setSidebarView(final View sidebarView) {
+		inflateSidebarView(InflaterFactory.createInflater(sidebarView));
+	}
+
+	private void inflateSidebarView(Inflater inflater) {
+		sidebarView = inflater.inflate(getContext(), null);
+		addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		sidebarView.setBackgroundResource(android.R.color.darker_gray);
+		bringSidebarToFront();
 	}
 
 	private void obtainSidebarView(TypedArray typedArray) {
 		if (typedArray != null) {
-			int sidebarViewId = typedArray.getResourceId(
-					R.styleable.Sidebar_sidebarView, -1);
-
-			LayoutInflater inflater = (LayoutInflater) getContext()
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			sidebarView = inflater.inflate(sidebarViewId, null);
-			addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.MATCH_PARENT);
-			sidebarView.setBackgroundResource(android.R.color.background_dark);
-			sidebarView.bringToFront();
+			setSidebarView(typedArray.getResourceId(
+					R.styleable.Sidebar_sidebarView, -1));
 		}
 	}
 
