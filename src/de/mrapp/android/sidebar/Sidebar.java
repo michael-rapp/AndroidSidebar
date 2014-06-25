@@ -24,7 +24,7 @@ import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
 
-	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
+	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.LEFT;
 
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
@@ -397,31 +397,43 @@ public class Sidebar extends ViewGroup {
 	private void handleRelease() {
 		mDragHelper.stopDragging();
 
-		float threshold = 0;
+		float threshold = calculateDragThreshold();
 
 		if (getLocation() == SidebarLocation.LEFT) {
-			threshold = mSidebarWidth * dragThreshold;
-
 			if (mSidebarView.getRight() > threshold) {
 				animateShowSidebar(calculateSnapDistance(true));
 			} else {
 				animateHideSidebar(calculateSnapDistance(false));
 			}
 		} else {
-			if (isSidebarShown()) {
-				threshold = mWidth + mOffset - mSidebarWidth + mSidebarWidth
-						* dragThreshold;
-
-			} else {
-				threshold = mWidth + mOffset - mSidebarWidth * dragThreshold;
-			}
-
 			if (mSidebarView.getLeft() < threshold) {
 				animateShowSidebar(calculateSnapDistance(true));
 			} else {
 				animateHideSidebar(calculateSnapDistance(false));
 			}
 		}
+	}
+
+	private float calculateDragThreshold() {
+		float threshold = 0;
+
+		if (getLocation() == SidebarLocation.LEFT) {
+			if (isSidebarShown()) {
+				threshold = mWidth - (mSidebarWidth * dragThreshold);
+			} else {
+				threshold = mOffset + (mWidth * dragThreshold);
+			}
+		} else {
+			if (isSidebarShown()) {
+				threshold = (getWidth() - mSidebarWidth)
+						+ (mSidebarWidth * dragThreshold);
+
+			} else {
+				threshold = mWidth - (mWidth * dragThreshold);
+			}
+		}
+
+		return threshold;
 	}
 
 	private float calculateSnapDistance(boolean show) {
