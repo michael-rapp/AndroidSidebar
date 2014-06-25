@@ -2,12 +2,32 @@ package de.mrapp.android.sidebar;
 
 public enum DragMode {
 
-	SIDEBAR_ONLY,
+	BOTH(0),
 
-	CONTENT_ONLY,
+	SIDEBAR_ONLY(1),
 
-	BOTH,
+	CONTENT_ONLY(2),
 
-	DISABLED;
+	DISABLED(3);
+
+	private int value;
+
+	private DragMode(final int value) {
+		this.value = value;
+	}
+
+	public final int getValue() {
+		return value;
+	}
+
+	public static final DragMode fromValue(final int value) {
+		for (DragMode dragMode : values()) {
+			if (dragMode.value == value) {
+				return dragMode;
+			}
+		}
+
+		throw new IllegalArgumentException("Invalid enum value: " + value);
+	}
 
 }
