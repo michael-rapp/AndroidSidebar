@@ -467,18 +467,14 @@ public class Sidebar extends ViewGroup {
 	private float calculateAnimationDistance() {
 		float distance = 0.0f;
 
-		if (mDragHelper.isDragging()) {
-			// TODO
-		} else {
-			distance = mSidebarWidth - mOffset;
+		distance = mSidebarWidth - mOffset;
 
-			if (!isSidebarShown()) {
-				distance = distance * -1;
-			}
+		if (!isSidebarShown()) {
+			distance = distance * -1;
+		}
 
-			if (getLocation() == SidebarLocation.LEFT) {
-				distance = distance * -1;
-			}
+		if (getLocation() == SidebarLocation.LEFT) {
+			distance = distance * -1;
 		}
 
 		return distance;
