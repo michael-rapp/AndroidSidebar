@@ -78,7 +78,7 @@ public class Sidebar extends ViewGroup {
 
 	private int mSidebarWidth;
 
-	private int mWidth;
+	private int mContentWidth;
 
 	private int mOffset;
 
@@ -334,7 +334,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private int calculateAnimationDuration(final float distance) {
-		int total = mWidth - mOffset - (mWidth - mSidebarWidth);
+		int total = mContentWidth - mOffset - (mContentWidth - mSidebarWidth);
 		float ratio = Math.abs(distance) / total;
 		return Math.round(animationDuration * ratio);
 	}
@@ -395,11 +395,11 @@ public class Sidebar extends ViewGroup {
 					.round((sidebarPosition.first + mSidebarWidth + mOffset)
 							* scrollRatio);
 		} else {
-			contentX = Math.round((sidebarPosition.first - mWidth)
+			contentX = Math.round((sidebarPosition.first - mContentWidth)
 					* scrollRatio);
 		}
 
-		return new Pair<Integer, Integer>(contentX, contentX + mWidth);
+		return new Pair<Integer, Integer>(contentX, contentX + mContentWidth);
 	}
 
 	private void handleRelease() {
@@ -427,9 +427,9 @@ public class Sidebar extends ViewGroup {
 
 		if (getLocation() == SidebarLocation.LEFT) {
 			if (isSidebarShown()) {
-				threshold = mWidth - (mSidebarWidth * dragThreshold);
+				threshold = mContentWidth - (mSidebarWidth * dragThreshold);
 			} else {
-				threshold = mOffset + (mWidth * dragThreshold);
+				threshold = mOffset + (mContentWidth * dragThreshold);
 			}
 		} else {
 			if (isSidebarShown()) {
@@ -437,27 +437,27 @@ public class Sidebar extends ViewGroup {
 						+ (mSidebarWidth * dragThreshold);
 
 			} else {
-				threshold = mWidth - (mWidth * dragThreshold);
+				threshold = mContentWidth - (mContentWidth * dragThreshold);
 			}
 		}
 
 		return threshold;
 	}
 
-	private float calculateSnapDistance(boolean show) {
+	private float calculateSnapDistance(boolean shouldBeShown) {
 		float distance = 0;
 
-		if (show) {
-			if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == SidebarLocation.LEFT) {
+			if (shouldBeShown) {
 				distance = mSidebarWidth - mSidebarView.getRight();
 			} else {
-				distance = getWidth() - mSidebarWidth - mSidebarView.getLeft();
+				distance = mOffset - mSidebarView.getRight();
 			}
 		} else {
-			if (getLocation() == SidebarLocation.LEFT) {
-				distance = mOffset - mSidebarView.getRight();
+			if (shouldBeShown) {
+				distance = getWidth() - mSidebarWidth - mSidebarView.getLeft();
 			} else {
-				distance = mWidth - mSidebarView.getLeft();
+				distance = mContentWidth - mSidebarView.getLeft();
 			}
 		}
 
@@ -782,7 +782,7 @@ public class Sidebar extends ViewGroup {
 			}
 		}
 
-		return new Pair<>(leftPos, leftPos + mWidth);
+		return new Pair<>(leftPos, leftPos + mContentWidth);
 	}
 
 	@Override
@@ -803,10 +803,11 @@ public class Sidebar extends ViewGroup {
 					parentHSpec);
 		} else if (child == mContentView) {
 			mOffset = Math.round(getMeasuredWidth() * (sidebarOffset / 100.0f));
-			mWidth = getMeasuredWidth() - mOffset;
+			mContentWidth = getMeasuredWidth() - mOffset;
 			int mode = MeasureSpec.getMode(parentWSpec);
 			super.measureChild(child,
-					MeasureSpec.makeMeasureSpec(mWidth, mode), parentHSpec);
+					MeasureSpec.makeMeasureSpec(mContentWidth, mode),
+					parentHSpec);
 		} else {
 			super.measureChild(child, parentWSpec, parentHSpec);
 		}
