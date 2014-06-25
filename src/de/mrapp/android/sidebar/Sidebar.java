@@ -24,7 +24,7 @@ import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
 
-	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.LEFT;
+	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
 
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
@@ -703,24 +703,28 @@ public class Sidebar extends ViewGroup {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		Pair<Integer, Integer> sidebarPos = calculateSidebarPosition();
+		mSidebarView.layout(sidebarPos.first, t, sidebarPos.second, b);
+
 		if (getLocation() == SidebarLocation.LEFT) {
 			if (isSidebarShown()) {
 				int contentViewX = (int) ((mSidebarWidth + mOffset) * scrollRatio);
 				mContentView.layout(contentViewX, t, contentViewX + mWidth, b);
-				mSidebarView.layout(0, t, mSidebarWidth, b);
+				// mSidebarView.layout(0, t, mSidebarWidth, b);
 			} else {
 				mContentView.layout(mOffset, t, mWidth + mOffset, b);
-				mSidebarView.layout(-mSidebarWidth + mOffset, t, mOffset, b);
+				// mSidebarView.layout(-mSidebarWidth + mOffset, t, mOffset, b);
 			}
 		} else {
 			if (isSidebarShown()) {
 				int contentViewX = (int) ((-mSidebarWidth + mOffset) * scrollRatio);
 				mContentView.layout(contentViewX, t, contentViewX + mWidth, b);
-				mSidebarView.layout(mWidth + mOffset - mSidebarWidth, t, mWidth
-						+ mOffset, b);
+				// mSidebarView.layout(mWidth + mOffset - mSidebarWidth, t,
+				// mWidth
+				// + mOffset, b);
 			} else {
 				mContentView.layout(0, t, mWidth, b);
-				mSidebarView.layout(mWidth, t, mWidth + mSidebarWidth, b);
+				// mSidebarView.layout(mWidth, t, mWidth + mSidebarWidth, b);
 			}
 		}
 	}
