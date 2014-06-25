@@ -24,7 +24,7 @@ import de.mrapp.android.sidebar.util.DragHelper;
 
 public class Sidebar extends ViewGroup {
 
-	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.LEFT;
+	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
 
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
@@ -68,6 +68,8 @@ public class Sidebar extends ViewGroup {
 
 	private boolean showOnSidebarClick;
 
+	private int sidebarBackground;
+
 	private Set<SidebarListener> mListeners;
 
 	private View mSidebarView;
@@ -108,8 +110,9 @@ public class Sidebar extends ViewGroup {
 		TypedArray typedArray = context.obtainStyledAttributes(attributeSet,
 				R.styleable.Sidebar);
 		try {
-			obtainContentView(typedArray);
+			obtainBackground(typedArray);
 			obtainSidebarView(typedArray);
+			obtainContentView(typedArray);
 			obtainLocation(typedArray);
 			obtainAnimationDuration(typedArray);
 			obtainSidebarWidth(typedArray);
@@ -123,6 +126,15 @@ public class Sidebar extends ViewGroup {
 			obtainShowOnSidebarClick(typedArray);
 		} finally {
 			typedArray.recycle();
+		}
+	}
+
+	private void obtainBackground(TypedArray typedArray) {
+		if (typedArray != null) {
+			sidebarBackground = typedArray.getResourceId(
+					R.styleable.Sidebar_android_background, -1);
+		} else {
+			sidebarBackground = -1;
 		}
 	}
 
@@ -250,16 +262,7 @@ public class Sidebar extends ViewGroup {
 		addView(mSidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
-
-		if (mSidebarView.getBackground() == null) {
-			if (getLocation() == SidebarLocation.LEFT) {
-				mSidebarView
-						.setBackgroundResource(R.drawable.sidebar_left_light);
-			} else {
-				mSidebarView
-						.setBackgroundResource(R.drawable.sidebar_right_light);
-			}
-		}
+		setSidebarBackground();
 	}
 
 	private void inflateContentView(Inflater inflater) {
@@ -267,6 +270,20 @@ public class Sidebar extends ViewGroup {
 		addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
+	}
+
+	private void setSidebarBackground() {
+		if (mSidebarView != null && sidebarBackground == -1) {
+			if (getLocation() == SidebarLocation.LEFT) {
+				mSidebarView
+						.setBackgroundResource(R.drawable.sidebar_left_light);
+
+			} else {
+				mSidebarView
+						.setBackgroundResource(R.drawable.sidebar_right_light);
+
+			}
+		}
 	}
 
 	private void bringSidebarToFront() {
@@ -592,6 +609,7 @@ public class Sidebar extends ViewGroup {
 	public final void setLocation(SidebarLocation location) {
 		ensureNotNull(location, "The location may not be null");
 		this.location = location;
+		setSidebarBackground();
 	}
 
 	public final int getAnimationDuration() {
