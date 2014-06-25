@@ -9,6 +9,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.content.res.Resources.NotFoundException;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -140,15 +141,23 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainSidebarView(TypedArray typedArray) {
 		if (typedArray != null) {
-			setSidebarView(typedArray.getResourceId(
-					R.styleable.Sidebar_sidebarView, -1));
+			try {
+				setSidebarView(typedArray.getResourceId(
+						R.styleable.Sidebar_sidebarView, -1));
+			} catch (NotFoundException e) {
+				return;
+			}
 		}
 	}
 
 	private void obtainContentView(TypedArray typedArray) {
 		if (typedArray != null) {
-			setContentView(typedArray.getResourceId(
-					R.styleable.Sidebar_contentView, -1));
+			try {
+				setContentView(typedArray.getResourceId(
+						R.styleable.Sidebar_contentView, -1));
+			} catch (NotFoundException e) {
+				return;
+			}
 		}
 	}
 
