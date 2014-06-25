@@ -22,7 +22,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
 
-	protected static final long DEFAULT_ANIMATION_DURATION = 250;
+	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
 	protected static final int DEFAULT_WIDTH = 80;
 
@@ -46,7 +46,7 @@ public class Sidebar extends ViewGroup {
 
 	private SidebarLocation location = SidebarLocation.RIGHT;
 
-	private long animationDuration = 250;
+	private int animationDuration = 250;
 
 	private int sidebarMaxWidth = 100;
 
@@ -197,7 +197,7 @@ public class Sidebar extends ViewGroup {
 		};
 	}
 
-	private long calculateAnimationDuration(final float distance) {
+	private int calculateAnimationDuration(final float distance) {
 		int total = width - offset - (width - sidebarWidth);
 		float ratio = Math.abs(distance) / total;
 		return Math.round(animationDuration * ratio);
