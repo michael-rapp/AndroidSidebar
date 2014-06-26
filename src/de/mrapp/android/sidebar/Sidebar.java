@@ -39,7 +39,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final float DEFAULT_DRAG_THRESHOLD = 0.33f;
 
-	protected static final int DEFAULT_DRAG_SENSITIVITY = 1;
+	protected static final int DEFAULT_DRAG_SENSITIVITY = 250;
 
 	protected static final boolean DEFAULT_HIDE_ON_BACK_BUTTON = true;
 
@@ -687,6 +687,7 @@ public class Sidebar extends ViewGroup {
 	public final void setDragSensitivity(final int dragSensitivity) {
 		ensureAtLeast(dragSensitivity, 1, "The sensitivity must be at least 1");
 		this.dragSensitivity = dragSensitivity;
+		this.mDragHelper = new DragHelper(dragSensitivity);
 	}
 
 	public final boolean isHiddenOnBackButton() {

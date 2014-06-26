@@ -22,8 +22,9 @@ public class DragHelper {
 		recycled = true;
 		distance = 0;
 		startValue = 0;
+		reachedThreshold = false;
 	}
-	
+
 	public void stopDragging() {
 		dragging = false;
 	}
@@ -39,16 +40,25 @@ public class DragHelper {
 			recycled = false;
 			startValue = roundedValue;
 			distance = 0;
+			reachedThreshold = false;
 		} else {
-			distance = roundedValue - startValue;
-			
-			if (reachedThreshold()) {
-				dragging = true;
+			if (!reachedThreshold) {
+				int tmpDistance = roundedValue - startValue;
+
+				if (reachedThreshold(tmpDistance)) {
+					reachedThreshold = true;
+					startValue = roundedValue;
+					dragging = true;
+				}
+			} else {
+				distance = roundedValue - startValue;
 			}
 		}
 	}
 
-	private boolean reachedThreshold() {
+	private boolean reachedThreshold;
+
+	private boolean reachedThreshold(final int distance) {
 		return Math.abs(distance) >= threshold;
 	}
 
