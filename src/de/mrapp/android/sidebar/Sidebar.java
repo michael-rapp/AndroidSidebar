@@ -377,7 +377,7 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	private void handleMove(float x, float y) {
+	private boolean handleMove(float x, float y) {
 		if (mContentView.getAnimation() == null
 				&& mSidebarView.getAnimation() == null) {
 			mDragHelper.update(x);
@@ -390,8 +390,12 @@ public class Sidebar extends ViewGroup {
 						sidebarPos.second, mSidebarView.getBottom());
 				mContentView.layout(contentPos.first, mContentView.getTop(),
 						contentPos.second, mContentView.getBottom());
+				
+				return true;
 			}
 		}
+		
+		return false;
 	}
 
 	private Pair<Integer, Integer> calculateSidebarDragPosition() {
@@ -741,7 +745,12 @@ public class Sidebar extends ViewGroup {
 		case MotionEvent.ACTION_DOWN:
 			break;
 		case MotionEvent.ACTION_MOVE:
-			handleMove(event.getX(), event.getY());
+			boolean handled = handleMove(event.getX(), event.getY());
+			
+			if (handled) {
+				return true;
+			}
+			
 			break;
 		case MotionEvent.ACTION_UP:
 			mDragHelper.reset();
