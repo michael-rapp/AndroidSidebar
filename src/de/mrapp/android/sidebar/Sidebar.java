@@ -8,8 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.content.res.Resources.NotFoundException;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -735,9 +735,30 @@ public class Sidebar extends ViewGroup {
 	}
 
 	@Override
-	public final boolean onTouchEvent(final MotionEvent event) {
-		super.onTouchEvent(event);
+	public final boolean dispatchTouchEvent(final MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			break;
+		case MotionEvent.ACTION_MOVE:
+			handleMove(event.getX(), event.getY());
+			break;
+		case MotionEvent.ACTION_UP:
+			mDragHelper.reset();
 
+			if (mDragHelper.isDragging()) {
+				handleRelease();
+			} else {
+				handleClick(event.getX(), event.getY());
+			}
+
+			break;
+		}
+
+		return super.dispatchTouchEvent(event);
+	}
+
+	@Override
+	public final boolean onTouchEvent(final MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			return true;
@@ -756,7 +777,7 @@ public class Sidebar extends ViewGroup {
 			return true;
 		}
 
-		return false;
+		return super.onTouchEvent(event);
 	}
 
 	@Override
