@@ -390,11 +390,11 @@ public class Sidebar extends ViewGroup {
 						sidebarPos.second, mSidebarView.getBottom());
 				mContentView.layout(contentPos.first, mContentView.getTop(),
 						contentPos.second, mContentView.getBottom());
-				
+
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -741,16 +741,20 @@ public class Sidebar extends ViewGroup {
 
 	@Override
 	public final boolean dispatchTouchEvent(final MotionEvent event) {
+		boolean handled = false;
+
+		if (isSidebarClicked(event.getX(), event.getY()) && !isSidebarShown()) {
+			handled = true;
+		} else if (isContentClicked(event.getX(), event.getY())
+				&& isSidebarShown()) {
+			handled = true;
+		}
+
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			break;
 		case MotionEvent.ACTION_MOVE:
-			boolean handled = handleMove(event.getX(), event.getY());
-			
-			if (handled) {
-				return true;
-			}
-			
+			handled = handleMove(event.getX(), event.getY());
 			break;
 		case MotionEvent.ACTION_UP:
 			mDragHelper.reset();
@@ -762,6 +766,10 @@ public class Sidebar extends ViewGroup {
 			}
 
 			break;
+		}
+
+		if (handled) {
+			return true;
 		}
 
 		return super.dispatchTouchEvent(event);
