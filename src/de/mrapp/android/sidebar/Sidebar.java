@@ -10,6 +10,7 @@ import java.util.Set;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -19,9 +20,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
+import de.mrapp.android.sidebar.animation.ContentViewAnimation;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
 import de.mrapp.android.sidebar.util.DragHelper;
+import de.mrapp.android.sidebar.view.ContentView;
 
 public class Sidebar extends ViewGroup {
 
@@ -75,7 +78,7 @@ public class Sidebar extends ViewGroup {
 
 	private View mSidebarView;
 
-	private View mContentView;
+	private ContentView mContentView;
 
 	private boolean mShown;
 
@@ -275,7 +278,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void inflateContentView(Inflater inflater) {
-		mContentView = inflater.inflate(getContext(), null);
+		mContentView = new ContentView(getContext(), inflater, Color.BLACK);
 		addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
@@ -302,26 +305,25 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void animateShowSidebar(final float toXDelta) {
-		animateSidebar(toXDelta, createAnimationListener(true));
+		animateSidebar(true, toXDelta, createAnimationListener(true));
 	}
 
 	private void animateHideSidebar(final float toXDelta) {
-		animateSidebar(toXDelta, createAnimationListener(false));
+		animateSidebar(false, toXDelta, createAnimationListener(false));
 	}
 
-	private void animateSidebar(final float toXDelta,
+	private void animateSidebar(final boolean show, final float toXDelta,
 			final AnimationListener animationListener) {
 		if (mContentView.getAnimation() == null
 				&& mSidebarView.getAnimation() == null) {
 			long duration = calculateAnimationDuration(toXDelta);
 
-			Animation contentViewAnimation = new TranslateAnimation(0, toXDelta
-					* scrollRatio, 0, 0);
-			contentViewAnimation.setDuration(duration);
-			contentViewAnimation.setAnimationListener(animationListener);
+			Animation contentViewAnimation = new ContentViewAnimation(
+					mContentView, duration, toXDelta, scrollRatio, 0.5f, show);
 
 			Animation sidebarViewAnimation = new TranslateAnimation(0,
 					toXDelta, 0, 0);
+			sidebarViewAnimation.setAnimationListener(animationListener);
 			sidebarViewAnimation.setDuration(duration);
 
 			mContentView.startAnimation(contentViewAnimation);
@@ -390,6 +392,8 @@ public class Sidebar extends ViewGroup {
 						sidebarPos.second, mSidebarView.getBottom());
 				mContentView.layout(contentPos.first, mContentView.getTop(),
 						contentPos.second, mContentView.getBottom());
+				mContentView
+						.setOverlayTransparency(calculateOverlayTransparency());
 
 				return true;
 			}
@@ -545,6 +549,15 @@ public class Sidebar extends ViewGroup {
 				&& !isSidebarClicked(x, y);
 	}
 
+	private float calculateOverlayTransparency() {
+		float totalDistance = mSidebarWidth - mOffset;
+		float distance = Math.abs(calculateSnapDistance(false));
+
+		float overlayTransparency = 0.5f;
+
+		return overlayTransparency * (distance / totalDistance);
+	}
+
 	public Sidebar(Context context) {
 		this(context, null);
 	}
@@ -604,7 +617,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final View getContentView() {
-		return mContentView;
+		return mContentView.getContentView();
 	}
 
 	public final void setContentView(final int contentViewId) {
@@ -805,6 +818,7 @@ public class Sidebar extends ViewGroup {
 
 		Pair<Integer, Integer> contentPos = calculateContentPosition();
 		mContentView.layout(contentPos.first, t, contentPos.second, b);
+		mContentView.setOverlayTransparency(calculateOverlayTransparency());
 	}
 
 	private Pair<Integer, Integer> calculateSidebarPosition() {
