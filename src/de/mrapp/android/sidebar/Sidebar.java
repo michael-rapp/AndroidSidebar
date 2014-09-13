@@ -52,6 +52,8 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_CONTENT_OVERLAY_COLOR = Color.BLACK;
 
+	protected static final float DEFAULT_CONTENT_OVERLAY_TRANSPARENCY = 0.5f;
+
 	private SidebarLocation location = SidebarLocation.RIGHT;
 
 	private int animationDuration;
@@ -77,6 +79,8 @@ public class Sidebar extends ViewGroup {
 	private int sidebarBackground;
 
 	private int contentOverlayColor;
+
+	private float contentOverlayTransparency;
 
 	private Set<SidebarListener> mListeners;
 
@@ -119,6 +123,7 @@ public class Sidebar extends ViewGroup {
 				R.styleable.Sidebar);
 		try {
 			obtainContentOverlayColor(typedArray);
+			obtainContentOverlayTransparency(typedArray);
 			obtainBackground(typedArray);
 			obtainSidebarView(typedArray);
 			obtainContentView(typedArray);
@@ -154,6 +159,16 @@ public class Sidebar extends ViewGroup {
 					DEFAULT_CONTENT_OVERLAY_COLOR));
 		} else {
 			setContentOverlayColor(DEFAULT_CONTENT_OVERLAY_COLOR);
+		}
+	}
+
+	private void obtainContentOverlayTransparency(TypedArray typedArray) {
+		if (typedArray != null) {
+			setContentOverlayTransparency(typedArray.getFloat(
+					R.styleable.Sidebar_contentOverlayTransparency,
+					DEFAULT_CONTENT_OVERLAY_TRANSPARENCY));
+		} else {
+			setContentOverlayTransparency(DEFAULT_CONTENT_OVERLAY_TRANSPARENCY);
 		}
 	}
 
@@ -335,7 +350,8 @@ public class Sidebar extends ViewGroup {
 			long duration = calculateAnimationDuration(toXDelta);
 
 			Animation contentViewAnimation = new ContentViewAnimation(
-					mContentView, duration, toXDelta, scrollRatio, 0.5f, show);
+					mContentView, duration, toXDelta, scrollRatio,
+					getContentOverlayTransparency(), show);
 
 			Animation sidebarViewAnimation = new TranslateAnimation(0,
 					toXDelta, 0, 0);
@@ -568,10 +584,7 @@ public class Sidebar extends ViewGroup {
 	private float calculateContentOverlayTransparency() {
 		float totalDistance = mSidebarWidth - mOffset;
 		float distance = Math.abs(calculateSnapDistance(false));
-
-		float overlayTransparency = 0.5f;
-
-		return overlayTransparency * (distance / totalDistance);
+		return getContentOverlayTransparency() * (distance / totalDistance);
 	}
 
 	public Sidebar(Context context) {
@@ -753,6 +766,19 @@ public class Sidebar extends ViewGroup {
 
 	public final void setContentOverlayColor(final int contentOverlayColor) {
 		this.contentOverlayColor = contentOverlayColor;
+	}
+
+	public final float getContentOverlayTransparency() {
+		return contentOverlayTransparency;
+	}
+
+	public final void setContentOverlayTransparency(
+			final float contentOverlayTransparency) {
+		ensureAtLeast(contentOverlayTransparency, 0,
+				"The transparency must be at least 0");
+		ensureAtMaximum(contentOverlayTransparency, 1,
+				"The transparency must be at maximum 1");
+		this.contentOverlayTransparency = contentOverlayTransparency;
 	}
 
 	public final void addSidebarListener(SidebarListener listener) {

@@ -43,6 +43,7 @@ License along with this program.  If not, see
         <attr name="hideOnContentClick" format="boolean" />
         <attr name="showOnSidebarClick" format="boolean" />
         <attr name="contentOverlayColor" format="color" />
+        <attr name="contentOverlayTransparency" format="float" />
     </declare-styleable>
 
 </resources>
