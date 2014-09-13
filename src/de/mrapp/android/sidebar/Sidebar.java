@@ -39,7 +39,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
-	protected static final DragMode DEFAULT_DRAG_MODE = DragMode.BOTH;
+	protected static final DragMode DEFAULT_DRAG_MODE = DragMode.SIDEBAR_ONLY;
 
 	protected static final float DEFAULT_DRAG_THRESHOLD = 0.33f;
 
