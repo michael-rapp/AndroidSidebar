@@ -25,6 +25,7 @@ import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
 import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
+import de.mrapp.android.sidebar.view.SidebarView;
 
 public class Sidebar extends ViewGroup {
 
@@ -53,6 +54,10 @@ public class Sidebar extends ViewGroup {
 	protected static final int DEFAULT_CONTENT_OVERLAY_COLOR = Color.BLACK;
 
 	protected static final float DEFAULT_CONTENT_OVERLAY_TRANSPARENCY = 0.5f;
+
+	protected static final int DEFAULT_SHADOW_WIDTH = 100;
+
+	protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
 
 	private SidebarLocation location = SidebarLocation.RIGHT;
 
@@ -84,7 +89,7 @@ public class Sidebar extends ViewGroup {
 
 	private Set<SidebarListener> mListeners;
 
-	private View mSidebarView;
+	private SidebarView mSidebarView;
 
 	private ContentView mContentView;
 
@@ -300,11 +305,11 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void inflateSidebarView(Inflater inflater) {
-		mSidebarView = inflater.inflate(getContext(), null);
+		mSidebarView = new SidebarView(getContext(), inflater, getLocation(),
+				sidebarBackground, DEFAULT_SHADOW_WIDTH, DEFAULT_SHADOW_COLOR);
 		addView(mSidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
-		setSidebarBackground();
 	}
 
 	private void inflateContentView(Inflater inflater) {
@@ -313,20 +318,6 @@ public class Sidebar extends ViewGroup {
 		addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
-	}
-
-	private void setSidebarBackground() {
-		if (mSidebarView != null && sidebarBackground == -1) {
-			if (getLocation() == SidebarLocation.LEFT) {
-				mSidebarView
-						.setBackgroundResource(R.drawable.sidebar_left_light);
-
-			} else {
-				mSidebarView
-						.setBackgroundResource(R.drawable.sidebar_right_light);
-
-			}
-		}
 	}
 
 	private void bringSidebarToFront() {
@@ -634,7 +625,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final View getSidebarView() {
-		return mSidebarView;
+		return mSidebarView.getSidebarView();
 	}
 
 	public final void setSidebarView(final int sidebarViewId) {
@@ -664,7 +655,6 @@ public class Sidebar extends ViewGroup {
 	public final void setLocation(SidebarLocation location) {
 		ensureNotNull(location, "The location may not be null");
 		this.location = location;
-		setSidebarBackground();
 	}
 
 	public final int getAnimationDuration() {
