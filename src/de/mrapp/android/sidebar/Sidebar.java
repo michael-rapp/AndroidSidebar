@@ -451,8 +451,9 @@ public class Sidebar extends ViewGroup {
 		int contentX = 0;
 
 		if (getLocation() == SidebarLocation.LEFT) {
-			contentX = Math.round((sidebarPosition.first + mSidebarWidth)
-					* scrollRatio);
+			contentX = mOffset
+					+ Math.round((sidebarPosition.second - shadowWidth - mOffset)
+							* scrollRatio);
 		} else {
 			contentX = Math
 					.round((sidebarPosition.first + shadowWidth - mContentWidth)
@@ -900,7 +901,8 @@ public class Sidebar extends ViewGroup {
 
 		if (getLocation() == SidebarLocation.LEFT) {
 			if (isSidebarShown()) {
-				leftPos = Math.round(mSidebarWidth * scrollRatio);
+				leftPos = mOffset
+						+ Math.round((mSidebarWidth - mOffset) * scrollRatio);
 			} else {
 				leftPos = mOffset;
 			}
