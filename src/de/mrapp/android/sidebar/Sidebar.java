@@ -393,7 +393,7 @@ public class Sidebar extends ViewGroup {
 				mContentView.layout(contentPos.first, mContentView.getTop(),
 						contentPos.second, mContentView.getBottom());
 				mContentView
-						.setOverlayTransparency(calculateOverlayTransparency());
+						.setOverlayTransparency(calculateContentOverlayTransparency());
 
 				return true;
 			}
@@ -549,7 +549,7 @@ public class Sidebar extends ViewGroup {
 				&& !isSidebarClicked(x, y);
 	}
 
-	private float calculateOverlayTransparency() {
+	private float calculateContentOverlayTransparency() {
 		float totalDistance = mSidebarWidth - mOffset;
 		float distance = Math.abs(calculateSnapDistance(false));
 
@@ -818,7 +818,8 @@ public class Sidebar extends ViewGroup {
 
 		Pair<Integer, Integer> contentPos = calculateContentPosition();
 		mContentView.layout(contentPos.first, t, contentPos.second, b);
-		mContentView.setOverlayTransparency(calculateOverlayTransparency());
+		mContentView
+				.setOverlayTransparency(calculateContentOverlayTransparency());
 	}
 
 	private Pair<Integer, Integer> calculateSidebarPosition() {
