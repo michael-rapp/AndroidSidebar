@@ -55,7 +55,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final float DEFAULT_CONTENT_OVERLAY_TRANSPARENCY = 0.5f;
 
-	protected static final int DEFAULT_SHADOW_WIDTH = 100;
+	protected static final int DEFAULT_SHADOW_WIDTH = 25;
 
 	protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
 

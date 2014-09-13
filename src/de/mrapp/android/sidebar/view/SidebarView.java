@@ -1,9 +1,11 @@
 package de.mrapp.android.sidebar.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
+import android.os.Build;
 import android.view.View;
 import android.widget.LinearLayout;
 import de.mrapp.android.sidebar.R;
@@ -75,12 +77,8 @@ public class SidebarView extends LinearLayout {
 			orientation = Orientation.RIGHT_LEFT;
 		}
 
-		// GradientDrawable gradient = new GradientDrawable(orientation,
-		// new int[] { Color.TRANSPARENT, shadowColor });
-
-		int color = Color.argb(75, 255, 0, 0);
 		GradientDrawable gradient = new GradientDrawable(orientation,
-				new int[] { color, color });
+				new int[] { Color.TRANSPARENT, shadowColor });
 		shadowView.setBackgroundDrawable(gradient);
 	}
 
