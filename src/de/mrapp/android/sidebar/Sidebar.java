@@ -469,13 +469,13 @@ public class Sidebar extends ViewGroup {
 		float threshold = calculateDragThreshold();
 
 		if (getLocation() == SidebarLocation.LEFT) {
-			if (mSidebarView.getRight() > threshold) {
+			if (mSidebarView.getRight() - shadowWidth > threshold) {
 				animateShowSidebar(calculateSnapDistance(true));
 			} else {
 				animateHideSidebar(calculateSnapDistance(false));
 			}
 		} else {
-			if (mSidebarView.getLeft() < threshold) {
+			if (mSidebarView.getLeft() + shadowWidth < threshold) {
 				animateShowSidebar(calculateSnapDistance(true));
 			} else {
 				animateHideSidebar(calculateSnapDistance(false));
