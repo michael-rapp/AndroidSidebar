@@ -404,12 +404,13 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	private boolean handleMove(float x, float y) {
+	private boolean handleMove(float x) {
 		if (mContentView.getAnimation() == null
 				&& mSidebarView.getAnimation() == null) {
 			mDragHelper.update(x);
 
-			if (mDragHelper.isDragging() && checkDragMode(x, y)) {
+			if (mDragHelper.isDragging()
+					&& checkDragMode(mDragHelper.getStartPosition())) {
 				Pair<Integer, Integer> sidebarPos = calculateSidebarDragPosition();
 				Pair<Integer, Integer> contentPos = calculateContentDragPosition(sidebarPos);
 
@@ -543,42 +544,48 @@ public class Sidebar extends ViewGroup {
 		return distance;
 	}
 
-	private void handleClick(float x, float y) {
-		if (isSidebarClicked(x, y)) {
+	private void handleClick(float x) {
+		if (isSidebarClicked(x)) {
 			if (showOnSidebarClick) {
 				showSidebar();
 			}
-		} else if (isContentClicked(x, y)) {
+		} else if (isContentClicked(x)) {
 			if (hideOnContentClick) {
 				hideSidebar();
 			}
 		}
 	}
 
-	private boolean checkDragMode(float x, float y) {
+	private boolean checkDragMode(float x) {
 		if (dragMode == DragMode.DISABLED) {
 			return false;
 		} else if (dragMode == DragMode.SIDEBAR_ONLY) {
-			return isSidebarClicked(x, y);
+			return isSidebarClicked(x);
 		} else if (dragMode == DragMode.CONTENT_ONLY) {
-			return isContentClicked(x, y);
+			return isContentClicked(x);
 		}
 
 		return true;
 	}
 
-	private boolean isSidebarClicked(float x, float y) {
-		return getSidebarView().getLeft() < x
-				&& getSidebarView().getRight() > x
-				&& getSidebarView().getTop() < y
-				&& getSidebarView().getBottom() > y;
+	private boolean isSidebarClicked(float x) {
+		if (getLocation() == SidebarLocation.LEFT) {
+			if (isSidebarShown()) {
+				return x < mSidebarWidth;
+			} else {
+				return x < mOffset;
+			}
+		} else {
+			if (isSidebarShown()) {
+				return x > getWidth() - mSidebarWidth;
+			} else {
+				return x > mContentWidth;
+			}
+		}
 	}
 
-	private boolean isContentClicked(float x, float y) {
-		return getContentView().getLeft() < x
-				&& getContentView().getRight() > x
-				&& getContentView().getTop() < y
-				&& getContentView().getBottom() > y && !isSidebarClicked(x, y);
+	private boolean isContentClicked(float x) {
+		return !isSidebarClicked(x);
 	}
 
 	private float calculateContentOverlayTransparency() {
@@ -805,10 +812,9 @@ public class Sidebar extends ViewGroup {
 	public final boolean dispatchTouchEvent(final MotionEvent event) {
 		boolean handled = false;
 
-		if (isSidebarClicked(event.getX(), event.getY()) && !isSidebarShown()) {
+		if (isSidebarClicked(event.getX()) && !isSidebarShown()) {
 			handled = true;
-		} else if (isContentClicked(event.getX(), event.getY())
-				&& isSidebarShown()) {
+		} else if (isContentClicked(event.getX()) && isSidebarShown()) {
 			handled = true;
 		}
 
@@ -816,7 +822,7 @@ public class Sidebar extends ViewGroup {
 		case MotionEvent.ACTION_DOWN:
 			break;
 		case MotionEvent.ACTION_MOVE:
-			handled = handleMove(event.getX(), event.getY());
+			handled = handleMove(event.getX());
 			break;
 		case MotionEvent.ACTION_UP:
 			mDragHelper.reset();
@@ -824,7 +830,7 @@ public class Sidebar extends ViewGroup {
 			if (mDragHelper.isDragging()) {
 				handleRelease();
 			} else {
-				handleClick(event.getX(), event.getY());
+				handleClick(event.getX());
 			}
 
 			break;
@@ -843,7 +849,7 @@ public class Sidebar extends ViewGroup {
 		case MotionEvent.ACTION_DOWN:
 			return true;
 		case MotionEvent.ACTION_MOVE:
-			handleMove(event.getX(), event.getY());
+			handleMove(event.getX());
 			return true;
 		case MotionEvent.ACTION_UP:
 			mDragHelper.reset();
@@ -851,7 +857,7 @@ public class Sidebar extends ViewGroup {
 			if (mDragHelper.isDragging()) {
 				handleRelease();
 			} else {
-				handleClick(event.getX(), event.getY());
+				handleClick(event.getX());
 			}
 
 			return true;

@@ -6,7 +6,9 @@ public class DragHelper {
 
 	private int distance;
 
-	private int startValue;
+	private int thresholdReachedPosition;
+
+	private int dragStartPosition;
 
 	private boolean recycled;
 
@@ -21,7 +23,8 @@ public class DragHelper {
 	public void reset() {
 		recycled = true;
 		distance = 0;
-		startValue = 0;
+		thresholdReachedPosition = 0;
+		dragStartPosition = 0;
 		reachedThreshold = false;
 	}
 
@@ -38,20 +41,21 @@ public class DragHelper {
 
 		if (recycled) {
 			recycled = false;
-			startValue = roundedValue;
+			thresholdReachedPosition = roundedValue;
+			dragStartPosition = roundedValue;
 			distance = 0;
 			reachedThreshold = false;
 		} else {
 			if (!reachedThreshold) {
-				int tmpDistance = roundedValue - startValue;
+				int tmpDistance = roundedValue - thresholdReachedPosition;
 
 				if (reachedThreshold(tmpDistance)) {
 					reachedThreshold = true;
-					startValue = roundedValue;
+					thresholdReachedPosition = roundedValue;
 					dragging = true;
 				}
 			} else {
-				distance = roundedValue - startValue;
+				distance = roundedValue - thresholdReachedPosition;
 			}
 		}
 	}
@@ -64,6 +68,10 @@ public class DragHelper {
 
 	public final int getDistance() {
 		return distance;
+	}
+
+	public final int getStartPosition() {
+		return dragStartPosition;
 	}
 
 }
