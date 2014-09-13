@@ -78,8 +78,9 @@ public class SidebarView extends LinearLayout {
 		// GradientDrawable gradient = new GradientDrawable(orientation,
 		// new int[] { Color.TRANSPARENT, shadowColor });
 
+		int color = Color.argb(75, 255, 0, 0);
 		GradientDrawable gradient = new GradientDrawable(orientation,
-				new int[] { Color.RED, Color.RED });
+				new int[] { color, color });
 		shadowView.setBackgroundDrawable(gradient);
 	}
 

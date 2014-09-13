@@ -87,6 +87,8 @@ public class Sidebar extends ViewGroup {
 
 	private float contentOverlayTransparency;
 
+	private int shadowWidth = DEFAULT_SHADOW_WIDTH;
+
 	private Set<SidebarListener> mListeners;
 
 	private SidebarView mSidebarView;
@@ -130,9 +132,9 @@ public class Sidebar extends ViewGroup {
 			obtainContentOverlayColor(typedArray);
 			obtainContentOverlayTransparency(typedArray);
 			obtainBackground(typedArray);
+			obtainLocation(typedArray);
 			obtainSidebarView(typedArray);
 			obtainContentView(typedArray);
-			obtainLocation(typedArray);
 			obtainAnimationDuration(typedArray);
 			obtainSidebarWidth(typedArray);
 			obtainSidebarOffset(typedArray);
@@ -385,7 +387,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private int calculateAnimationDuration(final float distance) {
-		int total = mContentWidth - mOffset - (mContentWidth - mSidebarWidth);
+		int total = mSidebarWidth - mOffset;
 		float ratio = Math.abs(distance) / total;
 		return Math.round(animationDuration * ratio);
 	}
@@ -440,7 +442,8 @@ public class Sidebar extends ViewGroup {
 			sidebarX = Math.min(hiddenSidebarPos.first, sidebarX);
 		}
 
-		return new Pair<Integer, Integer>(sidebarX, sidebarX + mSidebarWidth);
+		return new Pair<Integer, Integer>(sidebarX, sidebarX + mSidebarWidth
+				+ shadowWidth);
 	}
 
 	private Pair<Integer, Integer> calculateContentDragPosition(
@@ -448,12 +451,12 @@ public class Sidebar extends ViewGroup {
 		int contentX = 0;
 
 		if (getLocation() == SidebarLocation.LEFT) {
-			contentX = Math
-					.round((sidebarPosition.first + mSidebarWidth + mOffset)
-							* scrollRatio);
-		} else {
-			contentX = Math.round((sidebarPosition.first - mContentWidth)
+			contentX = Math.round((sidebarPosition.first + mSidebarWidth)
 					* scrollRatio);
+		} else {
+			contentX = Math
+					.round((sidebarPosition.first + shadowWidth - mContentWidth)
+							* scrollRatio);
 		}
 
 		return new Pair<Integer, Integer>(contentX, contentX + mContentWidth);
@@ -506,15 +509,17 @@ public class Sidebar extends ViewGroup {
 
 		if (getLocation() == SidebarLocation.LEFT) {
 			if (shouldBeShown) {
-				distance = mSidebarWidth - mSidebarView.getRight();
+				distance = mSidebarWidth + shadowWidth
+						- mSidebarView.getRight();
 			} else {
-				distance = mOffset - mSidebarView.getRight();
+				distance = mOffset + shadowWidth - mSidebarView.getRight();
 			}
 		} else {
 			if (shouldBeShown) {
-				distance = getWidth() - mSidebarWidth - mSidebarView.getLeft();
+				distance = getWidth() - mSidebarWidth - shadowWidth
+						- mSidebarView.getLeft();
 			} else {
-				distance = mContentWidth - mSidebarView.getLeft();
+				distance = mContentWidth - shadowWidth - mSidebarView.getLeft();
 			}
 		}
 
@@ -562,14 +567,17 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private boolean isSidebarClicked(float x, float y) {
-		return mSidebarView.getLeft() < x && mSidebarView.getRight() > x
-				&& mSidebarView.getTop() < y && mSidebarView.getBottom() > y;
+		return getSidebarView().getLeft() < x
+				&& getSidebarView().getRight() > x
+				&& getSidebarView().getTop() < y
+				&& getSidebarView().getBottom() > y;
 	}
 
 	private boolean isContentClicked(float x, float y) {
-		return mContentView.getLeft() < x && mContentView.getRight() > x
-				&& mContentView.getTop() < y && mContentView.getBottom() > y
-				&& !isSidebarClicked(x, y);
+		return getContentView().getLeft() < x
+				&& getContentView().getRight() > x
+				&& getContentView().getTop() < y
+				&& getContentView().getBottom() > y && !isSidebarClicked(x, y);
 	}
 
 	private float calculateContentOverlayTransparency() {
@@ -877,13 +885,14 @@ public class Sidebar extends ViewGroup {
 			}
 		} else {
 			if (shown) {
-				leftPos = getWidth() - mSidebarWidth;
+				leftPos = getWidth() - mSidebarWidth - shadowWidth;
 			} else {
-				leftPos = getWidth() - mOffset;
+				leftPos = getWidth() - mOffset - shadowWidth;
 			}
 		}
 
-		return new Pair<Integer, Integer>(leftPos, leftPos + mSidebarWidth);
+		return new Pair<Integer, Integer>(leftPos, leftPos + mSidebarWidth
+				+ shadowWidth);
 	}
 
 	private Pair<Integer, Integer> calculateContentPosition() {
@@ -891,7 +900,7 @@ public class Sidebar extends ViewGroup {
 
 		if (getLocation() == SidebarLocation.LEFT) {
 			if (isSidebarShown()) {
-				leftPos = Math.round((mSidebarWidth + mOffset) * scrollRatio);
+				leftPos = Math.round(mSidebarWidth * scrollRatio);
 			} else {
 				leftPos = mOffset;
 			}
@@ -919,9 +928,8 @@ public class Sidebar extends ViewGroup {
 			mSidebarWidth = Math.round(getMeasuredWidth()
 					* (sidebarWidth / 100.0f));
 			int mode = MeasureSpec.getMode(parentWSpec);
-			super.measureChild(child,
-					MeasureSpec.makeMeasureSpec(mSidebarWidth, mode),
-					parentHSpec);
+			super.measureChild(child, MeasureSpec.makeMeasureSpec(mSidebarWidth
+					+ shadowWidth, mode), parentHSpec);
 		} else if (child == mContentView) {
 			mOffset = Math.round(getMeasuredWidth() * (sidebarOffset / 100.0f));
 			mContentWidth = getMeasuredWidth() - mOffset;
