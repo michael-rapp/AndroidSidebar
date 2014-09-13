@@ -50,6 +50,8 @@ public class Sidebar extends ViewGroup {
 
 	protected static final boolean DEFAULT_SHOW_ON_SIDEBAR_CLICKED = true;
 
+	protected static final int DEFAULT_CONTENT_OVERLAY_COLOR = Color.BLACK;
+
 	private SidebarLocation location = SidebarLocation.RIGHT;
 
 	private int animationDuration;
@@ -73,6 +75,8 @@ public class Sidebar extends ViewGroup {
 	private boolean showOnSidebarClick;
 
 	private int sidebarBackground;
+
+	private int contentOverlayColor;
 
 	private Set<SidebarListener> mListeners;
 
@@ -114,6 +118,7 @@ public class Sidebar extends ViewGroup {
 		TypedArray typedArray = context.obtainStyledAttributes(attributeSet,
 				R.styleable.Sidebar);
 		try {
+			obtainContentOverlayColor(typedArray);
 			obtainBackground(typedArray);
 			obtainSidebarView(typedArray);
 			obtainContentView(typedArray);
@@ -139,6 +144,16 @@ public class Sidebar extends ViewGroup {
 					R.styleable.Sidebar_android_background, -1);
 		} else {
 			sidebarBackground = -1;
+		}
+	}
+
+	private void obtainContentOverlayColor(TypedArray typedArray) {
+		if (typedArray != null) {
+			setContentOverlayColor(typedArray.getColor(
+					R.styleable.Sidebar_contentOverlayColor,
+					DEFAULT_CONTENT_OVERLAY_COLOR));
+		} else {
+			setContentOverlayColor(DEFAULT_CONTENT_OVERLAY_COLOR);
 		}
 	}
 
@@ -278,7 +293,8 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void inflateContentView(Inflater inflater) {
-		mContentView = new ContentView(getContext(), inflater, Color.BLACK);
+		mContentView = new ContentView(getContext(), inflater,
+				getContentOverlayColor());
 		addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
@@ -729,6 +745,14 @@ public class Sidebar extends ViewGroup {
 
 	public final void showOnSidebarClick(final boolean showOnSidebarClick) {
 		this.showOnSidebarClick = showOnSidebarClick;
+	}
+
+	public final int getContentOverlayColor() {
+		return contentOverlayColor;
+	}
+
+	public final void setContentOverlayColor(final int contentOverlayColor) {
+		this.contentOverlayColor = contentOverlayColor;
 	}
 
 	public final void addSidebarListener(SidebarListener listener) {
