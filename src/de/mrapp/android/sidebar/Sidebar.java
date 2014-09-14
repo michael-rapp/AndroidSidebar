@@ -211,7 +211,9 @@ public class Sidebar extends ViewGroup {
 	private void obtainShadowWidth(TypedArray typedArray) {
 		if (typedArray != null) {
 			setShadowWidthInPixels(typedArray.getDimensionPixelSize(
-					R.styleable.Sidebar_shadowWidth, DEFAULT_SHADOW_WIDTH));
+					R.styleable.Sidebar_shadowWidth, DisplayUtil
+							.convertDpToPixels(getContext(),
+									DEFAULT_SHADOW_WIDTH)));
 		} else {
 			setShadowWidth(DEFAULT_SHADOW_WIDTH);
 		}
