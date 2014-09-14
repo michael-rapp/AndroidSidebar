@@ -313,6 +313,10 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void inflateSidebarView(Inflater inflater) {
+		if (mSidebarView != null) {
+			removeView(mSidebarView);
+		}
+
 		mSidebarView = new SidebarView(getContext(), inflater, getLocation(),
 				sidebarBackground, shadowWidth, shadowColor);
 		addView(mSidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -321,6 +325,10 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void inflateContentView(Inflater inflater) {
+		if (mContentView != null) {
+			removeView(mContentView);
+		}
+
 		mContentView = new ContentView(getContext(), inflater,
 				getContentOverlayColor());
 		addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT,
