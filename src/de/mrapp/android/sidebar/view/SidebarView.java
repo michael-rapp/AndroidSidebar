@@ -7,7 +7,7 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.View;
 import android.widget.LinearLayout;
 import de.mrapp.android.sidebar.R;
-import de.mrapp.android.sidebar.SidebarLocation;
+import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.inflater.Inflater;
 
 public class SidebarView extends LinearLayout {
@@ -16,7 +16,7 @@ public class SidebarView extends LinearLayout {
 
 	private View shadowView;
 
-	private SidebarLocation location;
+	private Location location;
 
 	private int background;
 
@@ -25,7 +25,7 @@ public class SidebarView extends LinearLayout {
 	private int shadowWidth;
 
 	private void inflateViews(Inflater inflater) {
-		if (location == SidebarLocation.LEFT) {
+		if (location == Location.LEFT) {
 			inflateSidebarView(inflater);
 			inflateShadowView(shadowColor, shadowWidth);
 		} else {
@@ -59,7 +59,7 @@ public class SidebarView extends LinearLayout {
 	}
 
 	public SidebarView(Context context, Inflater inflater,
-			final SidebarLocation location, final int background,
+			final Location location, final int background,
 			final int shadowWidth, final int shadowColor) {
 		super(context, null);
 		this.location = location;
@@ -76,7 +76,7 @@ public class SidebarView extends LinearLayout {
 		this.background = background;
 
 		if (sidebarView != null && background == -1) {
-			if (location == SidebarLocation.LEFT) {
+			if (location == Location.LEFT) {
 				sidebarView
 						.setBackgroundResource(R.drawable.sidebar_left_light);
 
@@ -93,7 +93,7 @@ public class SidebarView extends LinearLayout {
 		this.shadowColor = shadowColor;
 		Orientation orientation = Orientation.LEFT_RIGHT;
 
-		if (location == SidebarLocation.LEFT) {
+		if (location == Location.LEFT) {
 			orientation = Orientation.RIGHT_LEFT;
 		}
 
@@ -102,11 +102,11 @@ public class SidebarView extends LinearLayout {
 		shadowView.setBackgroundDrawable(gradient);
 	}
 
-	public final void setLocation(final SidebarLocation location) {
+	public final void setLocation(final Location location) {
 		this.location = location;
 		removeAllViews();
 
-		if (location == SidebarLocation.LEFT) {
+		if (location == Location.LEFT) {
 			addSidebarView();
 			addShadowView(shadowWidth);
 		} else {

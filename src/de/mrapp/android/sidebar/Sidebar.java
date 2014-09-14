@@ -30,7 +30,7 @@ import de.mrapp.android.sidebar.view.SidebarView;
 
 public class Sidebar extends ViewGroup {
 
-	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
+	protected static final Location DEFAULT_LOCATION = Location.RIGHT;
 
 	protected static final int DEFAULT_BACKGROUND = -1;
 
@@ -74,7 +74,7 @@ public class Sidebar extends ViewGroup {
 
 	private static final int MAX_DRAG_SENSITIVITY = 260;
 
-	private SidebarLocation location;
+	private Location location;
 
 	private int animationDuration;
 
@@ -226,7 +226,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void obtainLocation(TypedArray typedArray) {
-		setLocation(SidebarLocation.fromValue(typedArray.getInt(
+		setLocation(Location.fromValue(typedArray.getInt(
 				R.styleable.Sidebar_location, DEFAULT_LOCATION.getValue())));
 	}
 
@@ -446,7 +446,7 @@ public class Sidebar extends ViewGroup {
 		int sidebarX = calculateSidebarPosition().first
 				+ mDragHelper.getDistance();
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			sidebarX = Math.max(hiddenSidebarPos.first, sidebarX);
 			sidebarX = Math.min(shownSidebarPos.first, sidebarX);
 		} else {
@@ -462,7 +462,7 @@ public class Sidebar extends ViewGroup {
 			Pair<Integer, Integer> sidebarPosition) {
 		int contentX = 0;
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			contentX = mOffset
 					+ Math.round((sidebarPosition.second - shadowWidth - mOffset)
 							* scrollRatio);
@@ -480,7 +480,7 @@ public class Sidebar extends ViewGroup {
 
 		float threshold = calculateDragThreshold();
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			if (mSidebarView.getRight() - shadowWidth > threshold) {
 				animateShowSidebar(calculateSnapDistance(true));
 			} else {
@@ -498,7 +498,7 @@ public class Sidebar extends ViewGroup {
 	private float calculateDragThreshold() {
 		float threshold = 0;
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			if (isSidebarShown()) {
 				threshold = mSidebarWidth
 						- ((mSidebarWidth - mOffset) * dragThreshold);
@@ -523,7 +523,7 @@ public class Sidebar extends ViewGroup {
 	private float calculateSnapDistance(boolean shouldBeShown) {
 		float distance = 0;
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			if (shouldBeShown) {
 				distance = mSidebarWidth + shadowWidth
 						- mSidebarView.getRight();
@@ -551,7 +551,7 @@ public class Sidebar extends ViewGroup {
 			distance = distance * -1;
 		}
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			distance = distance * -1;
 		}
 
@@ -589,7 +589,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private boolean isSidebarClicked(float x) {
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			if (isSidebarShown()) {
 				return x < mSidebarWidth;
 			} else {
@@ -634,7 +634,7 @@ public class Sidebar extends ViewGroup {
 
 	public final void showSidebar() {
 		if (!isSidebarShown()) {
-			if (location == SidebarLocation.LEFT) {
+			if (location == Location.LEFT) {
 				animateShowSidebar(calculateAnimationDistance());
 			} else {
 				animateShowSidebar(calculateAnimationDistance());
@@ -644,7 +644,7 @@ public class Sidebar extends ViewGroup {
 
 	public final void hideSidebar() {
 		if (isSidebarShown()) {
-			if (location == SidebarLocation.LEFT) {
+			if (location == Location.LEFT) {
 				animateHideSidebar(calculateAnimationDistance());
 			} else {
 				animateHideSidebar(calculateAnimationDistance());
@@ -684,11 +684,11 @@ public class Sidebar extends ViewGroup {
 		inflateContentView(InflaterFactory.createInflater(contentView));
 	}
 
-	public final SidebarLocation getLocation() {
+	public final Location getLocation() {
 		return location;
 	}
 
-	public final void setLocation(SidebarLocation location) {
+	public final void setLocation(Location location) {
 		ensureNotNull(location, "The location may not be null");
 		this.location = location;
 
@@ -1027,7 +1027,7 @@ public class Sidebar extends ViewGroup {
 	private Pair<Integer, Integer> calculateSidebarPosition(final boolean shown) {
 		int leftPos = 0;
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			if (shown) {
 				leftPos = 0;
 			} else {
@@ -1048,7 +1048,7 @@ public class Sidebar extends ViewGroup {
 	private Pair<Integer, Integer> calculateContentPosition() {
 		int leftPos = 0;
 
-		if (getLocation() == SidebarLocation.LEFT) {
+		if (getLocation() == Location.LEFT) {
 			if (isSidebarShown()) {
 				leftPos = mOffset
 						+ Math.round((mSidebarWidth - mOffset) * scrollRatio);

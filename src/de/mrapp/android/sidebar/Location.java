@@ -7,7 +7,7 @@ package de.mrapp.android.sidebar;
  * 
  * @since 1.0.0
  */
-public enum SidebarLocation {
+public enum Location {
 
 	/**
 	 * If the sidebar is located at the left edge of the display.
@@ -21,7 +21,7 @@ public enum SidebarLocation {
 
 	private int value;
 
-	private SidebarLocation(final int value) {
+	private Location(final int value) {
 		this.value = value;
 	}
 
@@ -29,8 +29,8 @@ public enum SidebarLocation {
 		return value;
 	}
 
-	public static SidebarLocation fromValue(final int value) {
-		for (SidebarLocation location : values()) {
+	public static Location fromValue(final int value) {
+		for (Location location : values()) {
 			if (location.value == value)
 				return location;
 		}
