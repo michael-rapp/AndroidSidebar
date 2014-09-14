@@ -19,8 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.TranslateAnimation;
 import de.mrapp.android.sidebar.animation.ContentViewAnimation;
+import de.mrapp.android.sidebar.animation.SidebarViewAnimation;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
 import de.mrapp.android.sidebar.util.DisplayUtil;
@@ -351,11 +351,8 @@ public class Sidebar extends ViewGroup {
 			Animation contentViewAnimation = new ContentViewAnimation(
 					mContentView, duration, toXDelta, scrollRatio,
 					getContentOverlayTransparency(), show);
-
-			Animation sidebarViewAnimation = new TranslateAnimation(0,
-					toXDelta, 0, 0);
-			sidebarViewAnimation.setAnimationListener(animationListener);
-			sidebarViewAnimation.setDuration(duration);
+			Animation sidebarViewAnimation = new SidebarViewAnimation(toXDelta,
+					duration, animationListener);
 
 			mContentView.startAnimation(contentViewAnimation);
 			mSidebarView.startAnimation(sidebarViewAnimation);
