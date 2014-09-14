@@ -31,6 +31,8 @@ public class Sidebar extends ViewGroup {
 
 	protected static final SidebarLocation DEFAULT_LOCATION = SidebarLocation.RIGHT;
 
+	protected static final int DEFAULT_BACKGROUND = -1;
+
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
 	protected static final int DEFAULT_SIDEBAR_WIDTH = 80;
@@ -168,9 +170,9 @@ public class Sidebar extends ViewGroup {
 	private void obtainBackground(TypedArray typedArray) {
 		if (typedArray != null) {
 			sidebarBackground = typedArray.getResourceId(
-					R.styleable.Sidebar_android_background, -1);
+					R.styleable.Sidebar_android_background, DEFAULT_BACKGROUND);
 		} else {
-			sidebarBackground = -1;
+			sidebarBackground = DEFAULT_BACKGROUND;
 		}
 	}
 
@@ -265,7 +267,8 @@ public class Sidebar extends ViewGroup {
 	private void obtainMaxSidebarWidth(TypedArray typedArray) {
 		if (typedArray != null) {
 			setMaxSidebarWidth(typedArray.getInt(
-					R.styleable.Sidebar_maxSidebarWidth, DEFAULT_MAX_SIDEBAR_WIDTH));
+					R.styleable.Sidebar_maxSidebarWidth,
+					DEFAULT_MAX_SIDEBAR_WIDTH));
 		} else {
 			setMaxSidebarWidth(DEFAULT_MAX_SIDEBAR_WIDTH);
 		}
