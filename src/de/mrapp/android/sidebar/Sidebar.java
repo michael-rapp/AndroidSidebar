@@ -68,6 +68,8 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
 
+	protected static final boolean SHOW_SIDEBAR_BY_DEFAULT = false;
+
 	private static final int MIN_DRAG_SENSITIVITY = 10;
 
 	private static final int MAX_DRAG_SENSITIVITY = 260;
@@ -304,7 +306,8 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void obtainShowSidebar(TypedArray typedArray) {
-		if (typedArray.getBoolean(R.styleable.Sidebar_showSidebar, false)) {
+		if (typedArray.getBoolean(R.styleable.Sidebar_showSidebar,
+				SHOW_SIDEBAR_BY_DEFAULT)) {
 			showSidebar();
 		}
 	}
