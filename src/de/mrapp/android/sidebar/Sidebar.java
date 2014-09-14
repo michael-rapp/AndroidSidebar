@@ -35,7 +35,11 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_SIDEBAR_WIDTH = 80;
 
+	protected static final int DEFAULT_MAX_SIDEBAR_WIDTH = -1;
+
 	protected static final int DEFAULT_SIDEBAR_OFFSET = 10;
+
+	protected static final int DEFAULT_MAX_SIDEBAR_OFFSET = -1;
 
 	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
@@ -65,7 +69,11 @@ public class Sidebar extends ViewGroup {
 
 	private int sidebarWidth;
 
+	private int maxSidebarWidth;
+
 	private int sidebarOffset;
+
+	private int maxSidebarOffset;
 
 	private float scrollRatio;
 
@@ -141,7 +149,9 @@ public class Sidebar extends ViewGroup {
 			obtainContentView(typedArray);
 			obtainAnimationDuration(typedArray);
 			obtainSidebarWidth(typedArray);
+			obtainMaxSidebarWidth(typedArray);
 			obtainSidebarOffset(typedArray);
+			obtainMaxSidebarOffset(typedArray);
 			obtainScrollRatio(typedArray);
 			obtainDragMode(typedArray);
 			obtainDragThreshold(typedArray);
@@ -252,12 +262,31 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	private void obtainMaxSidebarWidth(TypedArray typedArray) {
+		if (typedArray != null) {
+			setMaxSidebarWidth(typedArray.getInt(
+					R.styleable.Sidebar_maxSidebarWidth, DEFAULT_MAX_SIDEBAR_WIDTH));
+		} else {
+			setMaxSidebarWidth(DEFAULT_MAX_SIDEBAR_WIDTH);
+		}
+	}
+
 	private void obtainSidebarOffset(TypedArray typedArray) {
 		if (typedArray != null) {
 			setSidebarOffset(typedArray.getInt(
 					R.styleable.Sidebar_sidebarOffset, DEFAULT_SIDEBAR_OFFSET));
 		} else {
 			setSidebarOffset(DEFAULT_SIDEBAR_OFFSET);
+		}
+	}
+
+	private void obtainMaxSidebarOffset(TypedArray typedArray) {
+		if (typedArray != null) {
+			setMaxSidebarOffset(typedArray.getInt(
+					R.styleable.Sidebar_maxSidebarOffset,
+					DEFAULT_MAX_SIDEBAR_OFFSET));
+		} else {
+			setMaxSidebarOffset(DEFAULT_MAX_SIDEBAR_OFFSET);
 		}
 	}
 
@@ -718,10 +747,21 @@ public class Sidebar extends ViewGroup {
 		return sidebarWidth;
 	}
 
-	public final void setSidebarWidth(final int width) {
-		ensureAtLeast(width, 0, "The width must be at least 0");
-		ensureAtMaximum(width, 100, "The width must be at maximum 100");
-		this.sidebarWidth = width;
+	public final void setSidebarWidth(final int sidebarWidth) {
+		ensureAtLeast(sidebarWidth, 0, "The sidebar width must be at least 0");
+		ensureAtMaximum(sidebarWidth, 100,
+				"The sidebar width must be at maximum 100");
+		this.sidebarWidth = sidebarWidth;
+	}
+
+	public final int getMaxSidebarWidth() {
+		return maxSidebarWidth;
+	}
+
+	public final void setMaxSidebarWidth(final int maxSidebarWidth) {
+		ensureAtLeast(maxSidebarWidth, -1,
+				"The max sidebar width must be at least -1");
+		this.maxSidebarWidth = maxSidebarWidth;
 	}
 
 	public final int getSidebarOffset() {
@@ -729,9 +769,20 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final void setSidebarOffset(final int sidebarOffset) {
-		ensureAtLeast(sidebarOffset, 0, "The offset must be at least 0");
-		ensureAtMaximum(sidebarOffset, 100, "The offset must be at maximum 100");
+		ensureAtLeast(sidebarOffset, 0, "The sidebar offset must be at least 0");
+		ensureAtMaximum(sidebarOffset, 100,
+				"The sidebar offset must be at maximum 100");
 		this.sidebarOffset = sidebarOffset;
+	}
+
+	public final int getMaxSidebarOffset() {
+		return maxSidebarOffset;
+	}
+
+	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
+		ensureAtLeast(maxSidebarOffset, -1,
+				"The max sidebar offset must be at least -1");
+		this.maxSidebarOffset = maxSidebarOffset;
 	}
 
 	public final float getScrollRatio() {
@@ -983,11 +1034,21 @@ public class Sidebar extends ViewGroup {
 		if (child == mSidebarView) {
 			mSidebarWidth = Math.round(getMeasuredWidth()
 					* (sidebarWidth / 100.0f));
+
+			if (getMaxSidebarWidth() != -1) {
+				mSidebarWidth = Math.min(getMaxSidebarWidth(), mSidebarWidth);
+			}
+
 			int mode = MeasureSpec.getMode(parentWSpec);
 			super.measureChild(child, MeasureSpec.makeMeasureSpec(mSidebarWidth
 					+ shadowWidth, mode), parentHSpec);
 		} else if (child == mContentView) {
 			mOffset = Math.round(getMeasuredWidth() * (sidebarOffset / 100.0f));
+
+			if (getMaxSidebarOffset() != -1) {
+				mOffset = Math.min(getMaxSidebarOffset(), mOffset);
+			}
+
 			mContentWidth = getMeasuredWidth() - mOffset;
 			int mode = MeasureSpec.getMode(parentWSpec);
 			super.measureChild(child,
