@@ -688,6 +688,12 @@ public class Sidebar extends ViewGroup {
 	public final void setLocation(SidebarLocation location) {
 		ensureNotNull(location, "The location may not be null");
 		this.location = location;
+
+		if (mSidebarView != null && mContentView != null) {
+			mSidebarView.setLocation(location);
+		}
+
+		requestLayout();
 	}
 
 	public final int getAnimationDuration() {
@@ -709,6 +715,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtMaximum(sidebarWidth, 100,
 				"The sidebar width must be at maximum 100");
 		this.sidebarWidth = sidebarWidth;
+		requestLayout();
 	}
 
 	public final int getMaxSidebarWidth() {
@@ -724,7 +731,7 @@ public class Sidebar extends ViewGroup {
 			setMaxSidebarWidthInPixels(DisplayUtil.convertDpToPixels(
 					getContext(), maxSidebarWidth));
 		} else {
-			setMaxSidebarOffsetInPixels(-1);
+			setMaxSidebarWidthInPixels(-1);
 		}
 	}
 
@@ -732,6 +739,12 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(maxSidebarWidth, -1,
 				"The max sidebar width must be at least -1");
 		this.maxSidebarWidth = maxSidebarWidth;
+
+		if (maxSidebarWidth != -1) {
+			mSidebarWidth = Math.max(mSidebarWidth, maxSidebarWidth);
+		}
+
+		requestLayout();
 	}
 
 	public final float getSidebarOffset() {
@@ -743,6 +756,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtMaximum(sidebarOffset, 100,
 				"The sidebar offset must be at maximum 100");
 		this.sidebarOffset = sidebarOffset;
+		requestLayout();
 	}
 
 	public final int getMaxSidebarOffset() {
@@ -756,10 +770,10 @@ public class Sidebar extends ViewGroup {
 
 	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
 		if (maxSidebarOffset != -1) {
-			setMaxSidebarWidthInPixels(DisplayUtil.convertDpToPixels(
+			setMaxSidebarOffsetInPixels(DisplayUtil.convertDpToPixels(
 					getContext(), maxSidebarOffset));
 		} else {
-			setMaxSidebarWidthInPixels(-1);
+			setMaxSidebarOffsetInPixels(-1);
 		}
 	}
 
@@ -767,6 +781,12 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(maxSidebarOffset, -1,
 				"The max sidebar offset must be at least -1");
 		this.maxSidebarOffset = maxSidebarOffset;
+
+		if (maxSidebarOffset != -1) {
+			mOffset = Math.min(mOffset, maxSidebarOffset);
+		}
+
+		requestLayout();
 	}
 
 	public final float getScrollRatio() {
@@ -777,6 +797,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(scrollRatio, 0, "The scroll ratio must be at least 0");
 		ensureAtMaximum(scrollRatio, 1, "The scroll ratio must be at maximum 1");
 		this.scrollRatio = scrollRatio;
+		requestLayout();
 	}
 
 	public final DragMode getDragModeWhenHidden() {
@@ -856,6 +877,10 @@ public class Sidebar extends ViewGroup {
 
 	public final void setContentOverlayColor(final int contentOverlayColor) {
 		this.contentOverlayColor = contentOverlayColor;
+
+		if (mContentView != null) {
+			mContentView.setOverlayColor(contentOverlayColor);
+		}
 	}
 
 	public final float getContentOverlayTransparency() {
@@ -869,6 +894,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtMaximum(contentOverlayTransparency, 1,
 				"The transparency must be at maximum 1");
 		this.contentOverlayTransparency = contentOverlayTransparency;
+		requestLayout();
 	}
 
 	public final int getShadowColor() {
@@ -877,6 +903,10 @@ public class Sidebar extends ViewGroup {
 
 	public final void setShadowColor(final int shadowColor) {
 		this.shadowColor = shadowColor;
+
+		if (mSidebarView != null) {
+			mSidebarView.setShadowColor(shadowColor);
+		}
 	}
 
 	public final int getShadowWidth() {
@@ -891,6 +921,10 @@ public class Sidebar extends ViewGroup {
 	private void setShadowWidthInPixels(final int shadowWidth) {
 		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
 		this.shadowWidth = shadowWidth;
+
+		if (mSidebarView != null) {
+			mSidebarView.setShadowWidth(shadowWidth);
+		}
 	}
 
 	public final void addSidebarListener(SidebarListener listener) {

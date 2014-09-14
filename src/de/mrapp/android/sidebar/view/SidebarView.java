@@ -18,27 +18,28 @@ public class SidebarView extends LinearLayout {
 
 	private SidebarLocation location;
 
+	private int background;
+
+	private int shadowColor;
+
 	private int shadowWidth;
 
-	private void initialize(Inflater inflater, final int background,
-			final int shadowColor) {
-		setOrientation(LinearLayout.HORIZONTAL);
-
+	private void inflateViews(Inflater inflater) {
 		if (location == SidebarLocation.LEFT) {
 			inflateSidebarView(inflater);
-			inflateShadowView(shadowColor);
+			inflateShadowView(shadowColor, shadowWidth);
 		} else {
-			inflateShadowView(shadowColor);
+			inflateShadowView(shadowColor, shadowWidth);
 			inflateSidebarView(inflater);
 		}
-
-		setBackground(background);
-		drawShadow(shadowColor);
 	}
 
-	private void inflateShadowView(final int shadowColor) {
+	private void inflateShadowView(final int shadowColor, final int shadowWidth) {
 		shadowView = new View(getContext());
-		shadowView.setBackgroundColor(shadowColor);
+		addShadowView(shadowWidth);
+	}
+
+	private void addShadowView(final int shadowWidth) {
 		LayoutParams layoutParams = new LayoutParams(shadowWidth,
 				LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 0;
@@ -47,13 +48,33 @@ public class SidebarView extends LinearLayout {
 
 	private void inflateSidebarView(Inflater inflater) {
 		sidebarView = inflater.inflate(getContext(), null);
+		addSidebarView();
+	}
+
+	private void addSidebarView() {
 		LayoutParams layoutParams = new LayoutParams(0,
 				LayoutParams.MATCH_PARENT);
 		layoutParams.weight = 1;
 		addView(sidebarView, layoutParams);
 	}
 
-	private void setBackground(final int background) {
+	public SidebarView(Context context, Inflater inflater,
+			final SidebarLocation location, final int background,
+			final int shadowWidth, final int shadowColor) {
+		super(context, null);
+		this.location = location;
+		this.background = background;
+		this.shadowWidth = shadowWidth;
+		this.shadowColor = shadowColor;
+		setOrientation(LinearLayout.HORIZONTAL);
+		inflateViews(inflater);
+		setBackground(background);
+		setShadowColor(shadowColor);
+	}
+
+	public final void setBackground(final int background) {
+		this.background = background;
+
 		if (sidebarView != null && background == -1) {
 			if (location == SidebarLocation.LEFT) {
 				sidebarView
@@ -68,7 +89,8 @@ public class SidebarView extends LinearLayout {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void drawShadow(final int shadowColor) {
+	public final void setShadowColor(final int shadowColor) {
+		this.shadowColor = shadowColor;
 		Orientation orientation = Orientation.LEFT_RIGHT;
 
 		if (location == SidebarLocation.LEFT) {
@@ -80,13 +102,25 @@ public class SidebarView extends LinearLayout {
 		shadowView.setBackgroundDrawable(gradient);
 	}
 
-	public SidebarView(Context context, Inflater inflater,
-			final SidebarLocation location, final int background,
-			final int shadowWidth, final int shadowColor) {
-		super(context, null);
+	public final void setLocation(final SidebarLocation location) {
 		this.location = location;
+		removeAllViews();
+
+		if (location == SidebarLocation.LEFT) {
+			addSidebarView();
+			addShadowView(shadowWidth);
+		} else {
+			addShadowView(shadowWidth);
+			addSidebarView();
+		}
+
+		setBackground(background);
+		setShadowColor(shadowColor);
+	}
+
+	public final void setShadowWidth(final int shadowWidth) {
 		this.shadowWidth = shadowWidth;
-		initialize(inflater, background, shadowColor);
+		setLocation(location);
 	}
 
 	public View getSidebarView() {

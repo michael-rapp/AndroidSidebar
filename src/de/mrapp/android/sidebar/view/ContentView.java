@@ -15,11 +15,6 @@ public class ContentView extends FrameLayout {
 
 	private float overlayTransparency;
 
-	private void initialize(final Inflater inflater, final int overlayColor) {
-		inflateContentView(inflater);
-		inflateOverlayView(overlayColor);
-	}
-
 	private void inflateContentView(final Inflater inflater) {
 		contentView = inflater.inflate(getContext(), null);
 		addView(contentView, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -37,7 +32,8 @@ public class ContentView extends FrameLayout {
 	public ContentView(Context context, Inflater inflater,
 			final int overlayColor) {
 		super(context, null);
-		initialize(inflater, overlayColor);
+		inflateContentView(inflater);
+		inflateOverlayView(overlayColor);
 	}
 
 	public final void setOverlayTransparency(final float transparency) {
@@ -55,6 +51,10 @@ public class ContentView extends FrameLayout {
 
 	public final View getContentView() {
 		return contentView;
+	}
+
+	public final void setOverlayColor(final int overlayColor) {
+		overlayView.setBackgroundColor(overlayColor);
 	}
 
 }
