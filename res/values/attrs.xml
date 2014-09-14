@@ -29,9 +29,9 @@ License along with this program.  If not, see
             <enum name="right" value="1" />
         </attr>
         <attr name="animationDuration" format="integer" />
-        <attr name="sidebarWidth" format="integer" />
+        <attr name="sidebarWidth" format="fraction" />
         <attr name="maxSidebarWidth" format="integer" />
-        <attr name="sidebarOffset" format="integer" />
+        <attr name="sidebarOffset" format="fraction" />
         <attr name="maxSidebarOffset" format="integer" />
         <attr name="scrollRatio" format="fraction" />
         <attr name="dragMode" format="enum">

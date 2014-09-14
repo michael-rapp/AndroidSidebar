@@ -36,11 +36,11 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
-	protected static final int DEFAULT_SIDEBAR_WIDTH = 80;
+	protected static final float DEFAULT_SIDEBAR_WIDTH = 0.8f;
 
 	protected static final int DEFAULT_MAX_SIDEBAR_WIDTH = -1;
 
-	protected static final int DEFAULT_SIDEBAR_OFFSET = 10;
+	protected static final float DEFAULT_SIDEBAR_OFFSET = 0.1f;
 
 	protected static final int DEFAULT_MAX_SIDEBAR_OFFSET = -1;
 
@@ -72,11 +72,11 @@ public class Sidebar extends ViewGroup {
 
 	private int animationDuration;
 
-	private int sidebarWidth;
+	private float sidebarWidth;
 
 	private int maxSidebarWidth;
 
-	private int sidebarOffset;
+	private float sidebarOffset;
 
 	private int maxSidebarOffset;
 
@@ -260,7 +260,8 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainSidebarWidth(TypedArray typedArray) {
 		if (typedArray != null) {
-			setSidebarWidth(typedArray.getInt(R.styleable.Sidebar_sidebarWidth,
+			setSidebarWidth(typedArray.getFraction(
+					R.styleable.Sidebar_sidebarWidth, 1, 1,
 					DEFAULT_SIDEBAR_WIDTH));
 		} else {
 			setSidebarWidth(DEFAULT_SIDEBAR_WIDTH);
@@ -279,8 +280,9 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainSidebarOffset(TypedArray typedArray) {
 		if (typedArray != null) {
-			setSidebarOffset(typedArray.getInt(
-					R.styleable.Sidebar_sidebarOffset, DEFAULT_SIDEBAR_OFFSET));
+			setSidebarOffset(typedArray.getFraction(
+					R.styleable.Sidebar_sidebarOffset, 1, 1,
+					DEFAULT_SIDEBAR_OFFSET));
 		} else {
 			setSidebarOffset(DEFAULT_SIDEBAR_OFFSET);
 		}
@@ -751,11 +753,11 @@ public class Sidebar extends ViewGroup {
 		this.animationDuration = animationDuration;
 	}
 
-	public final int getSidebarWidth() {
+	public final float getSidebarWidth() {
 		return sidebarWidth;
 	}
 
-	public final void setSidebarWidth(final int sidebarWidth) {
+	public final void setSidebarWidth(final float sidebarWidth) {
 		ensureAtLeast(sidebarWidth, 0, "The sidebar width must be at least 0");
 		ensureAtMaximum(sidebarWidth, 100,
 				"The sidebar width must be at maximum 100");
@@ -772,11 +774,11 @@ public class Sidebar extends ViewGroup {
 		this.maxSidebarWidth = maxSidebarWidth;
 	}
 
-	public final int getSidebarOffset() {
+	public final float getSidebarOffset() {
 		return sidebarOffset;
 	}
 
-	public final void setSidebarOffset(final int sidebarOffset) {
+	public final void setSidebarOffset(final float sidebarOffset) {
 		ensureAtLeast(sidebarOffset, 0, "The sidebar offset must be at least 0");
 		ensureAtMaximum(sidebarOffset, 100,
 				"The sidebar offset must be at maximum 100");
@@ -1052,8 +1054,7 @@ public class Sidebar extends ViewGroup {
 	protected final void measureChild(final View child, final int parentWSpec,
 			final int parentHSpec) {
 		if (child == mSidebarView) {
-			mSidebarWidth = Math.round(getMeasuredWidth()
-					* (sidebarWidth / 100.0f));
+			mSidebarWidth = Math.round(getMeasuredWidth() * sidebarWidth);
 
 			if (getMaxSidebarWidth() != -1) {
 				mSidebarWidth = Math.min(getMaxSidebarWidth(), mSidebarWidth);
@@ -1063,7 +1064,7 @@ public class Sidebar extends ViewGroup {
 			super.measureChild(child, MeasureSpec.makeMeasureSpec(mSidebarWidth
 					+ shadowWidth, mode), parentHSpec);
 		} else if (child == mContentView) {
-			mOffset = Math.round(getMeasuredWidth() * (sidebarOffset / 100.0f));
+			mOffset = Math.round(getMeasuredWidth() * sidebarOffset);
 
 			if (getMaxSidebarOffset() != -1) {
 				mOffset = Math.min(getMaxSidebarOffset(), mOffset);
