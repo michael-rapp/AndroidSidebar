@@ -272,7 +272,7 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainMaxSidebarWidth(TypedArray typedArray) {
 		if (typedArray != null) {
-			setMaxSidebarWidth(typedArray.getInt(
+			setMaxSidebarWidthInPixels(typedArray.getDimensionPixelSize(
 					R.styleable.Sidebar_maxSidebarWidth,
 					DEFAULT_MAX_SIDEBAR_WIDTH));
 		} else {
@@ -292,7 +292,7 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainMaxSidebarOffset(TypedArray typedArray) {
 		if (typedArray != null) {
-			setMaxSidebarOffset(typedArray.getInt(
+			setMaxSidebarOffsetInPixels(typedArray.getDimensionPixelSize(
 					R.styleable.Sidebar_maxSidebarOffset,
 					DEFAULT_MAX_SIDEBAR_OFFSET));
 		} else {
@@ -771,6 +771,16 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final void setMaxSidebarWidth(final int maxSidebarWidth) {
+		int maxSidebarWidthInPixels = -1;
+
+		if (maxSidebarWidth != -1) {
+			DisplayUtil.convertDpToPixels(getContext(), maxSidebarWidth);
+		}
+
+		setMaxSidebarWidthInPixels(maxSidebarWidthInPixels);
+	}
+
+	private final void setMaxSidebarWidthInPixels(final int maxSidebarWidth) {
 		ensureAtLeast(maxSidebarWidth, -1,
 				"The max sidebar width must be at least -1");
 		this.maxSidebarWidth = maxSidebarWidth;
@@ -792,6 +802,17 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
+		int maxSidebarOffsetInPixels = -1;
+
+		if (maxSidebarOffset != -1) {
+			maxSidebarOffsetInPixels = DisplayUtil.convertDpToPixels(
+					getContext(), maxSidebarOffset);
+		}
+
+		setMaxSidebarWidthInPixels(maxSidebarOffsetInPixels);
+	}
+
+	private void setMaxSidebarOffsetInPixels(final int maxSidebarOffset) {
 		ensureAtLeast(maxSidebarOffset, -1,
 				"The max sidebar offset must be at least -1");
 		this.maxSidebarOffset = maxSidebarOffset;

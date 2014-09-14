@@ -30,9 +30,9 @@ License along with this program.  If not, see
         </attr>
         <attr name="animationDuration" format="integer" />
         <attr name="sidebarWidth" format="fraction" />
-        <attr name="maxSidebarWidth" format="integer" />
+        <attr name="maxSidebarWidth" format="dimension" />
         <attr name="sidebarOffset" format="fraction" />
-        <attr name="maxSidebarOffset" format="integer" />
+        <attr name="maxSidebarOffset" format="dimension" />
         <attr name="scrollRatio" format="fraction" />
         <attr name="dragMode" format="enum">
             <enum name="both" value="0" />
