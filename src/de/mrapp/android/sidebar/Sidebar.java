@@ -23,6 +23,7 @@ import android.view.animation.TranslateAnimation;
 import de.mrapp.android.sidebar.animation.ContentViewAnimation;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
+import de.mrapp.android.sidebar.util.DisplayUtil;
 import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
@@ -207,8 +208,8 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainShadowWidth(TypedArray typedArray) {
 		if (typedArray != null) {
-			setShadowWidth(typedArray.getInt(R.styleable.Sidebar_shadowWidth,
-					DEFAULT_SHADOW_WIDTH));
+			setShadowWidthInPixels(typedArray.getDimensionPixelSize(
+					R.styleable.Sidebar_shadowWidth, DEFAULT_SHADOW_WIDTH));
 		} else {
 			setShadowWidth(DEFAULT_SHADOW_WIDTH);
 		}
@@ -885,6 +886,11 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final void setShadowWidth(final int shadowWidth) {
+		setShadowWidthInPixels(DisplayUtil.convertDpToPixels(getContext(),
+				shadowWidth));
+	}
+
+	private void setShadowWidthInPixels(final int shadowWidth) {
 		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
 		this.shadowWidth = shadowWidth;
 	}
