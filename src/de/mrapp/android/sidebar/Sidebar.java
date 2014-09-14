@@ -380,7 +380,7 @@ public class Sidebar extends ViewGroup {
 
 	private void inflateSidebarView(Inflater inflater) {
 		mSidebarView = new SidebarView(getContext(), inflater, getLocation(),
-				sidebarBackground, getShadowWidth(), getShadowColor());
+				sidebarBackground, shadowWidth, shadowColor);
 		addView(mSidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
@@ -915,7 +915,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final int getShadowWidth() {
-		return shadowWidth;
+		return DisplayUtil.convertPixelsToDp(getContext(), shadowWidth);
 	}
 
 	public final void setShadowWidth(final int shadowWidth) {
