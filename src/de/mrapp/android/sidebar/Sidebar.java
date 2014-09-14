@@ -317,8 +317,9 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainDragThreshold(TypedArray typedArray) {
 		if (typedArray != null) {
-			setDragThreshold(typedArray.getFloat(
-					R.styleable.Sidebar_dragThreshold, DEFAULT_DRAG_THRESHOLD));
+			setDragThreshold(typedArray.getFraction(
+					R.styleable.Sidebar_dragThreshold, 1, 1,
+					DEFAULT_DRAG_THRESHOLD));
 		} else {
 			setDragThreshold(DEFAULT_DRAG_THRESHOLD);
 		}
