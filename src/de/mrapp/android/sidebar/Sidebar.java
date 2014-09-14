@@ -380,7 +380,7 @@ public class Sidebar extends ViewGroup {
 
 	private void inflateSidebarView(Inflater inflater) {
 		mSidebarView = new SidebarView(getContext(), inflater, getLocation(),
-				sidebarBackground, DEFAULT_SHADOW_WIDTH, DEFAULT_SHADOW_COLOR);
+				sidebarBackground, getShadowWidth(), getShadowColor());
 		addView(mSidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
