@@ -41,7 +41,7 @@ License along with this program.  If not, see
             <enum name="disabled" value="3" />
         </attr>
         <attr name="dragThreshold" format="float" />
-        <attr name="dragSensitivity" format="integer" />
+        <attr name="dragSensitivity" format="fraction" />
         <attr name="hideOnBackButton" format="boolean" />
         <attr name="hideOnContentClick" format="boolean" />
         <attr name="showOnSidebarClick" format="boolean" />

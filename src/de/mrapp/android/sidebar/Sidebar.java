@@ -50,7 +50,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final float DEFAULT_DRAG_THRESHOLD = 0.33f;
 
-	protected static final int DEFAULT_DRAG_SENSITIVITY = 250;
+	protected static final float DEFAULT_DRAG_SENSITIVITY = 0.25f;
 
 	protected static final boolean DEFAULT_HIDE_ON_BACK_BUTTON = true;
 
@@ -65,6 +65,8 @@ public class Sidebar extends ViewGroup {
 	protected static final int DEFAULT_SHADOW_WIDTH = 25;
 
 	protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
+
+	private static final int MAX_DRAG_SENSITIVITY = 1000;
 
 	private SidebarLocation location;
 
@@ -82,7 +84,7 @@ public class Sidebar extends ViewGroup {
 
 	private float dragThreshold;
 
-	private int dragSensitivity;
+	private float dragSensitivity;
 
 	private DragMode dragMode;
 
@@ -122,7 +124,7 @@ public class Sidebar extends ViewGroup {
 			final AttributeSet attributeSet) {
 		this.mListeners = new LinkedHashSet<>();
 		this.mShown = false;
-		this.mDragHelper = new DragHelper(dragSensitivity);
+		this.mDragHelper = new DragHelper(getDragSensitivityInPixels());
 		this.setFocusableInTouchMode(true);
 		obtainStyledAttributes(context, attributeSet);
 	}
@@ -324,8 +326,8 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainDragSensitivity(final TypedArray typedArray) {
 		if (typedArray != null) {
-			setDragSensitivity(typedArray.getInt(
-					R.styleable.Sidebar_dragSensitivity,
+			setDragSensitivity(typedArray.getFraction(
+					R.styleable.Sidebar_dragSensitivity, 1, 1,
 					DEFAULT_DRAG_SENSITIVITY));
 		} else {
 			setDragSensitivity(DEFAULT_DRAG_SENSITIVITY);
@@ -818,14 +820,21 @@ public class Sidebar extends ViewGroup {
 		this.dragThreshold = dragThreshold;
 	}
 
-	public final int getDragSensitivity() {
+	public final float getDragSensitivity() {
 		return dragSensitivity;
 	}
 
-	public final void setDragSensitivity(final int dragSensitivity) {
-		ensureAtLeast(dragSensitivity, 1, "The sensitivity must be at least 1");
+	public final void setDragSensitivity(final float dragSensitivity) {
+		ensureAtLeast(dragSensitivity, 0,
+				"The drag sensitivity must be at least 0");
+		ensureAtMaximum(dragSensitivity, 1,
+				"The drag sensitivity must be at maximum 1");
 		this.dragSensitivity = dragSensitivity;
-		this.mDragHelper = new DragHelper(dragSensitivity);
+		this.mDragHelper = new DragHelper(getDragSensitivityInPixels());
+	}
+
+	private int getDragSensitivityInPixels() {
+		return Math.round(getDragSensitivity() * MAX_DRAG_SENSITIVITY);
 	}
 
 	public final boolean isHiddenOnBackButton() {
