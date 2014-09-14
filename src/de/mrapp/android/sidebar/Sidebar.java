@@ -767,7 +767,11 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final int getMaxSidebarWidth() {
-		return maxSidebarWidth;
+		if (maxSidebarWidth != -1) {
+			return DisplayUtil.convertPixelsToDp(getContext(), maxSidebarWidth);
+		} else {
+			return -1;
+		}
 	}
 
 	public final void setMaxSidebarWidth(final int maxSidebarWidth) {
@@ -797,7 +801,12 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final int getMaxSidebarOffset() {
-		return maxSidebarOffset;
+		if (maxSidebarOffset != -1) {
+			return DisplayUtil
+					.convertPixelsToDp(getContext(), maxSidebarOffset);
+		} else {
+			return -1;
+		}
 	}
 
 	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
@@ -1076,8 +1085,8 @@ public class Sidebar extends ViewGroup {
 		if (child == mSidebarView) {
 			mSidebarWidth = Math.round(getMeasuredWidth() * sidebarWidth);
 
-			if (getMaxSidebarWidth() != -1) {
-				mSidebarWidth = Math.min(getMaxSidebarWidth(), mSidebarWidth);
+			if (maxSidebarWidth != -1) {
+				mSidebarWidth = Math.min(maxSidebarWidth, mSidebarWidth);
 			}
 
 			int mode = MeasureSpec.getMode(parentWSpec);
@@ -1086,8 +1095,8 @@ public class Sidebar extends ViewGroup {
 		} else if (child == mContentView) {
 			mOffset = Math.round(getMeasuredWidth() * sidebarOffset);
 
-			if (getMaxSidebarOffset() != -1) {
-				mOffset = Math.min(getMaxSidebarOffset(), mOffset);
+			if (maxSidebarOffset != -1) {
+				mOffset = Math.min(maxSidebarOffset, mOffset);
 			}
 
 			mContentWidth = getMeasuredWidth() - mOffset;
