@@ -893,7 +893,7 @@ public class Sidebar extends ViewGroup {
 				"The transparency must be at least 0");
 		ensureAtMaximum(contentOverlayTransparency, 1,
 				"The transparency must be at maximum 1");
-		this.contentOverlayTransparency = contentOverlayTransparency;
+		this.contentOverlayTransparency = 1 - contentOverlayTransparency;
 		requestLayout();
 	}
 
