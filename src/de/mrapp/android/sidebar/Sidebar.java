@@ -771,13 +771,12 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final void setMaxSidebarWidth(final int maxSidebarWidth) {
-		int maxSidebarWidthInPixels = -1;
-
 		if (maxSidebarWidth != -1) {
-			DisplayUtil.convertDpToPixels(getContext(), maxSidebarWidth);
+			setMaxSidebarWidthInPixels(DisplayUtil.convertDpToPixels(
+					getContext(), maxSidebarWidth));
+		} else {
+			setMaxSidebarOffsetInPixels(-1);
 		}
-
-		setMaxSidebarWidthInPixels(maxSidebarWidthInPixels);
 	}
 
 	private final void setMaxSidebarWidthInPixels(final int maxSidebarWidth) {
@@ -802,14 +801,12 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
-		int maxSidebarOffsetInPixels = -1;
-
 		if (maxSidebarOffset != -1) {
-			maxSidebarOffsetInPixels = DisplayUtil.convertDpToPixels(
-					getContext(), maxSidebarOffset);
+			setMaxSidebarWidthInPixels(DisplayUtil.convertDpToPixels(
+					getContext(), maxSidebarOffset));
+		} else {
+			setMaxSidebarWidthInPixels(-1);
 		}
-
-		setMaxSidebarWidthInPixels(maxSidebarOffsetInPixels);
 	}
 
 	private void setMaxSidebarOffsetInPixels(final int maxSidebarOffset) {
