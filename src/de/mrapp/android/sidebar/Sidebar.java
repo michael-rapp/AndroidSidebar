@@ -171,210 +171,127 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void obtainBackground(TypedArray typedArray) {
-		if (typedArray != null) {
-			sidebarBackground = typedArray.getResourceId(
-					R.styleable.Sidebar_android_background, DEFAULT_BACKGROUND);
-		} else {
-			sidebarBackground = DEFAULT_BACKGROUND;
-		}
+		sidebarBackground = typedArray.getResourceId(
+				R.styleable.Sidebar_android_background, DEFAULT_BACKGROUND);
 	}
 
 	private void obtainContentOverlayColor(TypedArray typedArray) {
-		if (typedArray != null) {
-			setContentOverlayColor(typedArray.getColor(
-					R.styleable.Sidebar_contentOverlayColor,
-					DEFAULT_CONTENT_OVERLAY_COLOR));
-		} else {
-			setContentOverlayColor(DEFAULT_CONTENT_OVERLAY_COLOR);
-		}
+		setContentOverlayColor(typedArray.getColor(
+				R.styleable.Sidebar_contentOverlayColor,
+				DEFAULT_CONTENT_OVERLAY_COLOR));
 	}
 
 	private void obtainContentOverlayTransparency(TypedArray typedArray) {
-		if (typedArray != null) {
-			setContentOverlayTransparency(typedArray.getFraction(
-					R.styleable.Sidebar_contentOverlayTransparency, 1, 1,
-					DEFAULT_CONTENT_OVERLAY_TRANSPARENCY));
-		} else {
-			setContentOverlayTransparency(DEFAULT_CONTENT_OVERLAY_TRANSPARENCY);
-		}
+		setContentOverlayTransparency(typedArray.getFraction(
+				R.styleable.Sidebar_contentOverlayTransparency, 1, 1,
+				DEFAULT_CONTENT_OVERLAY_TRANSPARENCY));
 	}
 
 	private void obtainShadowColor(TypedArray typedArray) {
-		if (typedArray != null) {
-			setShadowColor(typedArray.getColor(R.styleable.Sidebar_shadowColor,
-					DEFAULT_SHADOW_COLOR));
-		} else {
-			setShadowColor(DEFAULT_SHADOW_COLOR);
-		}
+		setShadowColor(typedArray.getColor(R.styleable.Sidebar_shadowColor,
+				DEFAULT_SHADOW_COLOR));
 	}
 
 	private void obtainShadowWidth(TypedArray typedArray) {
-		if (typedArray != null) {
-			setShadowWidthInPixels(typedArray.getDimensionPixelSize(
-					R.styleable.Sidebar_shadowWidth, DisplayUtil
-							.convertDpToPixels(getContext(),
-									DEFAULT_SHADOW_WIDTH)));
-		} else {
-			setShadowWidth(DEFAULT_SHADOW_WIDTH);
-		}
+		setShadowWidthInPixels(typedArray.getDimensionPixelSize(
+				R.styleable.Sidebar_shadowWidth, DisplayUtil.convertDpToPixels(
+						getContext(), DEFAULT_SHADOW_WIDTH)));
 	}
 
 	private void obtainSidebarView(TypedArray typedArray) {
-		if (typedArray != null) {
-			try {
-				setSidebarView(typedArray.getResourceId(
-						R.styleable.Sidebar_sidebarView, -1));
-			} catch (NotFoundException e) {
-				return;
-			}
+		try {
+			setSidebarView(typedArray.getResourceId(
+					R.styleable.Sidebar_sidebarView, -1));
+		} catch (NotFoundException e) {
+			return;
 		}
 	}
 
 	private void obtainContentView(TypedArray typedArray) {
-		if (typedArray != null) {
-			try {
-				setContentView(typedArray.getResourceId(
-						R.styleable.Sidebar_contentView, -1));
-			} catch (NotFoundException e) {
-				return;
-			}
+		try {
+			setContentView(typedArray.getResourceId(
+					R.styleable.Sidebar_contentView, -1));
+		} catch (NotFoundException e) {
+			return;
 		}
 	}
 
 	private void obtainLocation(TypedArray typedArray) {
-		if (typedArray != null) {
-			setLocation(SidebarLocation.fromValue(typedArray.getInt(
-					R.styleable.Sidebar_location, DEFAULT_LOCATION.getValue())));
-		} else {
-			setLocation(DEFAULT_LOCATION);
-		}
+		setLocation(SidebarLocation.fromValue(typedArray.getInt(
+				R.styleable.Sidebar_location, DEFAULT_LOCATION.getValue())));
 	}
 
 	private void obtainAnimationDuration(TypedArray typedArray) {
-		if (typedArray != null) {
-			setAnimationDuration(typedArray.getInt(
-					R.styleable.Sidebar_animationDuration,
-					DEFAULT_ANIMATION_DURATION));
-		} else {
-			setAnimationDuration(DEFAULT_ANIMATION_DURATION);
-		}
+		setAnimationDuration(typedArray.getInt(
+				R.styleable.Sidebar_animationDuration,
+				DEFAULT_ANIMATION_DURATION));
 	}
 
 	private void obtainSidebarWidth(TypedArray typedArray) {
-		if (typedArray != null) {
-			setSidebarWidth(typedArray.getFraction(
-					R.styleable.Sidebar_sidebarWidth, 1, 1,
-					DEFAULT_SIDEBAR_WIDTH));
-		} else {
-			setSidebarWidth(DEFAULT_SIDEBAR_WIDTH);
-		}
+		setSidebarWidth(typedArray.getFraction(
+				R.styleable.Sidebar_sidebarWidth, 1, 1, DEFAULT_SIDEBAR_WIDTH));
 	}
 
 	private void obtainMaxSidebarWidth(TypedArray typedArray) {
-		if (typedArray != null) {
-			setMaxSidebarWidthInPixels(typedArray.getDimensionPixelSize(
-					R.styleable.Sidebar_maxSidebarWidth,
-					DEFAULT_MAX_SIDEBAR_WIDTH));
-		} else {
-			setMaxSidebarWidth(DEFAULT_MAX_SIDEBAR_WIDTH);
-		}
+		setMaxSidebarWidthInPixels(typedArray.getDimensionPixelSize(
+				R.styleable.Sidebar_maxSidebarWidth, DEFAULT_MAX_SIDEBAR_WIDTH));
 	}
 
 	private void obtainSidebarOffset(TypedArray typedArray) {
-		if (typedArray != null) {
-			setSidebarOffset(typedArray.getFraction(
-					R.styleable.Sidebar_sidebarOffset, 1, 1,
-					DEFAULT_SIDEBAR_OFFSET));
-		} else {
-			setSidebarOffset(DEFAULT_SIDEBAR_OFFSET);
-		}
+		setSidebarOffset(typedArray
+				.getFraction(R.styleable.Sidebar_sidebarOffset, 1, 1,
+						DEFAULT_SIDEBAR_OFFSET));
 	}
 
 	private void obtainMaxSidebarOffset(TypedArray typedArray) {
-		if (typedArray != null) {
-			setMaxSidebarOffsetInPixels(typedArray.getDimensionPixelSize(
-					R.styleable.Sidebar_maxSidebarOffset,
-					DEFAULT_MAX_SIDEBAR_OFFSET));
-		} else {
-			setMaxSidebarOffset(DEFAULT_MAX_SIDEBAR_OFFSET);
-		}
+		setMaxSidebarOffsetInPixels(typedArray.getDimensionPixelSize(
+				R.styleable.Sidebar_maxSidebarOffset,
+				DEFAULT_MAX_SIDEBAR_OFFSET));
 	}
 
 	private void obtainScrollRatio(TypedArray typedArray) {
-		if (typedArray != null) {
-			setScrollRatio(typedArray
-					.getFraction(R.styleable.Sidebar_scrollRatio, 1, 1,
-							DEFAULT_SCROLL_RATIO));
-		} else {
-			setScrollRatio(DEFAULT_SCROLL_RATIO);
-		}
+		setScrollRatio(typedArray.getFraction(R.styleable.Sidebar_scrollRatio,
+				1, 1, DEFAULT_SCROLL_RATIO));
 	}
 
 	private void obtainDragMode(TypedArray typedArray) {
-		if (typedArray != null) {
-			setDragMode(DragMode
-					.fromValue(typedArray.getInt(R.styleable.Sidebar_dragMode,
-							DEFAULT_DRAG_MODE.getValue())));
-		} else {
-			setDragMode(DEFAULT_DRAG_MODE);
-		}
+		setDragMode(DragMode.fromValue(typedArray.getInt(
+				R.styleable.Sidebar_dragMode, DEFAULT_DRAG_MODE.getValue())));
 	}
 
 	private void obtainDragThreshold(TypedArray typedArray) {
-		if (typedArray != null) {
-			setDragThreshold(typedArray.getFraction(
-					R.styleable.Sidebar_dragThreshold, 1, 1,
-					DEFAULT_DRAG_THRESHOLD));
-		} else {
-			setDragThreshold(DEFAULT_DRAG_THRESHOLD);
-		}
+		setDragThreshold(typedArray
+				.getFraction(R.styleable.Sidebar_dragThreshold, 1, 1,
+						DEFAULT_DRAG_THRESHOLD));
 	}
 
 	private void obtainDragSensitivity(final TypedArray typedArray) {
-		if (typedArray != null) {
-			setDragSensitivity(typedArray.getFraction(
-					R.styleable.Sidebar_dragSensitivity, 1, 1,
-					DEFAULT_DRAG_SENSITIVITY));
-		} else {
-			setDragSensitivity(DEFAULT_DRAG_SENSITIVITY);
-		}
+		setDragSensitivity(typedArray.getFraction(
+				R.styleable.Sidebar_dragSensitivity, 1, 1,
+				DEFAULT_DRAG_SENSITIVITY));
 	}
 
 	private void obtainHideOnBackButton(final TypedArray typedArray) {
-		if (typedArray != null) {
-			hideOnBackButton(typedArray.getBoolean(
-					R.styleable.Sidebar_hideOnBackButton,
-					DEFAULT_HIDE_ON_BACK_BUTTON));
-		} else {
-			hideOnBackButton(DEFAULT_HIDE_ON_BACK_BUTTON);
-		}
+		hideOnBackButton(typedArray.getBoolean(
+				R.styleable.Sidebar_hideOnBackButton,
+				DEFAULT_HIDE_ON_BACK_BUTTON));
 	}
 
 	private void obtainHideOnContentClick(final TypedArray typedArray) {
-		if (typedArray != null) {
-			hideOnContentClick(typedArray.getBoolean(
-					R.styleable.Sidebar_hideOnContentClick,
-					DEFAULT_HIDE_ON_CONTENT_CLICK));
-		} else {
-			hideOnContentClick(DEFAULT_HIDE_ON_CONTENT_CLICK);
-		}
+		hideOnContentClick(typedArray.getBoolean(
+				R.styleable.Sidebar_hideOnContentClick,
+				DEFAULT_HIDE_ON_CONTENT_CLICK));
 	}
 
 	private void obtainShowOnSidebarClick(TypedArray typedArray) {
-		if (typedArray != null) {
-			showOnSidebarClick(typedArray.getBoolean(
-					R.styleable.Sidebar_showOnSidebarClick,
-					DEFAULT_SHOW_ON_SIDEBAR_CLICKED));
-		} else {
-			showOnSidebarClick(DEFAULT_SHOW_ON_SIDEBAR_CLICKED);
-		}
+		showOnSidebarClick(typedArray.getBoolean(
+				R.styleable.Sidebar_showOnSidebarClick,
+				DEFAULT_SHOW_ON_SIDEBAR_CLICKED));
 	}
 
 	private void obtainShowSidebar(TypedArray typedArray) {
-		if (typedArray != null) {
-			if (typedArray.getBoolean(R.styleable.Sidebar_showSidebar, false)) {
-				showSidebar();
-			}
+		if (typedArray.getBoolean(R.styleable.Sidebar_showSidebar, false)) {
+			showSidebar();
 		}
 	}
 
