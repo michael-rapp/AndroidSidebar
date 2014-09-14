@@ -46,7 +46,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
-	protected static final DragMode DEFAULT_DRAG_MODE = DragMode.SIDEBAR_ONLY;
+	protected static final DragMode DEFAULT_DRAG_MODE_WHEN_HIDDEN = DragMode.SIDEBAR_ONLY;
 
 	protected static final float DEFAULT_DRAG_THRESHOLD = 0.25f;
 
@@ -160,7 +160,7 @@ public class Sidebar extends ViewGroup {
 			obtainSidebarOffset(typedArray);
 			obtainMaxSidebarOffset(typedArray);
 			obtainScrollRatio(typedArray);
-			obtainDragMode(typedArray);
+			obtainDragModeWhenHidden(typedArray);
 			obtainDragThreshold(typedArray);
 			obtainDragSensitivity(typedArray);
 			obtainHideOnBackButton(typedArray);
@@ -256,9 +256,10 @@ public class Sidebar extends ViewGroup {
 				1, 1, DEFAULT_SCROLL_RATIO));
 	}
 
-	private void obtainDragMode(TypedArray typedArray) {
-		setDragMode(DragMode.fromValue(typedArray.getInt(
-				R.styleable.Sidebar_dragMode, DEFAULT_DRAG_MODE.getValue())));
+	private void obtainDragModeWhenHidden(TypedArray typedArray) {
+		setDragModeWhenHidden(DragMode.fromValue(typedArray.getInt(
+				R.styleable.Sidebar_dragModeWhenHidden,
+				DEFAULT_DRAG_MODE_WHEN_HIDDEN.getValue())));
 	}
 
 	private void obtainDragThreshold(TypedArray typedArray) {
@@ -753,11 +754,11 @@ public class Sidebar extends ViewGroup {
 		this.scrollRatio = scrollRatio;
 	}
 
-	public final DragMode getDragMode() {
+	public final DragMode getDragModeWhenHidden() {
 		return dragMode;
 	}
 
-	public final void setDragMode(final DragMode dragMode) {
+	public final void setDragModeWhenHidden(final DragMode dragMode) {
 		ensureNotNull(dragMode, "The drag mode may not be null");
 		this.dragMode = dragMode;
 	}
