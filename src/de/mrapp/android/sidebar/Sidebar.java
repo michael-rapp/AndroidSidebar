@@ -298,8 +298,9 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainScrollRatio(TypedArray typedArray) {
 		if (typedArray != null) {
-			setScrollRatio(typedArray.getFloat(R.styleable.Sidebar_scrollRatio,
-					DEFAULT_SCROLL_RATIO));
+			setScrollRatio(typedArray
+					.getFraction(R.styleable.Sidebar_scrollRatio, 1, 1,
+							DEFAULT_SCROLL_RATIO));
 		} else {
 			setScrollRatio(DEFAULT_SCROLL_RATIO);
 		}
