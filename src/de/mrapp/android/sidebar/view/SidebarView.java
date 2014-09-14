@@ -1,11 +1,9 @@
 package de.mrapp.android.sidebar.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
-import android.os.Build;
 import android.view.View;
 import android.widget.LinearLayout;
 import de.mrapp.android.sidebar.R;
