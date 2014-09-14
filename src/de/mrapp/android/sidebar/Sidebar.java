@@ -48,6 +48,8 @@ public class Sidebar extends ViewGroup {
 
 	protected static final DragMode DEFAULT_DRAG_MODE_WHEN_HIDDEN = DragMode.SIDEBAR_ONLY;
 
+	protected static final DragMode DEFAULT_DRAG_MODE_WHEN_SHOWN = DragMode.BOTH;
+
 	protected static final float DEFAULT_DRAG_THRESHOLD = 0.25f;
 
 	protected static final float DEFAULT_DRAG_SENSITIVITY = 0.25f;
@@ -88,7 +90,9 @@ public class Sidebar extends ViewGroup {
 
 	private float dragSensitivity;
 
-	private DragMode dragMode;
+	private DragMode dragModeWhenHidden;
+
+	private DragMode dragModeWhenShown;
 
 	private boolean hideOnBackButton;
 
@@ -161,6 +165,7 @@ public class Sidebar extends ViewGroup {
 			obtainMaxSidebarOffset(typedArray);
 			obtainScrollRatio(typedArray);
 			obtainDragModeWhenHidden(typedArray);
+			obtainDragModeWhenShown(typedArray);
 			obtainDragThreshold(typedArray);
 			obtainDragSensitivity(typedArray);
 			obtainHideOnBackButton(typedArray);
@@ -260,6 +265,12 @@ public class Sidebar extends ViewGroup {
 		setDragModeWhenHidden(DragMode.fromValue(typedArray.getInt(
 				R.styleable.Sidebar_dragModeWhenHidden,
 				DEFAULT_DRAG_MODE_WHEN_HIDDEN.getValue())));
+	}
+
+	private void obtainDragModeWhenShown(TypedArray typedArray) {
+		setDragModeWhenShown(DragMode.fromValue(typedArray.getInt(
+				R.styleable.Sidebar_dragModeWhenShown,
+				DEFAULT_DRAG_MODE_WHEN_SHOWN.getValue())));
 	}
 
 	private void obtainDragThreshold(TypedArray typedArray) {
@@ -549,11 +560,17 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private boolean checkDragMode(float x) {
-		if (dragMode == DragMode.DISABLED) {
+		DragMode currentDragMode = dragModeWhenHidden;
+
+		if (isSidebarShown()) {
+			currentDragMode = dragModeWhenShown;
+		}
+
+		if (currentDragMode == DragMode.DISABLED) {
 			return false;
-		} else if (dragMode == DragMode.SIDEBAR_ONLY) {
+		} else if (currentDragMode == DragMode.SIDEBAR_ONLY) {
 			return isSidebarClicked(x);
-		} else if (dragMode == DragMode.CONTENT_ONLY) {
+		} else if (currentDragMode == DragMode.CONTENT_ONLY) {
 			return isContentClicked(x);
 		}
 
@@ -755,12 +772,21 @@ public class Sidebar extends ViewGroup {
 	}
 
 	public final DragMode getDragModeWhenHidden() {
-		return dragMode;
+		return dragModeWhenHidden;
 	}
 
 	public final void setDragModeWhenHidden(final DragMode dragMode) {
 		ensureNotNull(dragMode, "The drag mode may not be null");
-		this.dragMode = dragMode;
+		this.dragModeWhenHidden = dragMode;
+	}
+
+	public final DragMode getDragModeWhenShown() {
+		return dragModeWhenShown;
+	}
+
+	public final void setDragModeWhenShown(final DragMode dragMode) {
+		ensureNotNull(dragMode, "The drag mode may not be null");
+		this.dragModeWhenShown = dragMode;
 	}
 
 	public final float getDragThreshold() {
