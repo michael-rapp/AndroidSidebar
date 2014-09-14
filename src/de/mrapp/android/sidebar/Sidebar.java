@@ -500,17 +500,20 @@ public class Sidebar extends ViewGroup {
 
 		if (getLocation() == SidebarLocation.LEFT) {
 			if (isSidebarShown()) {
-				threshold = mContentWidth - (mSidebarWidth * dragThreshold);
+				threshold = mSidebarWidth
+						- ((mSidebarWidth - mOffset) * dragThreshold);
 			} else {
-				threshold = mOffset + (mContentWidth * dragThreshold);
+				threshold = mOffset
+						+ ((mSidebarWidth - mOffset) * dragThreshold);
 			}
 		} else {
 			if (isSidebarShown()) {
-				threshold = (getWidth() - mSidebarWidth)
-						+ (mSidebarWidth * dragThreshold);
+				threshold = getWidth() - mSidebarWidth
+						+ ((mSidebarWidth - mOffset) * dragThreshold);
 
 			} else {
-				threshold = mContentWidth - (mContentWidth * dragThreshold);
+				threshold = getWidth() - mOffset
+						- ((mSidebarWidth - mOffset) * dragThreshold);
 			}
 		}
 
