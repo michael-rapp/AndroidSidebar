@@ -189,8 +189,8 @@ public class Sidebar extends ViewGroup {
 
 	private void obtainContentOverlayTransparency(TypedArray typedArray) {
 		if (typedArray != null) {
-			setContentOverlayTransparency(typedArray.getFloat(
-					R.styleable.Sidebar_contentOverlayTransparency,
+			setContentOverlayTransparency(typedArray.getFraction(
+					R.styleable.Sidebar_contentOverlayTransparency, 1, 1,
 					DEFAULT_CONTENT_OVERLAY_TRANSPARENCY));
 		} else {
 			setContentOverlayTransparency(DEFAULT_CONTENT_OVERLAY_TRANSPARENCY);
