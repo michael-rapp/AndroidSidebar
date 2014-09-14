@@ -48,7 +48,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final DragMode DEFAULT_DRAG_MODE = DragMode.SIDEBAR_ONLY;
 
-	protected static final float DEFAULT_DRAG_THRESHOLD = 0.33f;
+	protected static final float DEFAULT_DRAG_THRESHOLD = 0.25f;
 
 	protected static final float DEFAULT_DRAG_SENSITIVITY = 0.25f;
 
