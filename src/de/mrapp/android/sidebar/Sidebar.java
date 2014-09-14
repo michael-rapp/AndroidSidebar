@@ -66,7 +66,9 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
 
-	private static final int MAX_DRAG_SENSITIVITY = 1000;
+	private static final int MIN_DRAG_SENSITIVITY = 10;
+
+	private static final int MAX_DRAG_SENSITIVITY = 260;
 
 	private SidebarLocation location;
 
@@ -784,7 +786,9 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private int getDragSensitivityInPixels() {
-		return Math.round(getDragSensitivity() * MAX_DRAG_SENSITIVITY);
+		int range = MAX_DRAG_SENSITIVITY - MIN_DRAG_SENSITIVITY;
+		return Math.round((1 - getDragSensitivity()) * range
+				+ MIN_DRAG_SENSITIVITY);
 	}
 
 	public final boolean isHiddenOnBackButton() {
