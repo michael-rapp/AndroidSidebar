@@ -59,7 +59,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
 
-	private SidebarLocation location = SidebarLocation.RIGHT;
+	private SidebarLocation location;
 
 	private int animationDuration;
 
@@ -87,7 +87,9 @@ public class Sidebar extends ViewGroup {
 
 	private float contentOverlayTransparency;
 
-	private int shadowWidth = DEFAULT_SHADOW_WIDTH;
+	private int shadowWidth;
+
+	private int shadowColor;
 
 	private Set<SidebarListener> mListeners;
 
@@ -131,6 +133,8 @@ public class Sidebar extends ViewGroup {
 		try {
 			obtainContentOverlayColor(typedArray);
 			obtainContentOverlayTransparency(typedArray);
+			obtainShadowColor(typedArray);
+			obtainShadowWidth(typedArray);
 			obtainBackground(typedArray);
 			obtainLocation(typedArray);
 			obtainSidebarView(typedArray);
@@ -145,6 +149,7 @@ public class Sidebar extends ViewGroup {
 			obtainHideOnBackButton(typedArray);
 			obtainHideOnContentClick(typedArray);
 			obtainShowOnSidebarClick(typedArray);
+			obtainShowSidebar(typedArray);
 		} finally {
 			typedArray.recycle();
 		}
@@ -176,6 +181,24 @@ public class Sidebar extends ViewGroup {
 					DEFAULT_CONTENT_OVERLAY_TRANSPARENCY));
 		} else {
 			setContentOverlayTransparency(DEFAULT_CONTENT_OVERLAY_TRANSPARENCY);
+		}
+	}
+
+	private void obtainShadowColor(TypedArray typedArray) {
+		if (typedArray != null) {
+			setShadowColor(typedArray.getColor(R.styleable.Sidebar_shadowColor,
+					DEFAULT_SHADOW_COLOR));
+		} else {
+			setShadowColor(DEFAULT_SHADOW_COLOR);
+		}
+	}
+
+	private void obtainShadowWidth(TypedArray typedArray) {
+		if (typedArray != null) {
+			setShadowWidth(typedArray.getInt(R.styleable.Sidebar_shadowWidth,
+					DEFAULT_SHADOW_WIDTH));
+		} else {
+			setShadowWidth(DEFAULT_SHADOW_WIDTH);
 		}
 	}
 
@@ -303,6 +326,14 @@ public class Sidebar extends ViewGroup {
 					DEFAULT_SHOW_ON_SIDEBAR_CLICKED));
 		} else {
 			showOnSidebarClick(DEFAULT_SHOW_ON_SIDEBAR_CLICKED);
+		}
+	}
+
+	private void obtainShowSidebar(TypedArray typedArray) {
+		if (typedArray != null) {
+			if (typedArray.getBoolean(R.styleable.Sidebar_showSidebar, false)) {
+				showSidebar();
+			}
 		}
 	}
 
@@ -785,6 +816,23 @@ public class Sidebar extends ViewGroup {
 		ensureAtMaximum(contentOverlayTransparency, 1,
 				"The transparency must be at maximum 1");
 		this.contentOverlayTransparency = contentOverlayTransparency;
+	}
+
+	public final int getShadowColor() {
+		return shadowColor;
+	}
+
+	public final void setShadowColor(final int shadowColor) {
+		this.shadowColor = shadowColor;
+	}
+
+	public final int getShadowWidth() {
+		return shadowWidth;
+	}
+
+	public final void setShadowWidth(final int shadowWidth) {
+		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
+		this.shadowWidth = shadowWidth;
 	}
 
 	public final void addSidebarListener(SidebarListener listener) {
