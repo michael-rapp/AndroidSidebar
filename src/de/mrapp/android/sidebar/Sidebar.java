@@ -102,7 +102,7 @@ public class Sidebar extends ViewGroup {
 
 	private boolean showOnSidebarClick;
 
-	private int sidebarBackground;
+	private int background;
 
 	private int contentOverlayColor;
 
@@ -180,7 +180,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void obtainBackground(TypedArray typedArray) {
-		sidebarBackground = typedArray.getResourceId(
+		background = typedArray.getResourceId(
 				R.styleable.Sidebar_android_background, DEFAULT_BACKGROUND);
 	}
 
@@ -318,7 +318,7 @@ public class Sidebar extends ViewGroup {
 		}
 
 		mSidebarView = new SidebarView(getContext(), inflater, getLocation(),
-				sidebarBackground, shadowWidth, shadowColor);
+				background, shadowWidth, shadowColor);
 		addView(mSidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
