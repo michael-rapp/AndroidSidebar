@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Pair;
@@ -112,6 +113,8 @@ public class Sidebar extends ViewGroup {
 
 	private boolean shown;
 
+	private transient Drawable sidebarBackground;
+
 	private transient Set<SidebarListener> listeners;
 
 	private transient SidebarView sidebarView;
@@ -155,6 +158,7 @@ public class Sidebar extends ViewGroup {
 			obtainShadowColor(typedArray);
 			obtainShadowWidth(typedArray);
 			obtainLocation(typedArray);
+			obtainSidebarBackground(typedArray);
 			obtainSidebarView(typedArray);
 			obtainContentView(typedArray);
 			obtainAnimationDuration(typedArray);
@@ -174,6 +178,11 @@ public class Sidebar extends ViewGroup {
 		} finally {
 			typedArray.recycle();
 		}
+	}
+
+	private void obtainSidebarBackground(TypedArray typedArray) {
+		setSidebarBackground(typedArray.getResourceId(
+				R.styleable.Sidebar_sidebarBackground, -1));
 	}
 
 	private void obtainContentOverlayColor(TypedArray typedArray) {
@@ -310,7 +319,7 @@ public class Sidebar extends ViewGroup {
 		}
 
 		sidebarView = new SidebarView(getContext(), inflater, getLocation(),
-				shadowWidth, shadowColor);
+				sidebarBackground, shadowWidth, shadowColor);
 		addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
@@ -678,6 +687,31 @@ public class Sidebar extends ViewGroup {
 
 	public void setContentView(final View contentView) {
 		inflateContentView(InflaterFactory.createInflater(contentView));
+	}
+
+	public final Drawable getSidebarBackground() {
+		return sidebarBackground;
+	}
+
+	public final void setSidebarBackground(final Drawable background) {
+		this.sidebarBackground = background;
+
+		if (sidebarView != null) {
+			sidebarView.setBackgroundDrawable(sidebarBackground);
+		}
+	}
+
+	public final void setSidebarBackground(final int resourceId) {
+		if (resourceId == -1) {
+			this.sidebarBackground = null;
+		} else {
+			this.sidebarBackground = getContext().getResources().getDrawable(
+					resourceId);
+		}
+
+		if (sidebarView != null) {
+			sidebarView.setBackgroundDrawable(sidebarBackground);
+		}
 	}
 
 	public final Location getLocation() {

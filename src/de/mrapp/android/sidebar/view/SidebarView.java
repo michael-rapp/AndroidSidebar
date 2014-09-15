@@ -2,6 +2,7 @@ package de.mrapp.android.sidebar.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.View;
@@ -21,6 +22,8 @@ public class SidebarView extends LinearLayout {
 	private int shadowColor;
 
 	private int shadowWidth;
+
+	private Drawable sidebarBackground;
 
 	private void inflateViews(Inflater inflater) {
 		if (location == Location.LEFT) {
@@ -46,22 +49,8 @@ public class SidebarView extends LinearLayout {
 
 	private void inflateSidebarView(Inflater inflater) {
 		sidebarView = inflater.inflate(getContext(), null);
-		setSidebarBackground();
+		setBackgroundDrawable(sidebarBackground);
 		addSidebarView();
-	}
-
-	private void setSidebarBackground() {
-		if (sidebarView.getBackground() == null) {
-			if (location == Location.LEFT) {
-				sidebarView
-						.setBackgroundResource(R.drawable.sidebar_left_light);
-
-			} else {
-				sidebarView
-						.setBackgroundResource(R.drawable.sidebar_right_light);
-
-			}
-		}
 	}
 
 	private void addSidebarView() {
@@ -72,12 +61,13 @@ public class SidebarView extends LinearLayout {
 	}
 
 	public SidebarView(Context context, Inflater inflater,
-			final Location location, final int shadowWidth,
-			final int shadowColor) {
+			final Location location, final Drawable sidebarBackground,
+			final int shadowWidth, final int shadowColor) {
 		super(context, null);
 		this.location = location;
 		this.shadowWidth = shadowWidth;
 		this.shadowColor = shadowColor;
+		this.sidebarBackground = sidebarBackground;
 		setOrientation(LinearLayout.HORIZONTAL);
 		inflateViews(inflater);
 		setShadowColor(shadowColor);
@@ -108,8 +98,8 @@ public class SidebarView extends LinearLayout {
 			addShadowView(shadowWidth);
 			addSidebarView();
 		}
-		
-		setSidebarBackground();
+
+		setBackgroundDrawable(sidebarBackground);
 		setShadowColor(shadowColor);
 	}
 
@@ -120,6 +110,25 @@ public class SidebarView extends LinearLayout {
 
 	public View getSidebarView() {
 		return sidebarView;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public final void setBackgroundDrawable(final Drawable background) {
+		this.sidebarBackground = background;
+
+		if (sidebarBackground == null) {
+			if (location == Location.LEFT) {
+				sidebarView
+						.setBackgroundResource(R.drawable.sidebar_left_light);
+			} else {
+				sidebarView
+						.setBackgroundResource(R.drawable.sidebar_right_light);
+
+			}
+		} else {
+			sidebarView.setBackgroundDrawable(sidebarBackground);
+		}
 	}
 
 }
