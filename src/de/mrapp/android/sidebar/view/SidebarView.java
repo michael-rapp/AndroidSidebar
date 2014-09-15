@@ -2,13 +2,12 @@ package de.mrapp.android.sidebar.view;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.View;
 import android.widget.LinearLayout;
-import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.Location;
+import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.inflater.Inflater;
 
 public class SidebarView extends LinearLayout {
@@ -109,6 +108,9 @@ public class SidebarView extends LinearLayout {
 			addShadowView(shadowWidth);
 			addSidebarView();
 		}
+		
+		setSidebarBackground();
+		setShadowColor(shadowColor);
 	}
 
 	public final void setShadowWidth(final int shadowWidth) {
@@ -118,39 +120,6 @@ public class SidebarView extends LinearLayout {
 
 	public View getSidebarView() {
 		return sidebarView;
-	}
-
-	@Override
-	public final void setBackgroundColor(int color) {
-		sidebarView.setBackgroundColor(color);
-	}
-
-	@Override
-	public final void setBackgroundResource(final int resourceId) {
-		if (resourceId == -1) {
-			if (location == Location.LEFT) {
-				sidebarView
-						.setBackgroundResource(R.drawable.sidebar_left_light);
-
-			} else {
-				sidebarView
-						.setBackgroundResource(R.drawable.sidebar_right_light);
-
-			}
-		} else {
-			sidebarView.setBackgroundResource(resourceId);
-		}
-	}
-
-	@Override
-	public final void setBackground(final Drawable background) {
-		sidebarView.setBackground(background);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public final void setBackgroundDrawable(final Drawable background) {
-		sidebarView.setBackgroundDrawable(background);
 	}
 
 }
