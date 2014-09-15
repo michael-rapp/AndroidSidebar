@@ -34,8 +34,6 @@ public class Sidebar extends ViewGroup {
 
 	protected static final Location DEFAULT_LOCATION = Location.RIGHT;
 
-	protected static final int DEFAULT_BACKGROUND = -1;
-
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
 	protected static final float DEFAULT_SIDEBAR_WIDTH = 0.8f;
@@ -104,8 +102,6 @@ public class Sidebar extends ViewGroup {
 
 	private boolean showOnSidebarClick;
 
-	private int sidebarBackground;
-
 	private int contentOverlayColor;
 
 	private float contentOverlayTransparency;
@@ -114,19 +110,19 @@ public class Sidebar extends ViewGroup {
 
 	private int shadowColor;
 
+	private boolean shown;
+
 	private transient Set<SidebarListener> listeners;
 
 	private transient SidebarView sidebarView;
 
 	private transient ContentView contentView;
 
-	private boolean shown;
+	private transient int currentSidebarWidth;
 
-	private int currentSidebarWidth;
+	private transient int currentContentWidth;
 
-	private int currentContentWidth;
-
-	private int currentOffset;
+	private transient int currentOffset;
 
 	private transient DragHelper dragHelper;
 
@@ -158,7 +154,6 @@ public class Sidebar extends ViewGroup {
 			obtainContentOverlayTransparency(typedArray);
 			obtainShadowColor(typedArray);
 			obtainShadowWidth(typedArray);
-			obtainBackground(typedArray);
 			obtainLocation(typedArray);
 			obtainSidebarView(typedArray);
 			obtainContentView(typedArray);
@@ -179,11 +174,6 @@ public class Sidebar extends ViewGroup {
 		} finally {
 			typedArray.recycle();
 		}
-	}
-
-	private void obtainBackground(TypedArray typedArray) {
-		sidebarBackground = typedArray.getResourceId(
-				R.styleable.Sidebar_android_background, DEFAULT_BACKGROUND);
 	}
 
 	private void obtainContentOverlayColor(TypedArray typedArray) {
@@ -320,7 +310,7 @@ public class Sidebar extends ViewGroup {
 		}
 
 		sidebarView = new SidebarView(getContext(), inflater, getLocation(),
-				sidebarBackground, shadowWidth, shadowColor);
+				shadowWidth, shadowColor);
 		addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
@@ -1132,7 +1122,6 @@ public class Sidebar extends ViewGroup {
 		savedState.setHideOnBackButton(isHiddenOnBackButton());
 		savedState.setHideOnContentClick(isHiddenOnContentClick());
 		savedState.setShowOnSidebarClick(isShownOnSidebarClick());
-		savedState.setSidebarBackground(sidebarBackground);
 		savedState.setContentOverlayColor(getContentOverlayColor());
 		savedState
 				.setContentOverlayTransparency(getContentOverlayTransparency());
@@ -1160,7 +1149,6 @@ public class Sidebar extends ViewGroup {
 			hideOnBackButton(savedState.isHideOnBackButton());
 			hideOnContentClick(savedState.isHideOnContentClick());
 			showOnSidebarClick(savedState.isShowOnSidebarClick());
-			sidebarBackground = savedState.getSidebarBackground();
 			setContentOverlayColor(savedState.getContentOverlayColor());
 			setContentOverlayTransparency(savedState
 					.getContentOverlayTransparency());

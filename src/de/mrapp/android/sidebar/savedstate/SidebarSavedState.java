@@ -37,8 +37,6 @@ public class SidebarSavedState extends BaseSavedState {
 
 	private boolean showOnSidebarClick;
 
-	private int sidebarBackground;
-
 	private int contentOverlayColor;
 
 	private float contentOverlayTransparency;
@@ -87,7 +85,6 @@ public class SidebarSavedState extends BaseSavedState {
 		hideOnBackButton = source.readByte() != 0;
 		hideOnContentClick = source.readByte() != 0;
 		showOnSidebarClick = source.readByte() != 0;
-		sidebarBackground = source.readInt();
 		contentOverlayColor = source.readInt();
 		contentOverlayTransparency = source.readFloat();
 		shadowWidth = source.readInt();
@@ -207,14 +204,6 @@ public class SidebarSavedState extends BaseSavedState {
 		this.showOnSidebarClick = showOnSidebarClick;
 	}
 
-	public int getSidebarBackground() {
-		return sidebarBackground;
-	}
-
-	public void setSidebarBackground(int sidebarBackground) {
-		this.sidebarBackground = sidebarBackground;
-	}
-
 	public int getContentOverlayColor() {
 		return contentOverlayColor;
 	}
@@ -272,7 +261,6 @@ public class SidebarSavedState extends BaseSavedState {
 		destination.writeByte((byte) (hideOnBackButton ? 1 : 0));
 		destination.writeByte((byte) (hideOnContentClick ? 1 : 0));
 		destination.writeByte((byte) (showOnSidebarClick ? 1 : 0));
-		destination.writeInt(sidebarBackground);
 		destination.writeInt(contentOverlayColor);
 		destination.writeFloat(contentOverlayTransparency);
 		destination.writeInt(shadowWidth);
