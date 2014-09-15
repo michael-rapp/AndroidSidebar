@@ -40,7 +40,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_MAX_SIDEBAR_WIDTH = -1;
 
-	protected static final float DEFAULT_SIDEBAR_OFFSET = 0.1f;
+	protected static final float DEFAULT_SIDEBAR_OFFSET = 0.125f;
 
 	protected static final int DEFAULT_MAX_SIDEBAR_OFFSET = -1;
 
