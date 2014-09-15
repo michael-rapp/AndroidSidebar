@@ -36,7 +36,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final int DEFAULT_ANIMATION_DURATION = 250;
 
-	protected static final float DEFAULT_SIDEBAR_WIDTH = 0.8f;
+	protected static final float DEFAULT_SIDEBAR_WIDTH = 0.75f;
 
 	protected static final int DEFAULT_MAX_SIDEBAR_WIDTH = -1;
 
