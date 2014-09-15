@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -23,6 +24,7 @@ import de.mrapp.android.sidebar.animation.ContentViewAnimation;
 import de.mrapp.android.sidebar.animation.SidebarViewAnimation;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
+import de.mrapp.android.sidebar.savedstate.SidebarSavedState;
 import de.mrapp.android.sidebar.util.DisplayUtil;
 import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
@@ -102,7 +104,7 @@ public class Sidebar extends ViewGroup {
 
 	private boolean showOnSidebarClick;
 
-	private int background;
+	private int sidebarBackground;
 
 	private int contentOverlayColor;
 
@@ -112,11 +114,11 @@ public class Sidebar extends ViewGroup {
 
 	private int shadowColor;
 
-	private Set<SidebarListener> listeners;
+	private transient Set<SidebarListener> listeners;
 
-	private SidebarView sidebarView;
+	private transient SidebarView sidebarView;
 
-	private ContentView contentView;
+	private transient ContentView contentView;
 
 	private boolean shown;
 
@@ -126,7 +128,7 @@ public class Sidebar extends ViewGroup {
 
 	private int currentOffset;
 
-	private DragHelper dragHelper;
+	private transient DragHelper dragHelper;
 
 	private void initialize(final Context context,
 			final AttributeSet attributeSet) {
@@ -180,7 +182,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void obtainBackground(TypedArray typedArray) {
-		background = typedArray.getResourceId(
+		sidebarBackground = typedArray.getResourceId(
 				R.styleable.Sidebar_android_background, DEFAULT_BACKGROUND);
 	}
 
@@ -318,7 +320,7 @@ public class Sidebar extends ViewGroup {
 		}
 
 		sidebarView = new SidebarView(getContext(), inflater, getLocation(),
-				background, shadowWidth, shadowColor);
+				sidebarBackground, shadowWidth, shadowColor);
 		addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 		bringSidebarToFront();
@@ -1109,6 +1111,66 @@ public class Sidebar extends ViewGroup {
 					parentHSpec);
 		} else {
 			super.measureChild(child, parentWSpec, parentHSpec);
+		}
+	}
+
+	@Override
+	protected final Parcelable onSaveInstanceState() {
+		Parcelable superState = super.onSaveInstanceState();
+		SidebarSavedState savedState = new SidebarSavedState(superState);
+		savedState.setLocation(getLocation());
+		savedState.setAnimationDuration(getAnimationDuration());
+		savedState.setSidebarWidth(getSidebarWidth());
+		savedState.setMaxSidebarWidth(getMaxSidebarWidth());
+		savedState.setSidebarOffset(getSidebarOffset());
+		savedState.setMaxSidebarOffset(getMaxSidebarOffset());
+		savedState.setScrollRatio(getScrollRatio());
+		savedState.setDragThreshold(getDragThreshold());
+		savedState.setDragSensitivity(getDragSensitivity());
+		savedState.setDragModeWhenHidden(getDragModeWhenHidden());
+		savedState.setDragModeWhenShown(getDragModeWhenShown());
+		savedState.setHideOnBackButton(isHiddenOnBackButton());
+		savedState.setHideOnContentClick(isHiddenOnContentClick());
+		savedState.setShowOnSidebarClick(isShownOnSidebarClick());
+		savedState.setSidebarBackground(sidebarBackground);
+		savedState.setContentOverlayColor(getContentOverlayColor());
+		savedState
+				.setContentOverlayTransparency(getContentOverlayTransparency());
+		savedState.setShadowWidth(getShadowWidth());
+		savedState.setShadowColor(getShadowColor());
+		savedState.setShown(isSidebarShown());
+		return savedState;
+	}
+
+	@Override
+	protected final void onRestoreInstanceState(final Parcelable state) {
+		if (state != null && state instanceof SidebarSavedState) {
+			SidebarSavedState savedState = (SidebarSavedState) state;
+			setLocation(savedState.getLocation());
+			setAnimationDuration(savedState.getAnimationDuration());
+			setSidebarWidth(savedState.getSidebarWidth());
+			setMaxSidebarWidth(savedState.getMaxSidebarWidth());
+			setSidebarOffset(savedState.getSidebarOffset());
+			setMaxSidebarOffset(savedState.getMaxSidebarOffset());
+			setScrollRatio(savedState.getScrollRatio());
+			setDragThreshold(savedState.getDragThreshold());
+			setDragSensitivity(savedState.getDragSensitivity());
+			setDragModeWhenHidden(savedState.getDragModeWhenHidden());
+			setDragModeWhenShown(savedState.getDragModeWhenShown());
+			hideOnBackButton(savedState.isHideOnBackButton());
+			hideOnContentClick(savedState.isHideOnContentClick());
+			showOnSidebarClick(savedState.isShowOnSidebarClick());
+			sidebarBackground = savedState.getSidebarBackground();
+			setContentOverlayColor(savedState.getContentOverlayColor());
+			setContentOverlayTransparency(savedState
+					.getContentOverlayTransparency());
+			setShadowWidth(savedState.getShadowWidth());
+			setShadowColor(savedState.getShadowColor());
+			shown = savedState.isShown();
+			requestLayout();
+			super.onRestoreInstanceState(savedState.getSuperState());
+		} else {
+			super.onRestoreInstanceState(state);
 		}
 	}
 
