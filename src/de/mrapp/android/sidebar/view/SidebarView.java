@@ -120,10 +120,10 @@ public class SidebarView extends LinearLayout {
 		if (sidebarBackground == null) {
 			if (location == Location.LEFT) {
 				sidebarView
-						.setBackgroundResource(R.drawable.sidebar_left_light);
+						.setBackgroundResource(R.drawable.sidebar_background_left_light);
 			} else {
 				sidebarView
-						.setBackgroundResource(R.drawable.sidebar_right_light);
+						.setBackgroundResource(R.drawable.sidebar_background_right_light);
 
 			}
 		} else {
