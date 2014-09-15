@@ -2,6 +2,8 @@
 <resources>
 
     <color name="border_light">#ffd4d4d4</color>
+    <color name="border_dark">#ff050606</color>
     <color name="background_light">#ffeeeeee</color>
+    <color name="background_dark">#ff202020</color>
 
 </resources>
