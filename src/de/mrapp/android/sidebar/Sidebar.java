@@ -126,13 +126,13 @@ public class Sidebar extends ViewGroup {
 
 	private int currentOffset;
 
-	private DragHelper mDragHelper;
+	private DragHelper dragHelper;
 
 	private void initialize(final Context context,
 			final AttributeSet attributeSet) {
 		this.listeners = new LinkedHashSet<>();
 		this.shown = false;
-		this.mDragHelper = new DragHelper(getDragSensitivityInPixels());
+		this.dragHelper = new DragHelper(getDragSensitivityInPixels());
 		this.setFocusableInTouchMode(true);
 		obtainStyledAttributes(context, attributeSet);
 	}
@@ -418,10 +418,10 @@ public class Sidebar extends ViewGroup {
 	private boolean handleMove(float x) {
 		if (contentView.getAnimation() == null
 				&& sidebarView.getAnimation() == null) {
-			mDragHelper.update(x);
+			dragHelper.update(x);
 
-			if (mDragHelper.isDragging()
-					&& checkDragMode(mDragHelper.getStartPosition())) {
+			if (dragHelper.isDragging()
+					&& checkDragMode(dragHelper.getStartPosition())) {
 				Pair<Integer, Integer> sidebarPos = calculateSidebarDragPosition();
 				Pair<Integer, Integer> contentPos = calculateContentDragPosition(sidebarPos);
 
@@ -444,7 +444,7 @@ public class Sidebar extends ViewGroup {
 		Pair<Integer, Integer> hiddenSidebarPos = calculateSidebarPosition(false);
 
 		int sidebarX = calculateSidebarPosition().first
-				+ mDragHelper.getDistance();
+				+ dragHelper.getDistance();
 
 		if (getLocation() == Location.LEFT) {
 			sidebarX = Math.max(hiddenSidebarPos.first, sidebarX);
@@ -477,7 +477,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void handleRelease() {
-		mDragHelper.stopDragging();
+		dragHelper.stopDragging();
 
 		float threshold = calculateDragThreshold();
 
@@ -846,7 +846,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtMaximum(dragSensitivity, 1,
 				"The drag sensitivity must be at maximum 1");
 		this.dragSensitivity = dragSensitivity;
-		this.mDragHelper = new DragHelper(getDragSensitivityInPixels());
+		this.dragHelper = new DragHelper(getDragSensitivityInPixels());
 	}
 
 	private int getDragSensitivityInPixels() {
@@ -973,9 +973,9 @@ public class Sidebar extends ViewGroup {
 			handled = handleMove(event.getX());
 			break;
 		case MotionEvent.ACTION_UP:
-			mDragHelper.reset();
+			dragHelper.reset();
 
-			if (mDragHelper.isDragging()) {
+			if (dragHelper.isDragging()) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
@@ -1000,9 +1000,9 @@ public class Sidebar extends ViewGroup {
 			handleMove(event.getX());
 			return true;
 		case MotionEvent.ACTION_UP:
-			mDragHelper.reset();
+			dragHelper.reset();
 
-			if (mDragHelper.isDragging()) {
+			if (dragHelper.isDragging()) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
