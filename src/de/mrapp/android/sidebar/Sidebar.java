@@ -1000,10 +1000,17 @@ public class Sidebar extends ViewGroup {
 				handleClick(event.getX());
 			}
 
+			performClick();
 			return true;
 		}
 
 		return super.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean performClick() {
+		super.performClick();
+		return true;
 	}
 
 	@Override
