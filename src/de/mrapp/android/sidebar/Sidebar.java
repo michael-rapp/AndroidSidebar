@@ -343,18 +343,31 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void animateShowSidebar(final float toXDelta) {
-		animateSidebar(true, toXDelta, createAnimationListener(true));
+		animateShowSidebar(toXDelta, animationSpeed);
+	}
+
+	private void animateShowSidebar(final float toXDelta,
+			final float animationSpeed) {
+		animateSidebar(true, toXDelta, animationSpeed,
+				createAnimationListener(true));
 	}
 
 	private void animateHideSidebar(final float toXDelta) {
-		animateSidebar(false, toXDelta, createAnimationListener(false));
+		animateHideSidebar(toXDelta, animationSpeed);
+	}
+
+	private void animateHideSidebar(final float toXDelta,
+			final float animationSpeed) {
+		animateSidebar(false, toXDelta, animationSpeed,
+				createAnimationListener(false));
 	}
 
 	private void animateSidebar(final boolean show, final float toXDelta,
+			final float animationSpeed,
 			final AnimationListener animationListener) {
 		if (contentView.getAnimation() == null
 				&& sidebarView.getAnimation() == null) {
-			long duration = calculateAnimationDuration(toXDelta);
+			long duration = calculateAnimationDuration(toXDelta, animationSpeed);
 
 			Animation contentViewAnimation = new ContentViewAnimation(
 					contentView, duration, toXDelta, scrollRatio,
@@ -397,7 +410,8 @@ public class Sidebar extends ViewGroup {
 		};
 	}
 
-	private int calculateAnimationDuration(final float distance) {
+	private int calculateAnimationDuration(final float distance,
+			final float animationSpeed) {
 		return Math.round(Math.abs(distance) / animationSpeed);
 	}
 
@@ -478,18 +492,19 @@ public class Sidebar extends ViewGroup {
 		dragHelper.stopDragging();
 
 		float threshold = calculateDragThreshold();
+		float speed = Math.max(dragHelper.getDragSpeed(), animationSpeed);
 
 		if (getLocation() == Location.LEFT) {
 			if (sidebarView.getRight() - shadowWidth > threshold) {
-				animateShowSidebar(calculateSnapDistance(true));
+				animateShowSidebar(calculateSnapDistance(true), speed);
 			} else {
-				animateHideSidebar(calculateSnapDistance(false));
+				animateHideSidebar(calculateSnapDistance(false), speed);
 			}
 		} else {
 			if (sidebarView.getLeft() + shadowWidth < threshold) {
-				animateShowSidebar(calculateSnapDistance(true));
+				animateShowSidebar(calculateSnapDistance(true), speed);
 			} else {
-				animateHideSidebar(calculateSnapDistance(false));
+				animateHideSidebar(calculateSnapDistance(false), speed);
 			}
 		}
 	}
@@ -995,7 +1010,6 @@ public class Sidebar extends ViewGroup {
 			handled = handleMove(event.getX());
 			break;
 		case MotionEvent.ACTION_UP:
-			dragHelper.reset();
 
 			if (dragHelper.isDragging()) {
 				handleRelease();
@@ -1003,6 +1017,7 @@ public class Sidebar extends ViewGroup {
 				handleClick(event.getX());
 			}
 
+			dragHelper.reset();
 			break;
 		}
 
@@ -1022,7 +1037,6 @@ public class Sidebar extends ViewGroup {
 			handleMove(event.getX());
 			return true;
 		case MotionEvent.ACTION_UP:
-			dragHelper.reset();
 
 			if (dragHelper.isDragging()) {
 				handleRelease();
@@ -1030,6 +1044,7 @@ public class Sidebar extends ViewGroup {
 				handleClick(event.getX());
 			}
 
+			dragHelper.reset();
 			performClick();
 			return true;
 		}

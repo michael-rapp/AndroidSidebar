@@ -10,6 +10,8 @@ public class DragHelper {
 
 	private int dragStartPosition;
 
+	private long dragStartTime;
+
 	private boolean recycled;
 
 	private boolean dragging;
@@ -23,8 +25,9 @@ public class DragHelper {
 	public void reset() {
 		recycled = true;
 		distance = 0;
-		thresholdReachedPosition = 0;
-		dragStartPosition = 0;
+		thresholdReachedPosition = -1;
+		dragStartPosition = -1;
+		dragStartTime = -1;
 		reachedThreshold = false;
 	}
 
@@ -43,6 +46,7 @@ public class DragHelper {
 			recycled = false;
 			thresholdReachedPosition = roundedValue;
 			dragStartPosition = roundedValue;
+			dragStartTime = System.currentTimeMillis();
 			distance = 0;
 			reachedThreshold = false;
 		} else {
@@ -74,4 +78,9 @@ public class DragHelper {
 		return dragStartPosition;
 	}
 
+	public final float getDragSpeed() {
+		long interval = System.currentTimeMillis() - dragStartTime;
+		return (float) Math.abs(getDistance()) / (float) interval;
+	}
+	
 }
