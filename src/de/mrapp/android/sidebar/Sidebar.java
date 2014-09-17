@@ -398,9 +398,6 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private int calculateAnimationDuration(final float distance) {
-		// int total = currentSidebarWidth - currentOffset;
-		// float ratio = Math.abs(distance) / total;
-		// return Math.round(animationDuration * ratio);
 		return Math.round(Math.abs(distance) / animationSpeed);
 	}
 
