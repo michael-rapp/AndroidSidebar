@@ -36,9 +36,14 @@ public final class DisplayUtil {
 	 * @return The calculated dp value
 	 */
 	public static int convertPixelsToDp(final Context context, final int pixels) {
+		return Math.round(convertPixelsToDp(context, (float) pixels));
+	}
+
+	public static float convertPixelsToDp(final Context context,
+			final float pixels) {
 		Resources resources = context.getResources();
 		DisplayMetrics metrics = resources.getDisplayMetrics();
-		return Math.round(pixels / (metrics.densityDpi / PIXEL_DP_RATIO));
+		return pixels / (metrics.densityDpi / PIXEL_DP_RATIO);
 	}
 
 	/**
@@ -52,9 +57,13 @@ public final class DisplayUtil {
 	 * @return The calculated pixel value
 	 */
 	public static int convertDpToPixels(final Context context, final int dp) {
+		return Math.round(convertDpToPixels(context, (float) dp));
+	}
+
+	public static float convertDpToPixels(final Context context, final float dp) {
 		Resources resources = context.getResources();
 		DisplayMetrics metrics = resources.getDisplayMetrics();
-		return Math.round(dp * (metrics.densityDpi / PIXEL_DP_RATIO));
+		return dp * (metrics.densityDpi / PIXEL_DP_RATIO);
 	}
 
 }

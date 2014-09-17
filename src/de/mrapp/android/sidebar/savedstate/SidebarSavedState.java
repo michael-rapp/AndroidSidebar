@@ -11,7 +11,7 @@ public class SidebarSavedState extends BaseSavedState {
 
 	private Location location;
 
-	private int animationDuration;
+	private float animationSpeed;
 
 	private float sidebarWidth;
 
@@ -72,7 +72,7 @@ public class SidebarSavedState extends BaseSavedState {
 	public SidebarSavedState(final Parcel source) {
 		super(source);
 		location = Location.fromValue(source.readInt());
-		animationDuration = source.readInt();
+		animationSpeed = source.readFloat();
 		sidebarWidth = source.readFloat();
 		maxSidebarWidth = source.readInt();
 		sidebarOffset = source.readFloat();
@@ -100,12 +100,12 @@ public class SidebarSavedState extends BaseSavedState {
 		this.location = location;
 	}
 
-	public int getAnimationDuration() {
-		return animationDuration;
+	public float getAnimationSpeed() {
+		return animationSpeed;
 	}
 
-	public void setAnimationDuration(int animationDuration) {
-		this.animationDuration = animationDuration;
+	public void setAnimationSpeed(float animationSpeed) {
+		this.animationSpeed = animationSpeed;
 	}
 
 	public float getSidebarWidth() {
@@ -248,7 +248,7 @@ public class SidebarSavedState extends BaseSavedState {
 	public final void writeToParcel(final Parcel destination, final int flags) {
 		super.writeToParcel(destination, flags);
 		destination.writeInt(location.getValue());
-		destination.writeInt(animationDuration);
+		destination.writeFloat(animationSpeed);
 		destination.writeFloat(sidebarWidth);
 		destination.writeInt(maxSidebarWidth);
 		destination.writeFloat(sidebarOffset);

@@ -28,7 +28,7 @@ License along with this program.  If not, see
             <enum name="left" value="0" />
             <enum name="right" value="1" />
         </attr>
-        <attr name="animationDuration" format="integer" />
+        <attr name="animationSpeed" format="float" />
         <attr name="sidebarWidth" format="fraction" />
         <attr name="maxSidebarWidth" format="dimension" />
         <attr name="sidebarOffset" format="fraction" />

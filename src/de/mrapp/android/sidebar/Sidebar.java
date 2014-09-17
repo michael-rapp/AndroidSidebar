@@ -35,7 +35,7 @@ public class Sidebar extends ViewGroup {
 
 	protected static final Location DEFAULT_LOCATION = Location.RIGHT;
 
-	protected static final int DEFAULT_ANIMATION_DURATION = 250;
+	protected static final float DEFAULT_ANIMATION_SPEED = 1.5f;
 
 	protected static final float DEFAULT_SIDEBAR_WIDTH = 0.75f;
 
@@ -77,7 +77,7 @@ public class Sidebar extends ViewGroup {
 
 	private Location location;
 
-	private int animationDuration;
+	private float animationSpeed = 1.0f;
 
 	private float sidebarWidth;
 
@@ -161,7 +161,7 @@ public class Sidebar extends ViewGroup {
 			obtainSidebarBackground(typedArray);
 			obtainSidebarView(typedArray);
 			obtainContentView(typedArray);
-			obtainAnimationDuration(typedArray);
+			obtainAnimationSpeed(typedArray);
 			obtainSidebarWidth(typedArray);
 			obtainMaxSidebarWidth(typedArray);
 			obtainSidebarOffset(typedArray);
@@ -231,10 +231,9 @@ public class Sidebar extends ViewGroup {
 				R.styleable.Sidebar_location, DEFAULT_LOCATION.getValue())));
 	}
 
-	private void obtainAnimationDuration(TypedArray typedArray) {
-		setAnimationDuration(typedArray.getInt(
-				R.styleable.Sidebar_animationDuration,
-				DEFAULT_ANIMATION_DURATION));
+	private void obtainAnimationSpeed(TypedArray typedArray) {
+		setAnimationSpeed(typedArray.getFloat(
+				R.styleable.Sidebar_animationSpeed, DEFAULT_ANIMATION_SPEED));
 	}
 
 	private void obtainSidebarWidth(TypedArray typedArray) {
@@ -399,9 +398,10 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private int calculateAnimationDuration(final float distance) {
-		int total = currentSidebarWidth - currentOffset;
-		float ratio = Math.abs(distance) / total;
-		return Math.round(animationDuration * ratio);
+		// int total = currentSidebarWidth - currentOffset;
+		// float ratio = Math.abs(distance) / total;
+		// return Math.round(animationDuration * ratio);
+		return Math.round(Math.abs(distance) / animationSpeed);
 	}
 
 	private void notifyOnSidebarHidden() {
@@ -729,14 +729,13 @@ public class Sidebar extends ViewGroup {
 		requestLayout();
 	}
 
-	public final int getAnimationDuration() {
-		return animationDuration;
+	public final float getAnimationSpeed() {
+		return DisplayUtil.convertPixelsToDp(getContext(), animationSpeed);
 	}
 
-	public final void setAnimationDuration(final int animationDuration) {
-		ensureAtLeast(animationDuration, 0,
-				"The animation duration must be at least 0");
-		this.animationDuration = animationDuration;
+	public final void setAnimationSpeed(final float animationSpeed) {
+		this.animationSpeed = DisplayUtil.convertDpToPixels(getContext(),
+				animationSpeed);
 	}
 
 	public final float getSidebarWidth() {
@@ -1150,7 +1149,7 @@ public class Sidebar extends ViewGroup {
 		Parcelable superState = super.onSaveInstanceState();
 		SidebarSavedState savedState = new SidebarSavedState(superState);
 		savedState.setLocation(getLocation());
-		savedState.setAnimationDuration(getAnimationDuration());
+		savedState.setAnimationSpeed(getAnimationSpeed());
 		savedState.setSidebarWidth(getSidebarWidth());
 		savedState.setMaxSidebarWidth(getMaxSidebarWidth());
 		savedState.setSidebarOffset(getSidebarOffset());
@@ -1177,7 +1176,7 @@ public class Sidebar extends ViewGroup {
 		if (state != null && state instanceof SidebarSavedState) {
 			SidebarSavedState savedState = (SidebarSavedState) state;
 			setLocation(savedState.getLocation());
-			setAnimationDuration(savedState.getAnimationDuration());
+			setAnimationSpeed(savedState.getAnimationSpeed());
 			setSidebarWidth(savedState.getSidebarWidth());
 			setMaxSidebarWidth(savedState.getMaxSidebarWidth());
 			setSidebarOffset(savedState.getSidebarOffset());
