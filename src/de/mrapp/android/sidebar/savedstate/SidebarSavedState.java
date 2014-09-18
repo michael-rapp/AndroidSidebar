@@ -1,3 +1,20 @@
+/*
+ * AndroidSidebar Copyright 2014 Michael Rapp
+ *
+ * This program is free software: you can redistribute it and/or modify 
+ * it under the terms of the GNU Lesser General Public License as published 
+ * by the Free Software Foundation, either version 3 of the License, or 
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>. 
+ */
 package de.mrapp.android.sidebar.savedstate;
 
 import android.os.Parcel;
@@ -5,46 +22,110 @@ import android.os.Parcelable;
 import android.preference.Preference.BaseSavedState;
 import de.mrapp.android.sidebar.DragMode;
 import de.mrapp.android.sidebar.Location;
-import de.mrapp.android.sidebar.Sidebar;
 
+/**
+ * A data structure, which allows to save the internal state of a
+ * {@link Sidebar}.
+ * 
+ * @author Michael Rapp
+ * 
+ * @since 1.0.0
+ */
 public class SidebarSavedState extends BaseSavedState {
 
+	/**
+	 * The saved value of the attribute "location".
+	 */
 	private Location location;
 
+	/**
+	 * The saved value of the attribute "animationSpeed".
+	 */
 	private float animationSpeed;
 
+	/**
+	 * The saved value of the attribute "sidebarWidth".
+	 */
 	private float sidebarWidth;
 
+	/**
+	 * The saved value of the attribute "maxSidebarWidth".
+	 */
 	private int maxSidebarWidth;
 
+	/**
+	 * The saved value of the attribute "sidebarOffset".
+	 */
 	private float sidebarOffset;
 
+	/**
+	 * The saved value of the attribute "maxSidebarOffset".
+	 */
 	private int maxSidebarOffset;
 
+	/**
+	 * The saved value of the attribute "scrollRatio".
+	 */
 	private float scrollRatio;
 
+	/**
+	 * The saved value of the attribute "dragThreshold".
+	 */
 	private float dragThreshold;
 
+	/**
+	 * The saved value of the attribute "dragSensitivity".
+	 */
 	private float dragSensitivity;
 
+	/**
+	 * The saved value of the attribute "dragModeWhenHidden".
+	 */
 	private DragMode dragModeWhenHidden;
 
+	/**
+	 * The saved value of the attribute "dragModeWhenShown".
+	 */
 	private DragMode dragModeWhenShown;
 
+	/**
+	 * The saved value of the attribute "hideOnBackButton".
+	 */
 	private boolean hideOnBackButton;
 
+	/**
+	 * The saved value of the attribute "hideOnContentClick".
+	 */
 	private boolean hideOnContentClick;
 
+	/**
+	 * The saved value of the attribute "showOnSidebarClick".
+	 */
 	private boolean showOnSidebarClick;
 
+	/**
+	 * The saved value of the attribute "contentOverlayColor".
+	 */
 	private int contentOverlayColor;
 
+	/**
+	 * The saved value of the attribute "contentOverlayTransparency".
+	 */
 	private float contentOverlayTransparency;
 
+	/**
+	 * The saved value of the attribute "shadowWidth".
+	 */
 	private int shadowWidth;
 
+	/**
+	 * The saved value of the attribute "shadowColor".
+	 */
 	private int shadowColor;
 
+	/**
+	 * The saved value of the attribute "shown".
+	 */
 	private boolean shown;
 
 	/**
@@ -92,155 +173,403 @@ public class SidebarSavedState extends BaseSavedState {
 		shown = source.readByte() != 0;
 	}
 
-	public Location getLocation() {
+	/**
+	 * Returns the saved value of the attribute "location".
+	 * 
+	 * @return The saved value of the attribute "location" as a value of the
+	 *         enum {@link Location}
+	 */
+	public final Location getLocation() {
 		return location;
 	}
 
-	public void setLocation(Location location) {
+	/**
+	 * Sets the saved value of the attribute "location".
+	 * 
+	 * @param location
+	 *            The saved value of the attribute "location", which should be
+	 *            set, as a value of the enum {@link Location}
+	 */
+	public final void setLocation(final Location location) {
 		this.location = location;
 	}
 
-	public float getAnimationSpeed() {
+	/**
+	 * Returns the saved value of the attribute "animationSpeed".
+	 * 
+	 * @return The saved value of the attribute "animationSpeed" as a
+	 *         {@link Float} value
+	 */
+	public final float getAnimationSpeed() {
 		return animationSpeed;
 	}
 
-	public void setAnimationSpeed(float animationSpeed) {
+	/**
+	 * Sets the saved value of the attribute "animationSpeed".
+	 * 
+	 * @param animationSpeed
+	 *            The saved value of the attribute "animationSpeed", which
+	 *            should be set, as a {@link Float} value
+	 */
+	public final void setAnimationSpeed(final float animationSpeed) {
 		this.animationSpeed = animationSpeed;
 	}
 
-	public float getSidebarWidth() {
+	/**
+	 * Returns the saved value of the attribute "sidebarWidth".
+	 * 
+	 * @return The saved value of the attribute "sidebarWidth" as a
+	 *         {@link Float} value
+	 */
+	public final float getSidebarWidth() {
 		return sidebarWidth;
 	}
 
-	public void setSidebarWidth(float sidebarWidth) {
+	/**
+	 * Sets the saved value of the attribute "sidebarWidth".
+	 * 
+	 * @param sidebarWidth
+	 *            The saved value of the attribute "sidebarWidth", which should
+	 *            be set, as a {@link Float} value
+	 */
+	public final void setSidebarWidth(final float sidebarWidth) {
 		this.sidebarWidth = sidebarWidth;
 	}
 
-	public int getMaxSidebarWidth() {
+	/**
+	 * Returns the saved value of the attribute "maxSidebarWidth".
+	 * 
+	 * @return The saved value of the attribute "maxSidebarWidth" as an
+	 *         {@link Integer} value
+	 */
+	public final int getMaxSidebarWidth() {
 		return maxSidebarWidth;
 	}
 
-	public void setMaxSidebarWidth(int maxSidebarWidth) {
+	/**
+	 * Sets the saved value of the attribute "maxSidebarWidth".
+	 * 
+	 * @param maxSidebarWidth
+	 *            The saved value of the attribute "maxSidebarWidth", which
+	 *            should be set, as an {@link Integer} value
+	 */
+	public final void setMaxSidebarWidth(final int maxSidebarWidth) {
 		this.maxSidebarWidth = maxSidebarWidth;
 	}
 
-	public float getSidebarOffset() {
+	/**
+	 * Returns the saved value of the attribute "sidebarOffset".
+	 * 
+	 * @return The saved value of the attribute "sidebarOffset" as a
+	 *         {@link Float} value
+	 */
+	public final float getSidebarOffset() {
 		return sidebarOffset;
 	}
 
-	public void setSidebarOffset(float sidebarOffset) {
+	/**
+	 * Sets the saved value of the attribute "sidebarOffset".
+	 * 
+	 * @param sidebarOffset
+	 *            The saved value of the attribute "sidebarOffset", which should
+	 *            be set, as a {@link Float} value
+	 */
+	public final void setSidebarOffset(final float sidebarOffset) {
 		this.sidebarOffset = sidebarOffset;
 	}
 
-	public int getMaxSidebarOffset() {
+	/**
+	 * Returns the saved value of the attribute "maxSidebarOffset".
+	 * 
+	 * @return The saved value of the attribute "maxSidebarOffset" as an
+	 *         {@link Integer} value
+	 */
+	public final int getMaxSidebarOffset() {
 		return maxSidebarOffset;
 	}
 
-	public void setMaxSidebarOffset(int maxSidebarOffset) {
+	/**
+	 * Sets the saved value of the attribute "maxSidebarOffset".
+	 * 
+	 * @param maxSidebarOffset
+	 *            The saved value of the attribute "maxSidebarOffset", which
+	 *            should be set, as an {@link Integer} value
+	 */
+	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
 		this.maxSidebarOffset = maxSidebarOffset;
 	}
 
-	public float getScrollRatio() {
+	/**
+	 * Returns the saved value of the attribute "scrollRatio".
+	 * 
+	 * @return The saved value of the attribute "scrollRatio" as a {@link Float}
+	 *         value
+	 */
+	public final float getScrollRatio() {
 		return scrollRatio;
 	}
 
-	public void setScrollRatio(float scrollRatio) {
+	/**
+	 * Sets the saved value of the attribute "scrollRatio".
+	 * 
+	 * @param scrollRatio
+	 *            The saved value of the attribute "scrollRatio", which should
+	 *            be set, as a {@link Float} value
+	 */
+	public final void setScrollRatio(final float scrollRatio) {
 		this.scrollRatio = scrollRatio;
 	}
 
-	public float getDragThreshold() {
+	/**
+	 * Returns the saved value of the attribute "dragThreshold".
+	 * 
+	 * @return The saved value of the attribute "dragThreshold" as a
+	 *         {@link Float} value
+	 */
+	public final float getDragThreshold() {
 		return dragThreshold;
 	}
 
-	public void setDragThreshold(float dragThreshold) {
+	/**
+	 * Sets the saved value of the attribute "dragThreshold".
+	 * 
+	 * @param dragThreshold
+	 *            The saved value of the attribute "dragThreshold", which should
+	 *            be set, as a {@link Float} value
+	 */
+	public final void setDragThreshold(final float dragThreshold) {
 		this.dragThreshold = dragThreshold;
 	}
 
-	public float getDragSensitivity() {
+	/**
+	 * Returns the saved value of the attribute "dragSensitivity".
+	 * 
+	 * @return The saved value of the attribute "dragSensitivity" as a
+	 *         {@link Float} value
+	 */
+	public final float getDragSensitivity() {
 		return dragSensitivity;
 	}
 
-	public void setDragSensitivity(float dragSensitivity) {
+	/**
+	 * Sets the saved value of the attribute "dragSensitivity".
+	 * 
+	 * @param dragSensitivity
+	 *            The saved value of the attribute "dragSensitivity", which
+	 *            should be set, as a {@link Float} value
+	 */
+	public final void setDragSensitivity(final float dragSensitivity) {
 		this.dragSensitivity = dragSensitivity;
 	}
 
-	public DragMode getDragModeWhenHidden() {
+	/**
+	 * Returns the saved value of the attribute "dragModeWhenHidden".
+	 * 
+	 * @return The saved value of the attribute "dragModeWhenHidden" as a value
+	 *         of the enum {@link DragMode}
+	 */
+	public final DragMode getDragModeWhenHidden() {
 		return dragModeWhenHidden;
 	}
 
-	public void setDragModeWhenHidden(DragMode dragModeWhenHidden) {
+	/**
+	 * Sets the saved value of the attribute "dragModeWhenHidden".
+	 * 
+	 * @param dragModeWhenHidden
+	 *            The saved value of the attribute "dragModeWhenHidden", which
+	 *            should be set, as a value of the enum {@link DragMode}
+	 */
+	public final void setDragModeWhenHidden(final DragMode dragModeWhenHidden) {
 		this.dragModeWhenHidden = dragModeWhenHidden;
 	}
 
-	public DragMode getDragModeWhenShown() {
+	/**
+	 * Returns the saved value of the attribute "dragModeWhenShown".
+	 * 
+	 * @return The saved value of the attribute "dragModeWhenShown" as a value
+	 *         of the enum {@link DragMode}
+	 */
+	public final DragMode getDragModeWhenShown() {
 		return dragModeWhenShown;
 	}
 
-	public void setDragModeWhenShown(DragMode dragModeWhenShown) {
+	/**
+	 * Sets the saved value of the attribute "dragModeWhenShown".
+	 * 
+	 * @param dragModeWhenShown
+	 *            The saved value of the attribute "dragModeWhenShown", which
+	 *            should be set, as a value of the enum {@link DragMode}
+	 */
+	public final void setDragModeWhenShown(final DragMode dragModeWhenShown) {
 		this.dragModeWhenShown = dragModeWhenShown;
 	}
 
-	public boolean isHideOnBackButton() {
+	/**
+	 * Returns the saved value of the attribute "hideOnBackButton".
+	 * 
+	 * @return The saved value of the attribute "hideOnBackButton" as a
+	 *         {@link Boolean} value
+	 */
+	public final boolean isHideOnBackButton() {
 		return hideOnBackButton;
 	}
 
-	public void setHideOnBackButton(boolean hideOnBackButton) {
+	/**
+	 * Sets the saved value of the attribute "hideOnBackButton".
+	 * 
+	 * @param hideOnBackButton
+	 *            The saved value of the attribute "hideOnBackButton", which
+	 *            should be set, as a {@link Boolean} value
+	 */
+	public final void setHideOnBackButton(final boolean hideOnBackButton) {
 		this.hideOnBackButton = hideOnBackButton;
 	}
 
-	public boolean isHideOnContentClick() {
+	/**
+	 * Returns the saved value of the attribute "hideOnContentClick".
+	 * 
+	 * @return The saved value of the attribute "hideOnContentClick" as a
+	 *         {@link Boolean} value
+	 */
+	public final boolean isHideOnContentClick() {
 		return hideOnContentClick;
 	}
 
-	public void setHideOnContentClick(boolean hideOnContentClick) {
+	/**
+	 * Sets the saved value of the attribute "hideOnContentClick".
+	 * 
+	 * @param hideOnContentClick
+	 *            The saved value of the attribute "hideOnContentClick", which
+	 *            should be set, as a {@link Boolean} value
+	 */
+	public final void setHideOnContentClick(final boolean hideOnContentClick) {
 		this.hideOnContentClick = hideOnContentClick;
 	}
 
-	public boolean isShowOnSidebarClick() {
+	/**
+	 * Returns the saved value of the attribute "showOnSidebarClick".
+	 * 
+	 * @return The saved value of the attribute "showOnSidebarClick" as a
+	 *         {@link Boolean} value
+	 */
+	public final boolean isShowOnSidebarClick() {
 		return showOnSidebarClick;
 	}
 
-	public void setShowOnSidebarClick(boolean showOnSidebarClick) {
+	/**
+	 * Sets the saved value of the attribute "showOnSidebarClick".
+	 * 
+	 * @param showOnSidebarClick
+	 *            The saved value of the attribute "showOnSidebarClick", which
+	 *            should be set, as a {@link Boolean} value
+	 */
+	public final void setShowOnSidebarClick(final boolean showOnSidebarClick) {
 		this.showOnSidebarClick = showOnSidebarClick;
 	}
 
-	public int getContentOverlayColor() {
+	/**
+	 * Returns the saved value of the attribute "contentOverlayColor".
+	 * 
+	 * @return The saved value of the attribute "contentOverlayColor" as an
+	 *         {@link Integer} value
+	 */
+	public final int getContentOverlayColor() {
 		return contentOverlayColor;
 	}
 
-	public void setContentOverlayColor(int contentOverlayColor) {
+	/**
+	 * Sets the saved value of the attribute "contentOverlayColor".
+	 * 
+	 * @param contentOverlayColor
+	 *            The saved value of the attribute "contentOverlayColor", which
+	 *            should be set, as an {@link Integer} value
+	 */
+	public final void setContentOverlayColor(final int contentOverlayColor) {
 		this.contentOverlayColor = contentOverlayColor;
 	}
 
-	public float getContentOverlayTransparency() {
+	/**
+	 * Returns the saved value of the attribute "contentOverlayTransparency".
+	 * 
+	 * @return The saved value of the attribute "contentOverlayTransparency" as
+	 *         a {@link Float} value
+	 */
+	public final float getContentOverlayTransparency() {
 		return contentOverlayTransparency;
 	}
 
-	public void setContentOverlayTransparency(float contentOverlayTransparency) {
+	/**
+	 * Sets the saved value of the attribute "contentOverlayTransparency".
+	 * 
+	 * @param contentOverlayTransparency
+	 *            The saved value of the attribute "contentOverlayTransparency",
+	 *            which should be set, as a {@link Float} value
+	 */
+	public final void setContentOverlayTransparency(
+			final float contentOverlayTransparency) {
 		this.contentOverlayTransparency = contentOverlayTransparency;
 	}
 
-	public int getShadowWidth() {
+	/**
+	 * Returns the saved value of the attribute "shadowWidth".
+	 * 
+	 * @return The saved value of the attribute "shadowWidth" as an
+	 *         {@link Integer} value
+	 */
+	public final int getShadowWidth() {
 		return shadowWidth;
 	}
 
-	public void setShadowWidth(int shadowWidth) {
+	/**
+	 * Sets the saved value of the attribute "shadowWidth".
+	 * 
+	 * @param shadowWidth
+	 *            The saved value of the attribute "shadowWidth", which should
+	 *            be set, as an {@link Integer} value
+	 */
+	public final void setShadowWidth(final int shadowWidth) {
 		this.shadowWidth = shadowWidth;
 	}
 
-	public int getShadowColor() {
+	/**
+	 * Returns the saved value of the attribute "shadowColor".
+	 * 
+	 * @return The saved value of the attribute "shadowColor" as an
+	 *         {@link Integer} value
+	 */
+	public final int getShadowColor() {
 		return shadowColor;
 	}
 
-	public void setShadowColor(int shadowColor) {
+	/**
+	 * Sets the saved value of the attribute "shadowColor".
+	 * 
+	 * @param shadowColor
+	 *            The saved value of the attribute "shadowColor", which should
+	 *            be set, as an {@link Integer} value
+	 */
+	public final void setShadowColor(final int shadowColor) {
 		this.shadowColor = shadowColor;
 	}
 
-	public boolean isShown() {
+	/**
+	 * Returns the saved value of the attribute "shown".
+	 * 
+	 * @return The saved value of the attribute "shown" as a {@link Boolean}
+	 *         value
+	 */
+	public final boolean isShown() {
 		return shown;
 	}
 
-	public void setShown(boolean shown) {
+	/**
+	 * Sets the saved value of the attribute "shown".
+	 * 
+	 * @param shown
+	 *            The saved value of the attribute "shown", which should be set,
+	 *            as a {@link Boolean} value
+	 */
+	public final void setShown(final boolean shown) {
 		this.shown = shown;
 	}
 
