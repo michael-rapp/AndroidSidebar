@@ -28,6 +28,9 @@ import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.inflater.Inflater;
 
+import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
+import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
+
 /**
  * A custom view, which contains the sidebar view of a sidebar, as well as a
  * view, which is used to visualize a shadow.
@@ -159,6 +162,9 @@ public class SidebarView extends LinearLayout {
 			final Location location, final Drawable sidebarBackground,
 			final int shadowWidth, final int shadowColor) {
 		super(context, null);
+		ensureNotNull(location, "The location may not be null");
+		ensureNotNull(inflater, "The inflater may not be null");
+		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
 		this.location = location;
 		this.shadowWidth = shadowWidth;
 		this.shadowColor = shadowColor;
@@ -217,6 +223,7 @@ public class SidebarView extends LinearLayout {
 	 *            or <code>RIGHT</code>
 	 */
 	public final void setLocation(final Location location) {
+		ensureNotNull(location, "The location may not be null");
 		this.location = location;
 		removeAllViews();
 
@@ -249,6 +256,7 @@ public class SidebarView extends LinearLayout {
 	 *            The width must be at least 0
 	 */
 	public final void setShadowWidth(final int shadowWidth) {
+		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
 		this.shadowWidth = shadowWidth;
 		setLocation(location);
 	}
