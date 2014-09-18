@@ -66,6 +66,24 @@ public class DragHelper {
 	private boolean dragging;
 
 	/**
+	 * True, if the threshold has already been reached, false otherwise.
+	 */
+	private boolean reachedThreshold;
+
+	/**
+	 * Returns, whether the threshold is reached by a specific distance.
+	 * 
+	 * @param distance
+	 *            The distance, which should be checked, as an {@link Integer}
+	 *            value
+	 * @return True, if the threshold is reached by the given distance, false
+	 *         otherwise
+	 */
+	private boolean reachedThreshold(final int distance) {
+		return Math.abs(distance) >= threshold;
+	}
+
+	/**
 	 * Creates a new helper class, which may be used to recognize drag gestures,
 	 * which uses a specific threshold.
 	 * 
@@ -120,12 +138,6 @@ public class DragHelper {
 				distance = roundedValue - thresholdReachedPosition;
 			}
 		}
-	}
-
-	private boolean reachedThreshold;
-
-	private boolean reachedThreshold(final int distance) {
-		return Math.abs(distance) >= threshold;
 	}
 
 	public final int getDistance() {
