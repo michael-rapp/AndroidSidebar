@@ -16,7 +16,7 @@ public class ContentView extends FrameLayout {
 	private float overlayTransparency;
 
 	private void inflateContentView(final Inflater inflater) {
-		contentView = inflater.inflate(getContext(), null);
+		contentView = inflater.inflate(getContext(), null, false);
 		addView(contentView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
 	}

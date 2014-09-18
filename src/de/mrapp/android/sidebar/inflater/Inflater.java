@@ -41,9 +41,12 @@ public interface Inflater {
 	 *            The parent, that this view will eventually be attached to, as
 	 *            an instance of the class {@link ViewGroup}. The parent may not
 	 *            be null
+	 * @param attachToRoot
+	 *            True, if the inflated view should also be attached to the
+	 *            parent, false otherwise
 	 * @return The view, which has been inflated, as an instance of the class
 	 *         {@link View} The view may not be null
 	 */
-	View inflate(Context context, ViewGroup parent);
+	View inflate(Context context, ViewGroup parent, boolean attachToRoot);
 
 }

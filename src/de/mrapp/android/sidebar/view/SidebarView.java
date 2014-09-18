@@ -48,7 +48,7 @@ public class SidebarView extends LinearLayout {
 	}
 
 	private void inflateSidebarView(Inflater inflater) {
-		sidebarView = inflater.inflate(getContext(), null);
+		sidebarView = inflater.inflate(getContext(), null, false);
 		setBackgroundDrawable(sidebarBackground);
 		addSidebarView();
 	}

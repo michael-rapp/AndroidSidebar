@@ -51,7 +51,8 @@ public class InstanceInflater implements Inflater {
 	}
 
 	@Override
-	public final View inflate(final Context context, final ViewGroup parent) {
+	public final View inflate(final Context context, final ViewGroup parent,
+			final boolean attachToRoot) {
 		return view;
 	}
 
