@@ -1,21 +1,79 @@
+/*
+ * AndroidSidebar Copyright 2014 Michael Rapp
+ *
+ * This program is free software: you can redistribute it and/or modify 
+ * it under the terms of the GNU Lesser General Public License as published 
+ * by the Free Software Foundation, either version 3 of the License, or 
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>. 
+ */
 package de.mrapp.android.sidebar.util;
 
+/**
+ * A helper class, which may be used to recognize drag gestures.
+ * 
+ * @author Michael Rapp
+ *
+ * @since 1.0.0
+ */
 public class DragHelper {
 
+	/**
+	 * The distance in pixels, the gesture must last until it is recognized.
+	 */
 	private final int threshold;
 
+	/**
+	 * The distance, which has been passed while dragging, in pixels.
+	 */
 	private int distance;
 
+	/**
+	 * The position, where the threshold was reached or -1, if the threshold was
+	 * not reached yet.
+	 */
 	private int thresholdReachedPosition;
 
+	/**
+	 * The position, where the gesture has been started at or -1, if no gesture
+	 * has been started yet.
+	 */
 	private int dragStartPosition;
 
+	/**
+	 * The time, when the gesture has been started or -1, if no gesture has been
+	 * started yet.
+	 */
 	private long dragStartTime;
 
-	private boolean recycled;
+	/**
+	 * True, if the method <code>reset():void</code> has been called, false
+	 * otherwise.
+	 */
+	private boolean resetted;
 
+	/**
+	 * True, if a gesture is currently recognized, false otherwise.
+	 */
 	private boolean dragging;
 
+	/**
+	 * Creates a new helper class, which may be used to recognize drag gestures,
+	 * which uses a specific threshold.
+	 * 
+	 * @param threshold
+	 *            The distance in pixels, the gesture must last until it is
+	 *            recognized, as an {@link Integer} value. The value must be at
+	 *            least 0
+	 */
 	public DragHelper(final int threshold) {
 		this.threshold = threshold;
 		reset();
@@ -23,7 +81,7 @@ public class DragHelper {
 	}
 
 	public void reset() {
-		recycled = true;
+		resetted = true;
 		distance = 0;
 		thresholdReachedPosition = -1;
 		dragStartPosition = -1;
@@ -42,8 +100,8 @@ public class DragHelper {
 	public final void update(float value) {
 		int roundedValue = Math.round(value);
 
-		if (recycled) {
-			recycled = false;
+		if (resetted) {
+			resetted = false;
 			thresholdReachedPosition = roundedValue;
 			dragStartPosition = roundedValue;
 			dragStartTime = System.currentTimeMillis();
@@ -82,5 +140,5 @@ public class DragHelper {
 		long interval = System.currentTimeMillis() - dragStartTime;
 		return (float) Math.abs(getDistance()) / (float) interval;
 	}
-	
+
 }
