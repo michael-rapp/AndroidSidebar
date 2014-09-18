@@ -1,3 +1,20 @@
+/*
+ * AndroidSidebar Copyright 2014 Michael Rapp
+ *
+ * This program is free software: you can redistribute it and/or modify 
+ * it under the terms of the GNU Lesser General Public License as published 
+ * by the Free Software Foundation, either version 3 of the License, or 
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>. 
+ */
 package de.mrapp.android.sidebar;
 
 import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
@@ -31,48 +48,144 @@ import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
 
+/**
+ * A custom view, which allows to show a sidebar, which overlaps the view's main
+ * content at a specific edge. The sidebar can be shown and hidden in an
+ * animated manner by either calling an appropriate method or via dragging on
+ * the device's touch screen. Furthermore there are a lot of attributes, which
+ * allow to specify the appearance and behavior of the sidebar.
+ * 
+ * @author Michael Rapp
+ * 
+ * @since 1.0.0
+ */
 public class Sidebar extends ViewGroup {
 
+	/**
+	 * The default location of the sidebar.
+	 */
 	protected static final Location DEFAULT_LOCATION = Location.RIGHT;
 
+	/**
+	 * The default speed of the animation, which is used to show or hide the
+	 * sidebar, in dp per millisecond.
+	 */
 	protected static final float DEFAULT_ANIMATION_SPEED = 1.5f;
 
+	/**
+	 * The default width of the sidebar in relation to the width of its parent
+	 * view.
+	 */
 	protected static final float DEFAULT_SIDEBAR_WIDTH = 0.75f;
 
+	/**
+	 * The default maximum width of the sidebar in dp or -1, if the sidebar's
+	 * width should not be restricted.
+	 */
 	protected static final int DEFAULT_MAX_SIDEBAR_WIDTH = -1;
 
+	/**
+	 * The amount of space in relation to its parent view, the sidebar is
+	 * visible, even if it is currently hidden.
+	 */
 	protected static final float DEFAULT_SIDEBAR_OFFSET = 0.125f;
 
+	/**
+	 * The maximum offset of the sidebar in dp or -1, if the sidebar's offset
+	 * should not be restricted.
+	 */
 	protected static final int DEFAULT_MAX_SIDEBAR_OFFSET = -1;
 
+	/**
+	 * The default ratio between the distance the sidebar is moved, when it
+	 * becomes shown or hidden, in relation to distance the content is moved. If
+	 * set to 1.0, the content will be moved exactly as far as the sidebar, if
+	 * set to 0.0, the content will not moved at all and each value in between
+	 * causes the content to be moved by a fraction of the distance, the sidebar
+	 * is moved.
+	 */
 	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
+	/**
+	 * The default drag mode, which specifies the region, where drag gestures
+	 * are recognized, when the sidebar is currently hidden.
+	 */
 	protected static final DragMode DEFAULT_DRAG_MODE_WHEN_HIDDEN = DragMode.SIDEBAR_ONLY;
 
+	/**
+	 * The default drag mode, which specifies the region, where drag gestures
+	 * are recognized, when the sidebar is currently shown.
+	 */
 	protected static final DragMode DEFAULT_DRAG_MODE_WHEN_SHOWN = DragMode.BOTH;
 
+	/**
+	 * The default distance, the sidebar has to be dragged until its state
+	 * changes, in relation to the whole distance.
+	 */
 	protected static final float DEFAULT_DRAG_THRESHOLD = 0.25f;
 
+	/**
+	 * The default sensitivity, which specifies the distance after which
+	 * dragging has an effect on the sidebar, in relation to an internal value
+	 * range.
+	 */
 	protected static final float DEFAULT_DRAG_SENSITIVITY = 0.25f;
 
+	/**
+	 * True, if the sidebar should be hidden, when the device's back button is
+	 * clicked, false otherwise.
+	 */
 	protected static final boolean DEFAULT_HIDE_ON_BACK_BUTTON = true;
 
+	/**
+	 * True, if the sidebar should be hidden, when the main content is clicked,
+	 * false otherwise.
+	 */
 	protected static final boolean DEFAULT_HIDE_ON_CONTENT_CLICK = true;
 
+	/**
+	 * True, if the sidebar should be shown, when it is clicked by the user,
+	 * false otherwise.
+	 */
 	protected static final boolean DEFAULT_SHOW_ON_SIDEBAR_CLICKED = true;
 
+	/**
+	 * The default color of the overlay, which is shown in front of the main
+	 * content, when the sidebar is shown.
+	 */
 	protected static final int DEFAULT_CONTENT_OVERLAY_COLOR = Color.BLACK;
 
+	/**
+	 * The default transparency of the overlay, which is shown in front of the
+	 * main content, when the sidebar is shown.
+	 */
 	protected static final float DEFAULT_CONTENT_OVERLAY_TRANSPARENCY = 0.5f;
 
+	/**
+	 * The default width of the sidebar's shadow in dp.
+	 */
 	protected static final int DEFAULT_SHADOW_WIDTH = 16;
 
+	/**
+	 * The default color of the sidebar's shadow.
+	 */
 	protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
 
+	/**
+	 * True, if the sidebar should be shown by default, false otherwise.
+	 */
 	protected static final boolean SHOW_SIDEBAR_BY_DEFAULT = false;
 
+	/**
+	 * The minimum value of the internal value range, which specifies after
+	 * which distance dragging has an effect on the sidebar.
+	 */
 	private static final int MIN_DRAG_SENSITIVITY = 10;
 
+	/**
+	 * The maximum value of the internal value range, which specificies after
+	 * which distance dragging has an effect on the sidebar.
+	 */
 	private static final int MAX_DRAG_SENSITIVITY = 260;
 
 	private Location location;
