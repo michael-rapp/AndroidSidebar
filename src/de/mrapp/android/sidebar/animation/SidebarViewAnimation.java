@@ -17,6 +17,7 @@
  */
 package de.mrapp.android.sidebar.animation;
 
+import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
 import android.view.animation.TranslateAnimation;
 
 /**
@@ -49,8 +50,8 @@ public class SidebarViewAnimation extends TranslateAnimation {
 	public SidebarViewAnimation(final float distance, final long duration,
 			final AnimationListener listener) {
 		super(0, distance, 0, 0);
+		ensureNotNull(listener, "The animation listener may not be null");
 		setDuration(duration);
 		setAnimationListener(listener);
 	}
-
 }
