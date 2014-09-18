@@ -32,13 +32,14 @@ public class DragHelper {
 	private final int threshold;
 
 	/**
-	 * The distance, which has been passed while dragging, in pixels.
+	 * The distance, which has been passed while dragging, in pixels or 0, if
+	 * the threshold has not been reached yet.
 	 */
 	private int distance;
 
 	/**
-	 * The position, where the threshold was reached or -1, if the threshold was
-	 * not reached yet.
+	 * The position, where the threshold was reached or -1, if the threshold has
+	 * not been reached yet.
 	 */
 	private int thresholdReachedPosition;
 
@@ -121,24 +122,32 @@ public class DragHelper {
 		return reseted;
 	}
 
-	public final void update(final float value) {
-		int roundedValue = Math.round(value);
+	/**
+	 * Updates the instance by adding a new position. This will cause all
+	 * properties to be re-calculated, depending on the new position.
+	 * 
+	 * @param position
+	 *            The position, which should be added, as a {@link Float} value
+	 */
+	public final void update(final float position) {
+		int roundedPosition = Math.round(position);
 
 		if (reseted) {
 			reseted = false;
 			distance = 0;
 			thresholdReachedPosition = -1;
-			dragStartTime = System.currentTimeMillis();
-			dragStartPosition = roundedValue;
+			dragStartTime = -1;
+			dragStartPosition = roundedPosition;
 			reachedThreshold = false;
 		} else {
 			if (!reachedThreshold) {
-				if (reachedThreshold(roundedValue - dragStartPosition)) {
+				if (reachedThreshold(roundedPosition - dragStartPosition)) {
+					dragStartTime = System.currentTimeMillis();
 					reachedThreshold = true;
-					thresholdReachedPosition = roundedValue;
+					thresholdReachedPosition = roundedPosition;
 				}
 			} else {
-				distance = roundedValue - thresholdReachedPosition;
+				distance = roundedPosition - thresholdReachedPosition;
 			}
 		}
 	}
@@ -146,23 +155,46 @@ public class DragHelper {
 	/**
 	 * Returns, whether the threshold has already been reached, or not.
 	 * 
-	 * @return True, if the threshold has been reached, false otherwise
+	 * @return True, if the threshold has been already reached, false otherwise
 	 */
 	public final boolean hasThresholdBeenReached() {
 		return reachedThreshold;
 	}
 
+	/**
+	 * Returns the distance, which has been passed while dragging, in pixels.
+	 * 
+	 * @return The distance, which has been passed while dragging, as an
+	 *         {@link Integer} value or 0, if the threshold has not been reached
+	 *         yet
+	 */
 	public final int getDistance() {
 		return distance;
 	}
 
+	/**
+	 * Returns the position, where the gesture has been started at.
+	 * 
+	 * @return The position, where the gesture has been started at, as an
+	 *         {@link Integer} value or -1, if no gesture has been started yet
+	 */
 	public final int getStartPosition() {
 		return dragStartPosition;
 	}
 
+	/**
+	 * Returns the speed of the drag gesture in pixels per millisecond.
+	 * 
+	 * @return The speed of the drag gesture as a {@link Float} value or -1, if
+	 *         the threshold has not been reached yet
+	 */
 	public final float getDragSpeed() {
-		long interval = System.currentTimeMillis() - dragStartTime;
-		return (float) Math.abs(getDistance()) / (float) interval;
+		if (hasThresholdBeenReached()) {
+			long interval = System.currentTimeMillis() - dragStartTime;
+			return (float) Math.abs(getDistance()) / (float) interval;
+		} else {
+			return -1;
+		}
 	}
 
 }
