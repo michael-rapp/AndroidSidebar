@@ -711,7 +711,7 @@ public class Sidebar extends ViewGroup {
 		this.sidebarBackground = background;
 
 		if (sidebarView != null) {
-			sidebarView.setBackgroundDrawable(sidebarBackground);
+			sidebarView.setSidebarBackground(sidebarBackground);
 		}
 	}
 
@@ -724,7 +724,7 @@ public class Sidebar extends ViewGroup {
 		}
 
 		if (sidebarView != null) {
-			sidebarView.setBackgroundDrawable(sidebarBackground);
+			sidebarView.setSidebarBackground(sidebarBackground);
 		}
 	}
 
