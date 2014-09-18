@@ -17,6 +17,7 @@
  */
 package de.mrapp.android.sidebar.view;
 
+import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public class ContentView extends FrameLayout {
 	public ContentView(final Context context, final Inflater inflater,
 			final int overlayColor) {
 		super(context, null);
+		ensureNotNull(inflater, "The inflater may not be null");
 		inflateContentView(inflater);
 		inflateOverlayView();
 		setOverlayColor(overlayColor);
