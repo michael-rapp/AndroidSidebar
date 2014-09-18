@@ -55,15 +55,10 @@ public class DragHelper {
 	private long dragStartTime;
 
 	/**
-	 * True, if the method <code>reset():void</code> has been called, false
-	 * otherwise.
+	 * True, if the method <code>reset():void</code> has been called since the
+	 * last value has been added, false otherwise.
 	 */
-	private boolean resetted;
-
-	/**
-	 * True, if a gesture is currently recognized, false otherwise.
-	 */
-	private boolean dragging;
+	private boolean reseted;
 
 	/**
 	 * True, if the threshold has already been reached, false otherwise.
@@ -99,44 +94,62 @@ public class DragHelper {
 		this.dragStartPosition = -1;
 		this.dragStartTime = -1;
 		this.reachedThreshold = false;
-		this.dragging = false;
 		reset();
 	}
 
-	public void reset() {
-		resetted = true;
-	}
-	
-	public boolean isResetted() {
-		return resetted;
+	/**
+	 * Marks the instance to be reseted. This will cause all properties to be
+	 * reseted to default values, when a value is added by calling the method
+	 * <code>update(float):void</code> the next time. Therefore this method may
+	 * be used to start recognizing a new drag gesture, whenever a value is
+	 * added the next time, while the values of the previous recognition can be
+	 * still retrieved until recognizing the new gesture begins.
+	 */
+	public final void reset() {
+		reseted = true;
 	}
 
-	public final boolean isDragging() {
-		return dragging;
+	/**
+	 * Returns, whether the instance has been marked to be reseted, since the
+	 * method <code>update(float):void</code> has been called the last time. See
+	 * method <code>reset():void</code> for further information.
+	 * 
+	 * @return True, if the instance has been marked to be reseted, false
+	 *         otherwise
+	 */
+	public final boolean isResetted() {
+		return reseted;
 	}
 
-	public final void update(float value) {
+	public final void update(final float value) {
 		int roundedValue = Math.round(value);
 
-		if (resetted) {
-			resetted = false;
+		if (reseted) {
+			reseted = false;
 			distance = 0;
 			thresholdReachedPosition = -1;
 			dragStartTime = System.currentTimeMillis();
 			dragStartPosition = roundedValue;
 			reachedThreshold = false;
-			dragging = false;
 		} else {
 			if (!reachedThreshold) {
 				if (reachedThreshold(roundedValue - dragStartPosition)) {
 					reachedThreshold = true;
 					thresholdReachedPosition = roundedValue;
-					dragging = true;
 				}
 			} else {
 				distance = roundedValue - thresholdReachedPosition;
 			}
 		}
+	}
+
+	/**
+	 * Returns, whether the threshold has already been reached, or not.
+	 * 
+	 * @return True, if the threshold has been reached, false otherwise
+	 */
+	public final boolean hasThresholdBeenReached() {
+		return reachedThreshold;
 	}
 
 	public final int getDistance() {

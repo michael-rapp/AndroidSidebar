@@ -432,7 +432,7 @@ public class Sidebar extends ViewGroup {
 				&& sidebarView.getAnimation() == null) {
 			dragHelper.update(x);
 
-			if (dragHelper.isDragging()
+			if (dragHelper.hasThresholdBeenReached()
 					&& checkDragMode(dragHelper.getStartPosition())) {
 				Pair<Integer, Integer> sidebarPos = calculateSidebarDragPosition();
 				Pair<Integer, Integer> contentPos = calculateContentDragPosition(sidebarPos);
@@ -1013,7 +1013,7 @@ public class Sidebar extends ViewGroup {
 			break;
 		case MotionEvent.ACTION_UP:
 
-			if (dragHelper.isDragging()) {
+			if (dragHelper.hasThresholdBeenReached()) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
@@ -1039,7 +1039,7 @@ public class Sidebar extends ViewGroup {
 			return true;
 		case MotionEvent.ACTION_UP:
 
-			if (dragHelper.isDragging()) {
+			if (dragHelper.hasThresholdBeenReached()) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
