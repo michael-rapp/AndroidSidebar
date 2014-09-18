@@ -17,6 +17,8 @@
  */
 package de.mrapp.android.sidebar.util;
 
+import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
+
 /**
  * A helper class, which may be used to recognize drag gestures.
  * 
@@ -89,6 +91,7 @@ public class DragHelper {
 	 *            least 0
 	 */
 	public DragHelper(final int threshold) {
+		ensureAtLeast(threshold, 0, "The threshold must be at least 0");
 		this.threshold = threshold;
 		this.distance = 0;
 		this.thresholdReachedPosition = -1;
