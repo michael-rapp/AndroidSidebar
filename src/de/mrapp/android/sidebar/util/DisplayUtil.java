@@ -32,7 +32,7 @@ public final class DisplayUtil {
 	/**
 	 * The ratio between pixel and dp measurement.
 	 */
-	private static final float PIXEL_DP_RATIO = 160.0f;
+	protected static final float PIXEL_DP_RATIO = 160.0f;
 
 	/**
 	 * Creates a new utility class, which offers methods for calculations,
