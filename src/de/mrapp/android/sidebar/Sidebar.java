@@ -489,7 +489,7 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void handleRelease() {
-		dragHelper.stopDragging();
+		dragHelper.reset();
 
 		float threshold = calculateDragThreshold();
 		float speed = Math.max(dragHelper.getDragSpeed(), animationSpeed);
@@ -576,6 +576,8 @@ public class Sidebar extends ViewGroup {
 	}
 
 	private void handleClick(float x) {
+		dragHelper.reset();
+
 		if (isSidebarClicked(x)) {
 			if (showOnSidebarClick) {
 				showSidebar();
@@ -1017,7 +1019,6 @@ public class Sidebar extends ViewGroup {
 				handleClick(event.getX());
 			}
 
-			dragHelper.reset();
 			break;
 		}
 
@@ -1044,7 +1045,6 @@ public class Sidebar extends ViewGroup {
 				handleClick(event.getX());
 			}
 
-			dragHelper.reset();
 			performClick();
 			return true;
 		}

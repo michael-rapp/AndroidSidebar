@@ -94,21 +94,21 @@ public class DragHelper {
 	 */
 	public DragHelper(final int threshold) {
 		this.threshold = threshold;
+		this.distance = 0;
+		this.thresholdReachedPosition = -1;
+		this.dragStartPosition = -1;
+		this.dragStartTime = -1;
+		this.reachedThreshold = false;
+		this.dragging = false;
 		reset();
-		stopDragging();
 	}
 
 	public void reset() {
 		resetted = true;
-		distance = 0;
-		thresholdReachedPosition = -1;
-		dragStartPosition = -1;
-		dragStartTime = -1;
-		reachedThreshold = false;
 	}
-
-	public void stopDragging() {
-		dragging = false;
+	
+	public boolean isResetted() {
+		return resetted;
 	}
 
 	public final boolean isDragging() {
@@ -120,16 +120,15 @@ public class DragHelper {
 
 		if (resetted) {
 			resetted = false;
-			thresholdReachedPosition = roundedValue;
-			dragStartPosition = roundedValue;
-			dragStartTime = System.currentTimeMillis();
 			distance = 0;
+			thresholdReachedPosition = -1;
+			dragStartTime = System.currentTimeMillis();
+			dragStartPosition = roundedValue;
 			reachedThreshold = false;
+			dragging = false;
 		} else {
 			if (!reachedThreshold) {
-				int tmpDistance = roundedValue - thresholdReachedPosition;
-
-				if (reachedThreshold(tmpDistance)) {
+				if (reachedThreshold(roundedValue - dragStartPosition)) {
 					reachedThreshold = true;
 					thresholdReachedPosition = roundedValue;
 					dragging = true;
