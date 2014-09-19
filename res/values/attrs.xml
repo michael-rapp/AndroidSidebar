@@ -33,6 +33,10 @@ License along with this program.  If not, see
         <attr name="maxSidebarWidth" format="dimension" />
         <attr name="sidebarOffset" format="fraction" />
         <attr name="maxSidebarOffset" format="dimension" />
+        <attr name="contentMode" format="enum">
+            <enum name="scroll" value="0" />
+            <enum name="resize" value="1" />
+        </attr>
         <attr name="scrollRatio" format="fraction" />
         <attr name="dragModeWhenHidden" format="enum">
             <enum name="both" value="0" />

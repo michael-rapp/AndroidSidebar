@@ -97,6 +97,12 @@ public class Sidebar extends ViewGroup {
 	protected static final int DEFAULT_MAX_SIDEBAR_OFFSET = -1;
 
 	/**
+	 * The default content mode, which specifies how the content view is handled
+	 * when the sidebar becomes shown or hidden.
+	 */
+	protected static final ContentMode DEFAULT_CONTENT_MODE = ContentMode.SCROLL;
+
+	/**
 	 * The default ratio between the distance the sidebar is moved, when it
 	 * becomes shown or hidden, in relation to distance the content is moved. If
 	 * set to 1.0, the content will be moved exactly as far as the sidebar, if
@@ -200,6 +206,8 @@ public class Sidebar extends ViewGroup {
 
 	private int maxSidebarOffset;
 
+	private ContentMode contentMode;
+
 	private float scrollRatio;
 
 	private float dragThreshold;
@@ -279,6 +287,7 @@ public class Sidebar extends ViewGroup {
 			obtainMaxSidebarWidth(typedArray);
 			obtainSidebarOffset(typedArray);
 			obtainMaxSidebarOffset(typedArray);
+			obtainContentMode(typedArray);
 			obtainScrollRatio(typedArray);
 			obtainDragModeWhenHidden(typedArray);
 			obtainDragModeWhenShown(typedArray);
@@ -369,6 +378,12 @@ public class Sidebar extends ViewGroup {
 		setMaxSidebarOffsetInPixels(typedArray.getDimensionPixelSize(
 				R.styleable.Sidebar_maxSidebarOffset,
 				DEFAULT_MAX_SIDEBAR_OFFSET));
+	}
+
+	private void obtainContentMode(TypedArray typedArray) {
+		setContentMode(ContentMode.fromValue(typedArray.getInt(
+				R.styleable.Sidebar_contentMode,
+				DEFAULT_CONTENT_MODE.getValue())));
 	}
 
 	private void obtainScrollRatio(TypedArray typedArray) {
@@ -946,6 +961,15 @@ public class Sidebar extends ViewGroup {
 			currentOffset = Math.min(currentOffset, maxSidebarOffset);
 		}
 
+		requestLayout();
+	}
+
+	public final ContentMode getContentMode() {
+		return contentMode;
+	}
+
+	public final void setContentMode(final ContentMode contentMode) {
+		this.contentMode = contentMode;
 		requestLayout();
 	}
 
