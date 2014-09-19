@@ -1303,6 +1303,7 @@ public class Sidebar extends ViewGroup {
 		savedState.setMaxSidebarWidth(getMaxSidebarWidth());
 		savedState.setSidebarOffset(getSidebarOffset());
 		savedState.setMaxSidebarOffset(getMaxSidebarOffset());
+		savedState.setContentMode(getContentMode());
 		savedState.setScrollRatio(getScrollRatio());
 		savedState.setDragThreshold(getDragThreshold());
 		savedState.setDragSensitivity(getDragSensitivity());
@@ -1330,6 +1331,7 @@ public class Sidebar extends ViewGroup {
 			setMaxSidebarWidth(savedState.getMaxSidebarWidth());
 			setSidebarOffset(savedState.getSidebarOffset());
 			setMaxSidebarOffset(savedState.getMaxSidebarOffset());
+			setContentMode(savedState.getContentMode());
 			setScrollRatio(savedState.getScrollRatio());
 			setDragThreshold(savedState.getDragThreshold());
 			setDragSensitivity(savedState.getDragSensitivity());

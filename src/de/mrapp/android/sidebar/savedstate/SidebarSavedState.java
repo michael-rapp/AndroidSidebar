@@ -20,6 +20,7 @@ package de.mrapp.android.sidebar.savedstate;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference.BaseSavedState;
+import de.mrapp.android.sidebar.ContentMode;
 import de.mrapp.android.sidebar.DragMode;
 import de.mrapp.android.sidebar.Location;
 
@@ -62,6 +63,11 @@ public class SidebarSavedState extends BaseSavedState {
 	 * The saved value of the attribute "maxSidebarOffset".
 	 */
 	private int maxSidebarOffset;
+
+	/**
+	 * The saved value of the attribute "contentMode".
+	 */
+	private ContentMode contentMode;
 
 	/**
 	 * The saved value of the attribute "scrollRatio".
@@ -158,6 +164,7 @@ public class SidebarSavedState extends BaseSavedState {
 		maxSidebarWidth = source.readInt();
 		sidebarOffset = source.readFloat();
 		maxSidebarOffset = source.readInt();
+		contentMode = ContentMode.fromValue(source.readInt());
 		scrollRatio = source.readFloat();
 		dragThreshold = source.readFloat();
 		dragSensitivity = source.readFloat();
@@ -297,6 +304,27 @@ public class SidebarSavedState extends BaseSavedState {
 	 */
 	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
 		this.maxSidebarOffset = maxSidebarOffset;
+	}
+
+	/**
+	 * Returns the saved value of the attribute "contentMode".
+	 * 
+	 * @return The saved value of the attribute "contentMode" as a value of the
+	 *         enum {@link ContentMode}
+	 */
+	public final ContentMode getContentMode() {
+		return contentMode;
+	}
+
+	/**
+	 * Sets the saved value of the attribute "contentMode".
+	 * 
+	 * @param contentMode
+	 *            The saved value of the attribute "contentMode", which should
+	 *            be set, as a value of the enum {@link ContentMode}
+	 */
+	public final void setContentMode(final ContentMode contentMode) {
+		this.contentMode = contentMode;
 	}
 
 	/**
@@ -582,6 +610,7 @@ public class SidebarSavedState extends BaseSavedState {
 		destination.writeInt(maxSidebarWidth);
 		destination.writeFloat(sidebarOffset);
 		destination.writeInt(maxSidebarOffset);
+		destination.writeInt(contentMode.getValue());
 		destination.writeFloat(scrollRatio);
 		destination.writeFloat(dragThreshold);
 		destination.writeFloat(dragSensitivity);
