@@ -17,6 +17,7 @@
  */
 package de.mrapp.android.sidebar.animation;
 
+import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
@@ -24,8 +25,8 @@ import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.view.ContentView;
 
 /**
- * An animation, which allows to move a sidebar's content view, when the sidebar
- * should be shown or hidden.
+ * An animation, which allows to resize a sidebar's content view, when the
+ * sidebar should be shown or hidden.
  * 
  * @author Michael Rapp
  *
@@ -34,7 +35,7 @@ import de.mrapp.android.sidebar.view.ContentView;
 public class ContentViewResizeAnimation extends AnimationSet {
 
 	/**
-	 * Creates a new animation, which allows to move a sidebar's content view,
+	 * Creates a new animation, which allows to resize a sidebar's content view,
 	 * when the sidebar should be shown or hidden.
 	 * 
 	 * @param contentView
@@ -48,12 +49,10 @@ public class ContentViewResizeAnimation extends AnimationSet {
 	 *            {@link Float} value. If the value is negative, the view will
 	 *            be moved to the left, if it is positive, the view will be
 	 *            moved to the right
-	 * @param scrollRatio
-	 *            The ratio between the distance, the sidebar view and the
-	 *            content view are moved by, as a {@link Float} value. The ratio
-	 *            may be at least 0 and at maximum 1. The distance is multiplied
-	 *            by the ratio to calculate the distance, the content view
-	 *            should be moved by
+	 * @param location
+	 *            The location of the sidebar as a value of the enum
+	 *            {@link Location}. The location may either be <code>LEFT</code>
+	 *            or <code>RIGHT</code>
 	 * @param overlayTransparency
 	 *            The transparency of the overlay, which should be applied, when
 	 *            the sidebar is shown, as a {@link Float} value. If set to 0.0,
@@ -67,6 +66,7 @@ public class ContentViewResizeAnimation extends AnimationSet {
 			final long duration, final float distance, final Location location,
 			final float overlayTransparency, final boolean show) {
 		super(true);
+		ensureNotNull(location, "The location may not be null");
 		setDuration(duration);
 
 		Animation overlayAnimation = new ContentOverlayAnimation(contentView,
@@ -74,14 +74,16 @@ public class ContentViewResizeAnimation extends AnimationSet {
 		addAnimation(overlayAnimation);
 
 		if (location == Location.LEFT) {
-			Animation resizeAnimation = new ResizeAnimation(contentView, -distance);
+			Animation resizeAnimation = new ResizeAnimation(contentView,
+					-distance);
 			addAnimation(resizeAnimation);
-			
+
 			Animation translateAnimation = new TranslateAnimation(0, distance,
 					0, 0);
 			addAnimation(translateAnimation);
 		} else {
-			Animation resizeAnimation = new ResizeAnimation(contentView, distance);
+			Animation resizeAnimation = new ResizeAnimation(contentView,
+					distance);
 			addAnimation(resizeAnimation);
 		}
 	}

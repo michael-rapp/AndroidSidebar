@@ -17,13 +17,12 @@
  */
 package de.mrapp.android.sidebar.animation;
 
+import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
+import static de.mrapp.android.sidebar.util.Condition.ensureAtMaximum;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
-import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.view.ContentView;
-import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
-import static de.mrapp.android.sidebar.util.Condition.ensureAtMaximum;
 
 /**
  * An animation, which allows to move a sidebar's content view, when the sidebar
@@ -65,20 +64,6 @@ public class ContentViewScrollAnimation extends AnimationSet {
 	 *            True, if the sidebar should be shown at the end of the
 	 *            animation, false otherwise
 	 */
-	public ContentViewScrollAnimation(final ContentView contentView,
-			final long duration, final float distance, final Location location,
-			final float overlayTransparency, final boolean show) {
-		super(true);
-		setDuration(duration);
-
-		Animation overlayAnimation = new ContentOverlayAnimation(contentView,
-				overlayTransparency, show);
-		addAnimation(overlayAnimation);
-
-		Animation resizeAnimation = new ResizeAnimation(contentView, distance);
-		addAnimation(resizeAnimation);
-	}
-
 	public ContentViewScrollAnimation(final ContentView contentView,
 			final long duration, final float distance, final float scrollRatio,
 			final float overlayTransparency, final boolean show) {
