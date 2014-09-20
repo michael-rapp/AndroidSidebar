@@ -280,7 +280,7 @@ public class Sidebar extends ViewGroup {
 
 		mContentWidth = width - mOffset;
 
-		sidebarView.getLayoutParams().width = mSidebarWidth;
+		sidebarView.getLayoutParams().width = mSidebarWidth + shadowWidth;
 		contentView.getLayoutParams().width = mContentWidth;
 	}
 
