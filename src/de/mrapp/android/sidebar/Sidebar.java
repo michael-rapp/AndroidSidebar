@@ -29,7 +29,6 @@ import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Pair;
@@ -668,7 +667,7 @@ public class Sidebar extends ViewGroup {
 		int rightPos;
 
 		if (getLocation() == Location.LEFT) {
-			leftPos = sidebarPosition.second - shadowWidth - shadowWidth;
+			leftPos = sidebarPosition.second - shadowWidth;
 			rightPos = getWidth();
 		} else {
 			leftPos = 0;
