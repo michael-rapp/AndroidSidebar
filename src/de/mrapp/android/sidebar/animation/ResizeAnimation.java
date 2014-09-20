@@ -42,9 +42,14 @@ public class ResizeAnimation extends Animation {
 	private int widthOffset;
 
 	/**
-	 * The views's original width.
+	 * The view's original width.
 	 */
 	private int originalWidth;
+
+	/**
+	 * The width, the view should be resized to.
+	 */
+	private int targetWidth;
 
 	/**
 	 * Creates a new animation, which allows to resize a view horizontally.
@@ -63,6 +68,7 @@ public class ResizeAnimation extends Animation {
 		this.view = view;
 		this.widthOffset = Math.round(widthOffset);
 		this.originalWidth = view.getWidth();
+		this.targetWidth = originalWidth + this.widthOffset;
 	}
 
 	@Override
@@ -72,6 +78,9 @@ public class ResizeAnimation extends Animation {
 		int newWidth = Math.round(originalWidth + widthOffset
 				* interpolatedTime);
 		view.getLayoutParams().width = newWidth;
+		view.layout(view.getLeft(), view.getTop(),
+				view.getLeft() + Math.max(targetWidth, originalWidth),
+				view.getBottom());
 		view.requestLayout();
 	}
 
