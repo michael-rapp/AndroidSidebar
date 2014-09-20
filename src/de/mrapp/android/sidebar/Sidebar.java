@@ -260,29 +260,6 @@ public class Sidebar extends ViewGroup {
 		obtainStyledAttributes(context, attributeSet);
 	}
 
-	@Override
-	protected final void onSizeChanged(final int width, final int height,
-			final int oldWidth, final int oldHeigth) {
-		super.onSizeChanged(width, height, oldWidth, oldHeigth);
-
-		mSidebarWidth = Math.round(width * sidebarWidth);
-
-		if (maxSidebarWidth != -1) {
-			mSidebarWidth = Math.min(maxSidebarWidth, mSidebarWidth);
-		}
-
-		mOffset = Math.round(width * sidebarOffset);
-
-		if (maxSidebarOffset != -1) {
-			mOffset = Math.min(maxSidebarOffset, mOffset);
-		}
-
-		mContentWidth = width - mOffset;
-
-		sidebarView.getLayoutParams().width = mSidebarWidth + shadowWidth;
-		contentView.getLayoutParams().width = mContentWidth;
-	}
-
 	/**
 	 * Obtains all attributes from a specific attribute set.
 	 * 
@@ -818,6 +795,128 @@ public class Sidebar extends ViewGroup {
 		return getContentOverlayTransparency() * (distance / totalDistance);
 	}
 
+	private Pair<Integer, Integer> calculateSidebarPosition() {
+		return calculateSidebarPosition(isSidebarShown());
+	}
+
+	private Pair<Integer, Integer> calculateSidebarPosition(final boolean shown) {
+		int leftPos = 0;
+
+		if (getLocation() == Location.LEFT) {
+			if (shown) {
+				leftPos = 0;
+			} else {
+				leftPos = mOffset - mSidebarWidth;
+			}
+		} else {
+			if (shown) {
+				leftPos = getWidth() - mSidebarWidth - shadowWidth;
+			} else {
+				leftPos = getWidth() - mOffset - shadowWidth;
+			}
+		}
+
+		return new Pair<Integer, Integer>(leftPos, leftPos + mSidebarWidth
+				+ shadowWidth);
+	}
+
+	private Pair<Integer, Integer> calculateContentPosition() {
+		Pair<Integer, Integer> pos;
+
+		if (getContentMode() == ContentMode.SCROLL) {
+			pos = calculateContentPositionWhenScrolling();
+		} else {
+			pos = calculateContentPositionWhenResizing();
+		}
+
+		return pos;
+	}
+
+	private Pair<Integer, Integer> calculateContentPositionWhenScrolling() {
+		int leftPos = 0;
+
+		if (getLocation() == Location.LEFT) {
+			if (isSidebarShown()) {
+				leftPos = mOffset
+						+ Math.round((mSidebarWidth - mOffset) * scrollRatio);
+			} else {
+				leftPos = mOffset;
+			}
+		} else {
+			if (isSidebarShown()) {
+				leftPos = Math.round((-mSidebarWidth + mOffset) * scrollRatio);
+			} else {
+				leftPos = 0;
+			}
+		}
+
+		return new Pair<Integer, Integer>(leftPos, leftPos + mContentWidth);
+	}
+
+	private Pair<Integer, Integer> calculateContentPositionWhenResizing() {
+		int leftPos;
+		int rightPos;
+
+		if (getLocation() == Location.LEFT) {
+			rightPos = getWidth();
+
+			if (isSidebarShown()) {
+				leftPos = mSidebarWidth;
+			} else {
+				leftPos = mOffset;
+			}
+		} else {
+			leftPos = 0;
+
+			if (isSidebarShown()) {
+				rightPos = getWidth() - mSidebarWidth;
+			} else {
+				rightPos = getWidth() - mOffset;
+			}
+		}
+
+		return new Pair<Integer, Integer>(leftPos, rightPos);
+	}
+
+	private void setShadowWidthInPixels(final int shadowWidth) {
+		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
+		this.shadowWidth = shadowWidth;
+
+		if (sidebarView != null) {
+			sidebarView.setShadowWidth(shadowWidth);
+		}
+	}
+
+	private final void setMaxSidebarWidthInPixels(final int maxSidebarWidth) {
+		ensureAtLeast(maxSidebarWidth, -1,
+				"The max sidebar width must be at least -1");
+		this.maxSidebarWidth = maxSidebarWidth;
+
+		if (maxSidebarWidth != -1) {
+			mSidebarWidth = Math.max(mSidebarWidth, maxSidebarWidth);
+		}
+
+		requestLayout();
+	}
+
+	private void setMaxSidebarOffsetInPixels(final int maxSidebarOffset) {
+		ensureAtLeast(maxSidebarOffset, -1,
+				"The max sidebar offset must be at least -1");
+		this.maxSidebarOffset = maxSidebarOffset;
+
+		if (maxSidebarOffset != -1) {
+			mOffset = Math.min(mOffset, maxSidebarOffset);
+		}
+
+		requestLayout();
+	}
+
+	private int getDragSensitivityInPixels() {
+		int range = MAX_DRAG_SENSITIVITY - MIN_DRAG_SENSITIVITY;
+		return Math.round((1 - getDragSensitivity()) * range
+				+ MIN_DRAG_SENSITIVITY);
+	}
+
 	public Sidebar(final Context context) {
 		this(context, null);
 	}
@@ -967,18 +1066,6 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	private final void setMaxSidebarWidthInPixels(final int maxSidebarWidth) {
-		ensureAtLeast(maxSidebarWidth, -1,
-				"The max sidebar width must be at least -1");
-		this.maxSidebarWidth = maxSidebarWidth;
-
-		if (maxSidebarWidth != -1) {
-			mSidebarWidth = Math.max(mSidebarWidth, maxSidebarWidth);
-		}
-
-		requestLayout();
-	}
-
 	public final float getSidebarOffset() {
 		return sidebarOffset;
 	}
@@ -1007,18 +1094,6 @@ public class Sidebar extends ViewGroup {
 		} else {
 			setMaxSidebarOffsetInPixels(-1);
 		}
-	}
-
-	private void setMaxSidebarOffsetInPixels(final int maxSidebarOffset) {
-		ensureAtLeast(maxSidebarOffset, -1,
-				"The max sidebar offset must be at least -1");
-		this.maxSidebarOffset = maxSidebarOffset;
-
-		if (maxSidebarOffset != -1) {
-			mOffset = Math.min(mOffset, maxSidebarOffset);
-		}
-
-		requestLayout();
 	}
 
 	public final ContentMode getContentMode() {
@@ -1080,12 +1155,6 @@ public class Sidebar extends ViewGroup {
 				"The drag sensitivity must be at maximum 1");
 		this.dragSensitivity = dragSensitivity;
 		this.dragHelper = new DragHelper(getDragSensitivityInPixels());
-	}
-
-	private int getDragSensitivityInPixels() {
-		int range = MAX_DRAG_SENSITIVITY - MIN_DRAG_SENSITIVITY;
-		return Math.round((1 - getDragSensitivity()) * range
-				+ MIN_DRAG_SENSITIVITY);
 	}
 
 	public final boolean isHiddenOnBackButton() {
@@ -1159,15 +1228,6 @@ public class Sidebar extends ViewGroup {
 				shadowWidth));
 	}
 
-	private void setShadowWidthInPixels(final int shadowWidth) {
-		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
-		this.shadowWidth = shadowWidth;
-
-		if (sidebarView != null) {
-			sidebarView.setShadowWidth(shadowWidth);
-		}
-	}
-
 	public final void addSidebarListener(final SidebarListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
 		listeners.add(listener);
@@ -1206,7 +1266,6 @@ public class Sidebar extends ViewGroup {
 			handled = handleDrag(event.getX());
 			break;
 		case MotionEvent.ACTION_UP:
-
 			if (dragHelper.hasThresholdBeenReached()) {
 				handleRelease();
 			} else {
@@ -1257,6 +1316,29 @@ public class Sidebar extends ViewGroup {
 	}
 
 	@Override
+	protected final void onSizeChanged(final int width, final int height,
+			final int oldWidth, final int oldHeigth) {
+		super.onSizeChanged(width, height, oldWidth, oldHeigth);
+
+		mSidebarWidth = Math.round(width * sidebarWidth);
+
+		if (maxSidebarWidth != -1) {
+			mSidebarWidth = Math.min(maxSidebarWidth, mSidebarWidth);
+		}
+
+		mOffset = Math.round(width * sidebarOffset);
+
+		if (maxSidebarOffset != -1) {
+			mOffset = Math.min(maxSidebarOffset, mOffset);
+		}
+
+		mContentWidth = width - mOffset;
+
+		sidebarView.getLayoutParams().width = mSidebarWidth + shadowWidth;
+		contentView.getLayoutParams().width = mContentWidth;
+	}
+
+	@Override
 	protected final void onLayout(final boolean changed, final int l,
 			final int t, final int r, final int b) {
 		if (dragHelper.isResetted() && contentView.getAnimation() == null
@@ -1272,89 +1354,6 @@ public class Sidebar extends ViewGroup {
 			contentView.layout(contentPos.first, t, contentPos.second, b);
 			contentView.requestLayout();
 		}
-	}
-
-	private Pair<Integer, Integer> calculateSidebarPosition() {
-		return calculateSidebarPosition(isSidebarShown());
-	}
-
-	private Pair<Integer, Integer> calculateSidebarPosition(final boolean shown) {
-		int leftPos = 0;
-
-		if (getLocation() == Location.LEFT) {
-			if (shown) {
-				leftPos = 0;
-			} else {
-				leftPos = mOffset - mSidebarWidth;
-			}
-		} else {
-			if (shown) {
-				leftPos = getWidth() - mSidebarWidth - shadowWidth;
-			} else {
-				leftPos = getWidth() - mOffset - shadowWidth;
-			}
-		}
-
-		return new Pair<Integer, Integer>(leftPos, leftPos + mSidebarWidth
-				+ shadowWidth);
-	}
-
-	private Pair<Integer, Integer> calculateContentPosition() {
-		Pair<Integer, Integer> pos;
-
-		if (getContentMode() == ContentMode.SCROLL) {
-			pos = calculateContentPositionWhenScrolling();
-		} else {
-			pos = calculateContentPositionWhenResizing();
-		}
-
-		return pos;
-	}
-
-	private Pair<Integer, Integer> calculateContentPositionWhenScrolling() {
-		int leftPos = 0;
-
-		if (getLocation() == Location.LEFT) {
-			if (isSidebarShown()) {
-				leftPos = mOffset
-						+ Math.round((mSidebarWidth - mOffset) * scrollRatio);
-			} else {
-				leftPos = mOffset;
-			}
-		} else {
-			if (isSidebarShown()) {
-				leftPos = Math.round((-mSidebarWidth + mOffset) * scrollRatio);
-			} else {
-				leftPos = 0;
-			}
-		}
-
-		return new Pair<Integer, Integer>(leftPos, leftPos + mContentWidth);
-	}
-
-	private Pair<Integer, Integer> calculateContentPositionWhenResizing() {
-		int leftPos;
-		int rightPos;
-
-		if (getLocation() == Location.LEFT) {
-			rightPos = getWidth();
-
-			if (isSidebarShown()) {
-				leftPos = mSidebarWidth;
-			} else {
-				leftPos = mOffset;
-			}
-		} else {
-			leftPos = 0;
-
-			if (isSidebarShown()) {
-				rightPos = getWidth() - mSidebarWidth;
-			} else {
-				rightPos = getWidth() - mOffset;
-			}
-		}
-
-		return new Pair<Integer, Integer>(leftPos, rightPos);
 	}
 
 	@Override
