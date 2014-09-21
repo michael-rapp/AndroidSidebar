@@ -86,14 +86,14 @@ public class Sidebar extends ViewGroup {
 	protected static final int DEFAULT_MAX_SIDEBAR_WIDTH = -1;
 
 	/**
-	 * The amount of space in relation to its parent view, the sidebar is
-	 * visible, even if it is currently hidden.
+	 * The default amount of space in relation to the width of the parent view,
+	 * the sidebar is visible, even if it is currently hidden.
 	 */
 	protected static final float DEFAULT_SIDEBAR_OFFSET = 0.125f;
 
 	/**
-	 * The maximum offset of the sidebar in dp or -1, if the sidebar's offset
-	 * should not be restricted.
+	 * The default maximum offset of the sidebar in dp or -1, if the sidebar's
+	 * offset should not be restricted.
 	 */
 	protected static final int DEFAULT_MAX_SIDEBAR_OFFSET = -1;
 
@@ -104,12 +104,9 @@ public class Sidebar extends ViewGroup {
 	protected static final ContentMode DEFAULT_CONTENT_MODE = ContentMode.SCROLL;
 
 	/**
-	 * The default ratio between the distance the sidebar is moved, when it
-	 * becomes shown or hidden, in relation to distance the content is moved. If
-	 * set to 1.0, the content will be moved exactly as far as the sidebar, if
-	 * set to 0.0, the content will not moved at all and each value in between
-	 * causes the content to be moved by a fraction of the distance, the sidebar
-	 * is moved.
+	 * The default ratio between the distance, the sidebar is moved by, when it
+	 * becomes shown or hidden, in relation to the distance, the content is
+	 * moved by.
 	 */
 	protected static final float DEFAULT_SCROLL_RATIO = 0.5f;
 
@@ -139,20 +136,20 @@ public class Sidebar extends ViewGroup {
 	protected static final float DEFAULT_DRAG_SENSITIVITY = 0.25f;
 
 	/**
-	 * True, if the sidebar should be hidden, when the device's back button is
-	 * clicked, false otherwise.
+	 * Specifies, whether by default the sidebar should be hidden, when the
+	 * device's back button is clicked, or not.
 	 */
 	protected static final boolean DEFAULT_HIDE_ON_BACK_BUTTON = true;
 
 	/**
-	 * True, if the sidebar should be hidden, when the main content is clicked,
-	 * false otherwise.
+	 * Specifies, whether by default the sidebar should be hidden, when the main
+	 * content is clicked by the user, or not.
 	 */
 	protected static final boolean DEFAULT_HIDE_ON_CONTENT_CLICK = true;
 
 	/**
-	 * True, if the sidebar should be shown, when it is clicked by the user,
-	 * false otherwise.
+	 * Specifies, whether by default the sidebar should be shown, when it is
+	 * clicked by the user, or not.
 	 */
 	protected static final boolean DEFAULT_SHOW_ON_SIDEBAR_CLICKED = true;
 
@@ -190,72 +187,187 @@ public class Sidebar extends ViewGroup {
 	private static final int MIN_DRAG_SENSITIVITY = 10;
 
 	/**
-	 * The maximum value of the internal value range, which specificies after
+	 * The maximum value of the internal value range, which specifies after
 	 * which distance dragging has an effect on the sidebar.
 	 */
 	private static final int MAX_DRAG_SENSITIVITY = 260;
 
+	/**
+	 * The location of the sidebar.
+	 */
 	private Location location;
 
-	private float animationSpeed = 1.0f;
+	/**
+	 * The speed of the animation, which is used to show or hide the sidebar, in
+	 * pixels per millisecond.
+	 */
+	private float animationSpeed;
 
+	/**
+	 * The width of the sidebar in relation to the width of its parent view.
+	 */
 	private float sidebarWidth;
 
+	/**
+	 * The maximum width of the sidebar in dp or -1, if the sidebar's width
+	 * should not be restricted.
+	 */
 	private int maxSidebarWidth;
 
+	/**
+	 * The amount of space in relation to the width of the parent view, the
+	 * sidebar is visible, even if it is currently hidden.
+	 */
 	private float sidebarOffset;
 
+	/**
+	 * The maximum offset of the sidebar in dp or -1, if the sidebar's offset
+	 * should not be restricted.
+	 */
 	private int maxSidebarOffset;
 
+	/**
+	 * The content mode, which specifies how the content view is handled when
+	 * the sidebar becomes shown or hidden.
+	 */
 	private ContentMode contentMode;
 
+	/**
+	 * The ratio between the distance, the sidebar is moved by, when it becomes
+	 * shown or hidden, in relation to the distance, the content is moved by. If
+	 * set to 1.0, the content will be moved exactly as far as the sidebar, if
+	 * set to 0.0, the content will not moved at all and each value in between
+	 * causes the content to be moved by a fraction of the distance, the sidebar
+	 * is moved.
+	 */
 	private float scrollRatio;
 
-	private float dragThreshold;
-
-	private float dragSensitivity;
-
+	/**
+	 * The drag mode, which specifies the region, where drag gestures are
+	 * recognized, when the sidebar is currently hidden.
+	 */
 	private DragMode dragModeWhenHidden;
 
+	/**
+	 * The drag mode, which specifies the region, where drag gestures are
+	 * recognized, when the sidebar is currently shown.
+	 */
 	private DragMode dragModeWhenShown;
 
+	/**
+	 * The distance, the sidebar has to be dragged until its state changes, in
+	 * relation to the whole distance.
+	 */
+	private float dragThreshold;
+
+	/**
+	 * The sensitivity, which specifies the distance after which dragging has an
+	 * effect on the sidebar, in relation to an internal value range.
+	 */
+	private float dragSensitivity;
+
+	/**
+	 * True, if the sidebar should be hidden, when the device's back button is
+	 * clicked, false otherwise.
+	 */
 	private boolean hideOnBackButton;
 
+	/**
+	 * True, if the sidebar should be hidden, when the main content is clicked
+	 * by the user, false otherwise.
+	 */
 	private boolean hideOnContentClick;
 
+	/**
+	 * True, if the sidebar should be shown, when it is clicked by the user,
+	 * false otherwise.
+	 */
 	private boolean showOnSidebarClick;
 
+	/**
+	 * The color of the overlay, which is shown in front of the main content,
+	 * when the sidebar is shown.
+	 */
 	private int contentOverlayColor;
 
+	/**
+	 * The transparency of the overlay, which is shown in front of the main
+	 * content, when the sidebar is shown.
+	 */
 	private float contentOverlayTransparency;
 
+	/**
+	 * The width of the sidebar's shadow in dp.
+	 */
 	private int shadowWidth;
 
+	/**
+	 * The color of the sidebar's shadow.
+	 */
 	private int shadowColor;
 
+	/**
+	 * True, if the sidebar is currently shown, false otherwise.
+	 */
 	private boolean shown;
 
+	/**
+	 * The background of the sidebar or null, if the default background is used.
+	 */
 	private transient Drawable sidebarBackground;
 
+	/**
+	 * A set, which contains the listeners, which have registered to be
+	 * notified, when the sidebar becomes shown or hidden.
+	 */
 	private transient Set<SidebarListener> listeners;
 
+	/**
+	 * The view, which contains the sidebar and its shadow.
+	 */
 	private transient SidebarView sidebarView;
 
+	/**
+	 * The view, which contains the content and its overlay.
+	 */
 	private transient ContentView contentView;
 
+	/**
+	 * A helper variable, which contains the sidebar's width in pixels.
+	 */
 	private transient int mSidebarWidth;
 
+	/**
+	 * A helper variable, which contains the content's width in pixels.
+	 */
 	private transient int mContentWidth;
 
+	/**
+	 * A helper variable, which contains the sidebar's offset in pixels.
+	 */
 	private transient int mOffset;
 
+	/**
+	 * An instance of the class {@link DragHelper}, which is used to recognize
+	 * drag gestures.
+	 */
 	private transient DragHelper dragHelper;
 
+	/**
+	 * Initializes the sidebar.
+	 * 
+	 * @param context
+	 *            The context, the sidebar should belong to, as an instance of
+	 *            the class {@link Context}
+	 * @param attributeSet
+	 *            The attribute set, the attributes should be obtained from, as
+	 *            an instance of the type {@link AttributeSet}
+	 */
 	private void initialize(final Context context,
 			final AttributeSet attributeSet) {
 		this.listeners = new LinkedHashSet<>();
 		this.shown = false;
-		this.dragHelper = new DragHelper(getDragSensitivityInPixels());
+		this.dragHelper = new DragHelper(calculateDragSensitivity());
 		this.setFocusableInTouchMode(true);
 		obtainStyledAttributes(context, attributeSet);
 	}
@@ -274,6 +386,7 @@ public class Sidebar extends ViewGroup {
 			final AttributeSet attributeSet) {
 		TypedArray typedArray = context.obtainStyledAttributes(attributeSet,
 				R.styleable.Sidebar);
+
 		try {
 			obtainContentOverlayColor(typedArray);
 			obtainContentOverlayTransparency(typedArray);
@@ -303,34 +416,78 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Obtains the background of the sidebar from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the background of the sidebar should be
+	 *            obtained from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainSidebarBackground(final TypedArray typedArray) {
 		setSidebarBackground(typedArray.getResourceId(
 				R.styleable.Sidebar_sidebarBackground, -1));
 	}
 
+	/**
+	 * Obtains the color of the overlay, which is shown in front of the main
+	 * content, when the sidebar is shown, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the color of the overlay should be obtained
+	 *            from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainContentOverlayColor(final TypedArray typedArray) {
 		setContentOverlayColor(typedArray.getColor(
 				R.styleable.Sidebar_contentOverlayColor,
 				DEFAULT_CONTENT_OVERLAY_COLOR));
 	}
 
+	/**
+	 * Obtains the transparency of the overlay, which is shown in front of the
+	 * main content, when the sidebar is shown, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the transparency of the overlay should be
+	 *            obtained from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainContentOverlayTransparency(final TypedArray typedArray) {
 		setContentOverlayTransparency(typedArray.getFraction(
 				R.styleable.Sidebar_contentOverlayTransparency, 1, 1,
 				DEFAULT_CONTENT_OVERLAY_TRANSPARENCY));
 	}
 
+	/**
+	 * Obtains the color of the sidebar's shadow from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the color of the sidebar's shadow should be
+	 *            obtained from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainShadowColor(final TypedArray typedArray) {
 		setShadowColor(typedArray.getColor(R.styleable.Sidebar_shadowColor,
 				DEFAULT_SHADOW_COLOR));
 	}
 
+	/**
+	 * Obtains the width of the sidebar's shadow from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the width of the sidebar's shadow should be
+	 *            obtained from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainShadowWidth(final TypedArray typedArray) {
 		setShadowWidthInPixels(typedArray.getDimensionPixelSize(
 				R.styleable.Sidebar_shadowWidth, DisplayUtil.convertDpToPixels(
 						getContext(), DEFAULT_SHADOW_WIDTH)));
 	}
 
+	/**
+	 * Obtains the sidebar view from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the sidebar view should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainSidebarView(final TypedArray typedArray) {
 		try {
 			setSidebarView(typedArray.getResourceId(
@@ -340,6 +497,13 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Obtains the content view from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the content view should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainContentView(final TypedArray typedArray) {
 		try {
 			setContentView(typedArray.getResourceId(
@@ -349,91 +513,222 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Obtains the location of the sidebar from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the location of the sidebar should be
+	 *            obtained from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainLocation(final TypedArray typedArray) {
 		setLocation(Location.fromValue(typedArray.getInt(
 				R.styleable.Sidebar_location, DEFAULT_LOCATION.getValue())));
 	}
 
+	/**
+	 * Obtains the speed of the animation, which is used to show or hide the
+	 * sidebar, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the speed of the animation should be obtained
+	 *            from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainAnimationSpeed(final TypedArray typedArray) {
 		setAnimationSpeed(typedArray.getFloat(
 				R.styleable.Sidebar_animationSpeed, DEFAULT_ANIMATION_SPEED));
 	}
 
+	/**
+	 * Obtains the width of the sidebar in relation to the width of its parent
+	 * view, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the width of the sidebar should be obtained
+	 *            from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainSidebarWidth(final TypedArray typedArray) {
 		setSidebarWidth(typedArray.getFraction(
 				R.styleable.Sidebar_sidebarWidth, 1, 1, DEFAULT_SIDEBAR_WIDTH));
 	}
 
+	/**
+	 * Obtains the maximum width of the sidebar from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the maximum width of the sidebar should be
+	 *            obtained from, as an instance of the class {@link TypedArray}
+	 */
 	private void obtainMaxSidebarWidth(final TypedArray typedArray) {
 		setMaxSidebarWidthInPixels(typedArray.getDimensionPixelSize(
 				R.styleable.Sidebar_maxSidebarWidth, DEFAULT_MAX_SIDEBAR_WIDTH));
 	}
 
+	/**
+	 * Obtains the amount of space in relation to the width of the parent view,
+	 * the sidebar is visible, even if it is currently hidden, from a specific
+	 * typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the offset should be obtained from, as an
+	 *            instance of the class {@link TypedArray}
+	 */
 	private void obtainSidebarOffset(final TypedArray typedArray) {
 		setSidebarOffset(typedArray
 				.getFraction(R.styleable.Sidebar_sidebarOffset, 1, 1,
 						DEFAULT_SIDEBAR_OFFSET));
 	}
 
+	/**
+	 * Obtains the maximum offset of the sidebar from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the maximum offset should be obtained from,
+	 *            as an instance of the class {@link TypedArray}
+	 */
 	private void obtainMaxSidebarOffset(final TypedArray typedArray) {
 		setMaxSidebarOffsetInPixels(typedArray.getDimensionPixelSize(
 				R.styleable.Sidebar_maxSidebarOffset,
 				DEFAULT_MAX_SIDEBAR_OFFSET));
 	}
 
+	/**
+	 * Obtains the content mode, which specifies how the content view is handled
+	 * when the sidebar becomes shown or hidden, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the content mode should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainContentMode(final TypedArray typedArray) {
 		setContentMode(ContentMode.fromValue(typedArray.getInt(
 				R.styleable.Sidebar_contentMode,
 				DEFAULT_CONTENT_MODE.getValue())));
 	}
 
+	/**
+	 * Obtains the ratio between the distance, the sidebar is moved by when it
+	 * becomes shown or hidden, in relation to the distance, the content is
+	 * moved by, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the scroll ratio should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainScrollRatio(final TypedArray typedArray) {
 		setScrollRatio(typedArray.getFraction(R.styleable.Sidebar_scrollRatio,
 				1, 1, DEFAULT_SCROLL_RATIO));
 	}
 
+	/**
+	 * Obtains the drag mode, which specifies the region, where drag gestures
+	 * are recognized, when the sidebar is currently hidden, from a specific
+	 * typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the drag mode should be obtained from, as an
+	 *            instance of the class {@link TypedArray}
+	 */
 	private void obtainDragModeWhenHidden(final TypedArray typedArray) {
 		setDragModeWhenHidden(DragMode.fromValue(typedArray.getInt(
 				R.styleable.Sidebar_dragModeWhenHidden,
 				DEFAULT_DRAG_MODE_WHEN_HIDDEN.getValue())));
 	}
 
+	/**
+	 * Obtains the drag mode, which specifies the region, where drag gestures
+	 * are recognized, when the sidebar is currently shown, from a specific
+	 * typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the drag mode should be obtained from, as an
+	 *            instance of the class {@link TypedArray}
+	 */
 	private void obtainDragModeWhenShown(final TypedArray typedArray) {
 		setDragModeWhenShown(DragMode.fromValue(typedArray.getInt(
 				R.styleable.Sidebar_dragModeWhenShown,
 				DEFAULT_DRAG_MODE_WHEN_SHOWN.getValue())));
 	}
 
+	/**
+	 * Obtains the distance, the sidebar has to be dragged until its state
+	 * changes, in relation to the whole distance, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the threshold should be obtained from, as an
+	 *            instance of the class {@link TypedArray}
+	 */
 	private void obtainDragThreshold(final TypedArray typedArray) {
 		setDragThreshold(typedArray
 				.getFraction(R.styleable.Sidebar_dragThreshold, 1, 1,
 						DEFAULT_DRAG_THRESHOLD));
 	}
 
+	/**
+	 * Obtains the sensitivity, which specifies the distance after which
+	 * dragging has an effect on the sidebar, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the sensitivity should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainDragSensitivity(final TypedArray typedArray) {
 		setDragSensitivity(typedArray.getFraction(
 				R.styleable.Sidebar_dragSensitivity, 1, 1,
 				DEFAULT_DRAG_SENSITIVITY));
 	}
 
+	/**
+	 * Obtains the boolean value, which specifies, whether the sidebar should be
+	 * hidden, when the device's back button is clicked, from a specific typed
+	 * array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the boolean value should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainHideOnBackButton(final TypedArray typedArray) {
 		hideOnBackButton(typedArray.getBoolean(
 				R.styleable.Sidebar_hideOnBackButton,
 				DEFAULT_HIDE_ON_BACK_BUTTON));
 	}
 
+	/**
+	 * Obtains the boolean value, which specifies, whether the sidebar should be
+	 * hidden, when the main content is clicked by the user, from a specific
+	 * typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the boolean value should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainHideOnContentClick(final TypedArray typedArray) {
 		hideOnContentClick(typedArray.getBoolean(
 				R.styleable.Sidebar_hideOnContentClick,
 				DEFAULT_HIDE_ON_CONTENT_CLICK));
 	}
 
+	/**
+	 * Obtains the boolean value, which specifies, whether the sidebar should be
+	 * shown, when it is clicked by the user, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the boolean value should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainShowOnSidebarClick(final TypedArray typedArray) {
 		showOnSidebarClick(typedArray.getBoolean(
 				R.styleable.Sidebar_showOnSidebarClick,
 				DEFAULT_SHOW_ON_SIDEBAR_CLICKED));
 	}
 
+	/**
+	 * Obtains the boolean value, which specifies, whether the sidebar should be
+	 * shown by default, from a specific typed array.
+	 * 
+	 * @param typedArray
+	 *            The typed array, the boolean value should be obtained from, as
+	 *            an instance of the class {@link TypedArray}
+	 */
 	private void obtainShowSidebar(final TypedArray typedArray) {
 		if (typedArray.getBoolean(R.styleable.Sidebar_showSidebar,
 				SHOW_SIDEBAR_BY_DEFAULT)) {
@@ -441,6 +736,67 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Sets the width of the sidebar's shadow in pixels.
+	 * 
+	 * @param shadowWidth
+	 *            The width, which should be set, in pixels as an
+	 *            {@link Integer} value
+	 */
+	private void setShadowWidthInPixels(final int shadowWidth) {
+		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
+		this.shadowWidth = shadowWidth;
+
+		if (sidebarView != null) {
+			sidebarView.setShadowWidth(shadowWidth);
+		}
+	}
+
+	/**
+	 * Sets the maximum width of the sidebar in pixels.
+	 * 
+	 * @param maxSidebarWidth
+	 *            The maximum width, which should be set, in pixels as an
+	 *            {@link Integer} value
+	 */
+	private void setMaxSidebarWidthInPixels(final int maxSidebarWidth) {
+		ensureAtLeast(maxSidebarWidth, -1,
+				"The max sidebar width must be at least -1");
+		this.maxSidebarWidth = maxSidebarWidth;
+
+		if (maxSidebarWidth != -1) {
+			mSidebarWidth = Math.max(mSidebarWidth, maxSidebarWidth);
+		}
+
+		requestLayout();
+	}
+
+	/**
+	 * Sets the maximum offset of the sidebar in pixels.
+	 * 
+	 * @param maxSidebarOffset
+	 *            The maximum offset, which should be set, in pixels as an
+	 *            {@link Integer} value
+	 */
+	private void setMaxSidebarOffsetInPixels(final int maxSidebarOffset) {
+		ensureAtLeast(maxSidebarOffset, -1,
+				"The max sidebar offset must be at least -1");
+		this.maxSidebarOffset = maxSidebarOffset;
+
+		if (maxSidebarOffset != -1) {
+			mOffset = Math.min(mOffset, maxSidebarOffset);
+		}
+
+		requestLayout();
+	}
+
+	/**
+	 * Inflates and adds the sidebar view by using a specific inflater.
+	 * 
+	 * @param inflater
+	 *            The inflater, which should be used, as an instance of the type
+	 *            {@link Inflater}
+	 */
 	private void inflateSidebarView(final Inflater inflater) {
 		if (sidebarView != null) {
 			removeView(sidebarView);
@@ -453,6 +809,13 @@ public class Sidebar extends ViewGroup {
 		bringSidebarToFront();
 	}
 
+	/**
+	 * Inflates and adds the content view by using a specific inflater.
+	 * 
+	 * @param inflater
+	 *            The inflater, which should be used, as an instance of the type
+	 *            {@link Inflater}
+	 */
 	private void inflateContentView(final Inflater inflater) {
 		if (contentView != null) {
 			removeView(contentView);
@@ -465,59 +828,122 @@ public class Sidebar extends ViewGroup {
 		bringSidebarToFront();
 	}
 
+	/**
+	 * Brings the sidebar view to the front, if it has already been inflated.
+	 */
 	private void bringSidebarToFront() {
 		if (sidebarView != null) {
 			sidebarView.bringToFront();
 		}
 	}
 
-	private void animateShowSidebar(final float toXDelta) {
-		animateShowSidebar(toXDelta, animationSpeed);
+	/**
+	 * Animates the sidebar to become shown.
+	 * 
+	 * @param distance
+	 *            The distance, the sidebar has to be moved by, as a
+	 *            {@link Float} value
+	 */
+	private void animateShowSidebar(final float distance) {
+		animateShowSidebar(distance, animationSpeed);
 	}
 
-	private void animateShowSidebar(final float toXDelta,
+	/**
+	 * Animates the sidebar to become shown.
+	 * 
+	 * @param distance
+	 *            The distance, the sidebar has to be moved by, as a
+	 *            {@link Float} value
+	 * @param animationSpeed
+	 *            The speed of the animation in pixels per milliseconds as a
+	 *            {@link Float} value
+	 */
+	private void animateShowSidebar(final float distance,
 			final float animationSpeed) {
-		animateSidebar(true, toXDelta, animationSpeed,
+		animateSidebar(true, distance, animationSpeed,
 				createAnimationListener(true));
 	}
 
-	private void animateHideSidebar(final float toXDelta) {
-		animateHideSidebar(toXDelta, animationSpeed);
+	/**
+	 * Animates the sidebar to become hidden.
+	 * 
+	 * @param distance
+	 *            The distance, the sidebar has to be moved by, as a
+	 *            {@link Float} value
+	 */
+	private void animateHideSidebar(final float distance) {
+		animateHideSidebar(distance, animationSpeed);
 	}
 
-	private void animateHideSidebar(final float toXDelta,
+	/**
+	 * Animates the sidebar to become hidden.
+	 * 
+	 * @param distance
+	 *            The distance, the sidebar has to be moved by, as a
+	 *            {@link Float} value
+	 * @param animationSpeed
+	 *            The speed of the animation in pixels per millisecond as a
+	 *            {@link Float} value
+	 */
+	private void animateHideSidebar(final float distance,
 			final float animationSpeed) {
-		animateSidebar(false, toXDelta, animationSpeed,
+		animateSidebar(false, distance, animationSpeed,
 				createAnimationListener(false));
 	}
 
-	private void animateSidebar(final boolean show, final float toXDelta,
+	/**
+	 * Animates the sidebar to be moved by a specific distance.
+	 * 
+	 * @param show
+	 *            True, if the sidebar should be shown at the end of the
+	 *            animation, false otherwise
+	 * @param distance
+	 *            The distance, the sidebar has to be moved by, as a
+	 *            {@link Float} value. If the distance is negative, the sidebar
+	 *            will be moved to the left, if the distance is positive, it
+	 *            will be moved to the right
+	 * @param animationSpeed
+	 *            The speed of the animation in pixels per millisecond as a
+	 *            {@link Float} value
+	 * @param animationListener
+	 *            The listener, which should be notified about the animation's
+	 *            progress, as an instance of the type {@link AnimationListener}
+	 */
+	private void animateSidebar(final boolean show, final float distance,
 			final float animationSpeed,
 			final AnimationListener animationListener) {
 		if (contentView.getAnimation() == null
 				&& sidebarView.getAnimation() == null) {
-			long duration = calculateAnimationDuration(toXDelta, animationSpeed);
-
+			long duration = calculateAnimationDuration(distance, animationSpeed);
 			Animation contentViewAnimation;
 
 			if (getContentMode() == ContentMode.SCROLL) {
 				contentViewAnimation = new ContentViewScrollAnimation(
-						contentView, duration, toXDelta, scrollRatio,
+						contentView, duration, distance, scrollRatio,
 						getContentOverlayTransparency(), show);
 			} else {
 				contentViewAnimation = new ContentViewResizeAnimation(
-						contentView, duration, toXDelta, getLocation(),
+						contentView, duration, distance, getLocation(),
 						getContentOverlayTransparency(), show);
 			}
 
-			Animation sidebarViewAnimation = new SidebarViewAnimation(toXDelta,
+			Animation sidebarViewAnimation = new SidebarViewAnimation(distance,
 					duration, animationListener);
-
 			contentView.startAnimation(contentViewAnimation);
 			sidebarView.startAnimation(sidebarViewAnimation);
 		}
 	}
 
+	/**
+	 * Creates and returns a listener, which allows to handle the end of an
+	 * animation, which has been used to show or hide the sidebar.
+	 * 
+	 * @param show
+	 *            True, if the sidebar should be shown at the end of the
+	 *            animation, false otherwise
+	 * @return The listener, which has been created, as an instance of the type
+	 *         {@link AnimationListener}
+	 */
 	private AnimationListener createAnimationListener(final boolean show) {
 		return new AnimationListener() {
 
@@ -548,32 +974,291 @@ public class Sidebar extends ViewGroup {
 		};
 	}
 
-	private int calculateAnimationDuration(final float distance,
-			final float animationSpeed) {
-		return Math.round(Math.abs(distance) / animationSpeed);
-	}
-
-	private void notifyOnSidebarHidden() {
-		for (SidebarListener listener : listeners) {
-			listener.onSidebarHidden(this);
-		}
-	}
-
+	/**
+	 * Notifies all listeners, which have been registered to be notified, when
+	 * the sidebar becomes shown or hidden, about when the sidebar has become
+	 * shown.
+	 */
 	private void notifyOnSidebarShown() {
 		for (SidebarListener listener : listeners) {
 			listener.onSidebarShown(this);
 		}
 	}
 
-	private boolean handleDrag(final float x) {
+	/**
+	 * Notifies all listeners, which have been registered to be notified, when
+	 * the sidebar becomes show or hidden, about when the sidebar has become
+	 * hidden.
+	 */
+	private void notifyOnSidebarHidden() {
+		for (SidebarListener listener : listeners) {
+			listener.onSidebarHidden(this);
+		}
+	}
+
+	/**
+	 * Calculates the duration of the animation, which is used to hide or show
+	 * the sidebar, depending on a specific distance and speed.
+	 * 
+	 * @param distance
+	 *            The distance, the sidebar has to be moved by, as a
+	 *            {@link Float} value
+	 * @param animationSpeed
+	 *            The speed of the animation in pixels per millisecond as a
+	 *            {@link Float} value
+	 * @return The duration of the animation in milliseconds as an
+	 *         {@link Integer} value
+	 */
+	private int calculateAnimationDuration(final float distance,
+			final float animationSpeed) {
+		return Math.round(Math.abs(distance) / animationSpeed);
+	}
+
+	/**
+	 * Calculates and returns the position of the sidebar's left and right edge,
+	 * depending on its location and whether it is currently shown or not.
+	 * 
+	 * @return The position of the sidebar's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateSidebarConstraints() {
+		return calculateSidebarConstraints(isSidebarShown());
+	}
+
+	/**
+	 * Calculates and returns the position of the sidebar's left and right edge,
+	 * depending on its location and a specific boolean value, which specifies,
+	 * whether it should be shown or not.
+	 * 
+	 * @param shown
+	 *            True, if the sidebar should be shown, false otherwise
+	 * @return The position of the sidebar's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateSidebarConstraints(
+			final boolean shown) {
+		int leftEdge;
+		int rightEdge;
+
+		if (getLocation() == Location.LEFT) {
+			if (shown) {
+				leftEdge = 0;
+			} else {
+				leftEdge = mOffset - mSidebarWidth;
+			}
+		} else {
+			if (shown) {
+				leftEdge = getWidth() - mSidebarWidth - shadowWidth;
+			} else {
+				leftEdge = getWidth() - mOffset - shadowWidth;
+			}
+		}
+
+		rightEdge = leftEdge + mSidebarWidth + shadowWidth;
+		return new Pair<Integer, Integer>(leftEdge, rightEdge);
+	}
+
+	/**
+	 * Calculates and returns the position of the content's left and right edge,
+	 * depending on the sidebar's location, whether the sidebar is currently
+	 * shown and the current content mode.
+	 * 
+	 * @return The position of the content's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateContentConstraints() {
+		if (getContentMode() == ContentMode.SCROLL) {
+			return calculateScrolledContentConstraints();
+		} else {
+			return calculateResizedContentConstraints();
+		}
+	}
+
+	/**
+	 * Calculates and returns the position of the content's left and right edge,
+	 * depending on the sidebar's location and whether the sidebar is currently
+	 * shown, using the content mode <code>SCROLL</code>.
+	 * 
+	 * @return The position of the content's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateScrolledContentConstraints() {
+		int leftEdge;
+		int rightEdge;
+
+		if (getLocation() == Location.LEFT) {
+			if (isSidebarShown()) {
+				leftEdge = mOffset
+						+ Math.round((mSidebarWidth - mOffset) * scrollRatio);
+			} else {
+				leftEdge = mOffset;
+			}
+		} else {
+			if (isSidebarShown()) {
+				leftEdge = Math.round((-mSidebarWidth + mOffset) * scrollRatio);
+			} else {
+				leftEdge = 0;
+			}
+		}
+
+		rightEdge = leftEdge + mContentWidth;
+		return new Pair<Integer, Integer>(leftEdge, rightEdge);
+	}
+
+	/**
+	 * Calculates and returns the position of the content's left and right edge,
+	 * depending on the sidebar's location and whether the sidebar is currently
+	 * shown, using the content mode <code>RESIZE</code>.
+	 * 
+	 * @return The position of the content's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateResizedContentConstraints() {
+		int leftEdge;
+		int rightEdge;
+
+		if (getLocation() == Location.LEFT) {
+			rightEdge = getWidth();
+
+			if (isSidebarShown()) {
+				leftEdge = mSidebarWidth;
+			} else {
+				leftEdge = mOffset;
+			}
+		} else {
+			leftEdge = 0;
+
+			if (isSidebarShown()) {
+				rightEdge = getWidth() - mSidebarWidth;
+			} else {
+				rightEdge = getWidth() - mOffset;
+			}
+		}
+
+		return new Pair<Integer, Integer>(leftEdge, rightEdge);
+	}
+
+	/**
+	 * Calculates and returns the position of the sidebar's left and right edge,
+	 * depending on its location, while the user performs a drag gesture.
+	 * 
+	 * @return The position of the sidebar's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateSidebarConstraintsWhileDragging() {
+		Pair<Integer, Integer> shownSidebarConstraints = calculateSidebarConstraints(true);
+		Pair<Integer, Integer> hiddenSidebarConstraints = calculateSidebarConstraints(false);
+
+		int leftEdge = calculateSidebarConstraints().first
+				+ dragHelper.getDistance();
+
+		if (getLocation() == Location.LEFT) {
+			leftEdge = Math.max(hiddenSidebarConstraints.first, leftEdge);
+			leftEdge = Math.min(shownSidebarConstraints.first, leftEdge);
+		} else {
+			leftEdge = Math.max(shownSidebarConstraints.first, leftEdge);
+			leftEdge = Math.min(hiddenSidebarConstraints.first, leftEdge);
+		}
+
+		int rightEdge = leftEdge + mSidebarWidth + shadowWidth;
+		return new Pair<Integer, Integer>(leftEdge, rightEdge);
+	}
+
+	/**
+	 * Calculates and returns the position of the content's left and right edge,
+	 * depending on the sidebar's location and the current content mode, while
+	 * the user performs a drag gesture.
+	 * 
+	 * @param sidebarConstraints
+	 *            The current position of the sidebar's left and right edge, as
+	 *            an instance of the class {@link Pair}
+	 * @return The position of the content's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateContentConstraintsWhileDragging(
+			final Pair<Integer, Integer> sidebarConstraints) {
+		if (getContentMode() == ContentMode.SCROLL) {
+			return calculateScrolledContentConstraintsWhileDragging(sidebarConstraints);
+		} else {
+			return calculateResizedContentConstraintsWhileDragging(sidebarConstraints);
+		}
+	}
+
+	/**
+	 * Calculates and returns the position of the content's left and right edge,
+	 * depending on the sidebar's location, using the content mode
+	 * <code>SCROLL</code>, while the user performs a drag gesture.
+	 * 
+	 * @param sidebarConstraints
+	 *            The current position of the sidebar's left and right edge, as
+	 *            an instance of the class {@link Pair}
+	 * @return The position of the content's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateScrolledContentConstraintsWhileDragging(
+			final Pair<Integer, Integer> sidebarConstraints) {
+		int leftEdge;
+		int rightEdge;
+
+		if (getLocation() == Location.LEFT) {
+			leftEdge = mOffset
+					+ Math.round((sidebarConstraints.second - shadowWidth - mOffset)
+							* scrollRatio);
+		} else {
+			leftEdge = Math
+					.round((sidebarConstraints.first + shadowWidth - mContentWidth)
+							* scrollRatio);
+		}
+
+		rightEdge = leftEdge + mContentWidth;
+		return new Pair<Integer, Integer>(leftEdge, rightEdge);
+	}
+
+	/**
+	 * Calculates and returns the position of the content's left and right edge,
+	 * depending on the sidebar's location, using the content mode
+	 * <code>RESIZE</code>, while the user performs a drag gesture.
+	 * 
+	 * @param sidebarConstraints
+	 *            The current position of the sidebar's left and right edge, as
+	 *            an instance of the class {@link Pair}
+	 * @return The position of the content's left and right edge as an instance
+	 *         of the class {@link Pair}
+	 */
+	private Pair<Integer, Integer> calculateResizedContentConstraintsWhileDragging(
+			final Pair<Integer, Integer> sidebarConstraints) {
+		int leftEdge;
+		int rightEdge;
+
+		if (getLocation() == Location.LEFT) {
+			leftEdge = sidebarConstraints.second - shadowWidth;
+			rightEdge = getWidth();
+		} else {
+			leftEdge = 0;
+			rightEdge = sidebarConstraints.first + shadowWidth;
+		}
+
+		return new Pair<Integer, Integer>(leftEdge, rightEdge);
+	}
+
+	/**
+	 * Handles when a drag gesture is performed by the user.
+	 * 
+	 * @param dragPosition
+	 *            The current horizontal position of the drag gesture as a
+	 *            {@link Float} value
+	 * @return True, if the sidebar has been moved by the drag gesture, false
+	 *         otherwise
+	 */
+	private boolean handleDrag(final float dragPosition) {
 		if (contentView.getAnimation() == null
 				&& sidebarView.getAnimation() == null) {
-			dragHelper.update(x);
+			dragHelper.update(dragPosition);
 
 			if (dragHelper.hasThresholdBeenReached()
-					&& checkDragMode(dragHelper.getStartPosition())) {
-				Pair<Integer, Integer> sidebarPos = calculateSidebarDragPosition();
-				Pair<Integer, Integer> contentPos = calculateContentDragPosition(sidebarPos);
+					&& isDraggingAllowed(dragHelper.getStartPosition())) {
+				Pair<Integer, Integer> sidebarPos = calculateSidebarConstraintsWhileDragging();
+				Pair<Integer, Integer> contentPos = calculateContentConstraintsWhileDragging(sidebarPos);
 
 				sidebarView.layout(sidebarPos.first, sidebarView.getTop(),
 						sidebarPos.second, sidebarView.getBottom());
@@ -593,81 +1278,23 @@ public class Sidebar extends ViewGroup {
 		return false;
 	}
 
-	private Pair<Integer, Integer> calculateSidebarDragPosition() {
-		Pair<Integer, Integer> shownSidebarPos = calculateSidebarPosition(true);
-		Pair<Integer, Integer> hiddenSidebarPos = calculateSidebarPosition(false);
-
-		int sidebarX = calculateSidebarPosition().first
-				+ dragHelper.getDistance();
-
-		if (getLocation() == Location.LEFT) {
-			sidebarX = Math.max(hiddenSidebarPos.first, sidebarX);
-			sidebarX = Math.min(shownSidebarPos.first, sidebarX);
-		} else {
-			sidebarX = Math.max(shownSidebarPos.first, sidebarX);
-			sidebarX = Math.min(hiddenSidebarPos.first, sidebarX);
-		}
-
-		return new Pair<Integer, Integer>(sidebarX, sidebarX + mSidebarWidth
-				+ shadowWidth);
-	}
-
-	private Pair<Integer, Integer> calculateContentDragPosition(
-			final Pair<Integer, Integer> sidebarPosition) {
-		if (getContentMode() == ContentMode.SCROLL) {
-			return calculateContentDragPositionWhenScrolling(sidebarPosition);
-		} else {
-			return calculateContentDragPositionWhenResizing(sidebarPosition);
-		}
-	}
-
-	private Pair<Integer, Integer> calculateContentDragPositionWhenScrolling(
-			final Pair<Integer, Integer> sidebarPosition) {
-		int contentX = 0;
-
-		if (getLocation() == Location.LEFT) {
-			contentX = mOffset
-					+ Math.round((sidebarPosition.second - shadowWidth - mOffset)
-							* scrollRatio);
-		} else {
-			contentX = Math
-					.round((sidebarPosition.first + shadowWidth - mContentWidth)
-							* scrollRatio);
-		}
-
-		return new Pair<Integer, Integer>(contentX, contentX + mContentWidth);
-	}
-
-	private Pair<Integer, Integer> calculateContentDragPositionWhenResizing(
-			final Pair<Integer, Integer> sidebarPosition) {
-		int leftPos;
-		int rightPos;
-
-		if (getLocation() == Location.LEFT) {
-			leftPos = sidebarPosition.second - shadowWidth;
-			rightPos = getWidth();
-		} else {
-			leftPos = 0;
-			rightPos = sidebarPosition.first + shadowWidth;
-		}
-
-		return new Pair<Integer, Integer>(leftPos, rightPos);
-	}
-
+	/**
+	 * Handles when a drag gesture has been ended by the user.
+	 */
 	private void handleRelease() {
 		dragHelper.reset();
 
-		float threshold = calculateDragThreshold();
+		float thresholdPosition = calculatePositionWhereDragThresholdIsReached();
 		float speed = Math.max(dragHelper.getDragSpeed(), animationSpeed);
 
 		if (getLocation() == Location.LEFT) {
-			if (sidebarView.getRight() - shadowWidth > threshold) {
+			if (sidebarView.getRight() - shadowWidth > thresholdPosition) {
 				animateShowSidebar(calculateSnapDistance(true), speed);
 			} else {
 				animateHideSidebar(calculateSnapDistance(false), speed);
 			}
 		} else {
-			if (sidebarView.getLeft() + shadowWidth < threshold) {
+			if (sidebarView.getLeft() + shadowWidth < thresholdPosition) {
 				animateShowSidebar(calculateSnapDistance(true), speed);
 			} else {
 				animateHideSidebar(calculateSnapDistance(false), speed);
@@ -675,29 +1302,121 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
-	private float calculateDragThreshold() {
-		float threshold = 0;
+	/**
+	 * Handles when the sidebar or content is clicked by the user.
+	 * 
+	 * @param clickPosition
+	 *            The horizontal position of the click as a {@link Float} value
+	 */
+	private void handleClick(final float clickPosition) {
+		dragHelper.reset();
+
+		if (isSidebarClicked(clickPosition)) {
+			if (showOnSidebarClick) {
+				showSidebar();
+			}
+		} else if (isContentClicked(clickPosition)) {
+			if (hideOnContentClick) {
+				hideSidebar();
+			}
+		}
+	}
+
+	/**
+	 * Returns, whether a click at a specific position targets the content, or
+	 * not.
+	 * 
+	 * @param clickPosition
+	 *            The horizontal position of the click as a {@link Float} value
+	 * @return True, if the content has been clicked, false otherwise
+	 */
+	private boolean isContentClicked(final float clickPosition) {
+		return !isSidebarClicked(clickPosition);
+	}
+
+	/**
+	 * Returns, whether a click at a specific position targets the sidebar, or
+	 * not.
+	 * 
+	 * @param clickPosition
+	 *            The horizontal position of the click as a {@link Float} value
+	 * @return True, if the sidebar has been clicked, false otherwise
+	 */
+	private boolean isSidebarClicked(final float clickPosition) {
+		if (getLocation() == Location.LEFT) {
+			if (isSidebarShown()) {
+				return clickPosition < mSidebarWidth;
+			} else {
+				return clickPosition < mOffset;
+			}
+		} else {
+			if (isSidebarShown()) {
+				return clickPosition > getWidth() - mSidebarWidth;
+			} else {
+				return clickPosition > mContentWidth;
+			}
+		}
+	}
+
+	/**
+	 * Returns, whether dragging at a specific position is allowed, depending on
+	 * the current drag mode and whether the sidebar is currently shown or
+	 * hidden, or not.
+	 * 
+	 * @param dragPosition
+	 *            The horizontal position of the drag gesture as a {@link Float}
+	 *            value
+	 * @return True, if dragging is allowed, false otherwise
+	 */
+	private boolean isDraggingAllowed(final float dragPosition) {
+		DragMode currentDragMode = dragModeWhenHidden;
+
+		if (isSidebarShown()) {
+			currentDragMode = dragModeWhenShown;
+		}
+
+		if (currentDragMode == DragMode.DISABLED) {
+			return false;
+		} else if (currentDragMode == DragMode.SIDEBAR_ONLY) {
+			return isSidebarClicked(dragPosition);
+		} else if (currentDragMode == DragMode.CONTENT_ONLY) {
+			return isContentClicked(dragPosition);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Calculates the position, where the drag threshold is reached, depending
+	 * on whether the sidebar's location and whether it is currently shown or
+	 * hidden.
+	 * 
+	 * @return The horizontal position, where the drag threshold is reached, as
+	 *         a {@link Float} value
+	 */
+	private float calculatePositionWhereDragThresholdIsReached() {
+		float position;
 
 		if (getLocation() == Location.LEFT) {
 			if (isSidebarShown()) {
-				threshold = mSidebarWidth
+				position = mSidebarWidth
 						- ((mSidebarWidth - mOffset) * dragThreshold);
 			} else {
-				threshold = mOffset
+				position = mOffset
 						+ ((mSidebarWidth - mOffset) * dragThreshold);
 			}
 		} else {
 			if (isSidebarShown()) {
-				threshold = getWidth() - mSidebarWidth
+				position = getWidth() - mSidebarWidth
 						+ ((mSidebarWidth - mOffset) * dragThreshold);
 
 			} else {
-				threshold = getWidth() - mOffset
+				position = getWidth() - mOffset
 						- ((mSidebarWidth - mOffset) * dragThreshold);
 			}
 		}
 
-		return threshold;
+		return position;
 	}
 
 	private float calculateSnapDistance(final boolean shouldBeShown) {
@@ -737,184 +1456,34 @@ public class Sidebar extends ViewGroup {
 		return distance;
 	}
 
-	private void handleClick(final float x) {
-		dragHelper.reset();
-
-		if (isSidebarClicked(x)) {
-			if (showOnSidebarClick) {
-				showSidebar();
-			}
-		} else if (isContentClicked(x)) {
-			if (hideOnContentClick) {
-				hideSidebar();
-			}
-		}
+	/**
+	 * Calculates and returns the distance after which dragging has an effect on
+	 * the sidebar in pixels. The distance depends on the current set drag
+	 * sensitivity, which corresponds to an internal value range.
+	 * 
+	 * @return The distance after which dragging has an effect on the sidebar in
+	 *         pixels as an {@link Integer} value
+	 */
+	private int calculateDragSensitivity() {
+		int range = MAX_DRAG_SENSITIVITY - MIN_DRAG_SENSITIVITY;
+		return Math.round((1 - getDragSensitivity()) * range
+				+ MIN_DRAG_SENSITIVITY);
 	}
 
-	private boolean checkDragMode(final float x) {
-		DragMode currentDragMode = dragModeWhenHidden;
-
-		if (isSidebarShown()) {
-			currentDragMode = dragModeWhenShown;
-		}
-
-		if (currentDragMode == DragMode.DISABLED) {
-			return false;
-		} else if (currentDragMode == DragMode.SIDEBAR_ONLY) {
-			return isSidebarClicked(x);
-		} else if (currentDragMode == DragMode.CONTENT_ONLY) {
-			return isContentClicked(x);
-		}
-
-		return true;
-	}
-
-	private boolean isSidebarClicked(final float x) {
-		if (getLocation() == Location.LEFT) {
-			if (isSidebarShown()) {
-				return x < mSidebarWidth;
-			} else {
-				return x < mOffset;
-			}
-		} else {
-			if (isSidebarShown()) {
-				return x > getWidth() - mSidebarWidth;
-			} else {
-				return x > mContentWidth;
-			}
-		}
-	}
-
-	private boolean isContentClicked(final float x) {
-		return !isSidebarClicked(x);
-	}
-
+	/**
+	 * Calculates and returns the transparency of the content overlay, depending
+	 * on the sidebar's current position and the transparency, which should be
+	 * applied, when the sidebar is shown.
+	 * 
+	 * @return The transparency of the content overlay as a {@link Float} value.
+	 *         If the transparency is 0.0, the overlay will be completely
+	 *         transparent, if it is 1.0, the overlay will be not transparent at
+	 *         all
+	 */
 	private float calculateContentOverlayTransparency() {
 		float totalDistance = mSidebarWidth - mOffset;
 		float distance = Math.abs(calculateSnapDistance(false));
 		return getContentOverlayTransparency() * (distance / totalDistance);
-	}
-
-	private Pair<Integer, Integer> calculateSidebarPosition() {
-		return calculateSidebarPosition(isSidebarShown());
-	}
-
-	private Pair<Integer, Integer> calculateSidebarPosition(final boolean shown) {
-		int leftPos = 0;
-
-		if (getLocation() == Location.LEFT) {
-			if (shown) {
-				leftPos = 0;
-			} else {
-				leftPos = mOffset - mSidebarWidth;
-			}
-		} else {
-			if (shown) {
-				leftPos = getWidth() - mSidebarWidth - shadowWidth;
-			} else {
-				leftPos = getWidth() - mOffset - shadowWidth;
-			}
-		}
-
-		return new Pair<Integer, Integer>(leftPos, leftPos + mSidebarWidth
-				+ shadowWidth);
-	}
-
-	private Pair<Integer, Integer> calculateContentPosition() {
-		Pair<Integer, Integer> pos;
-
-		if (getContentMode() == ContentMode.SCROLL) {
-			pos = calculateContentPositionWhenScrolling();
-		} else {
-			pos = calculateContentPositionWhenResizing();
-		}
-
-		return pos;
-	}
-
-	private Pair<Integer, Integer> calculateContentPositionWhenScrolling() {
-		int leftPos = 0;
-
-		if (getLocation() == Location.LEFT) {
-			if (isSidebarShown()) {
-				leftPos = mOffset
-						+ Math.round((mSidebarWidth - mOffset) * scrollRatio);
-			} else {
-				leftPos = mOffset;
-			}
-		} else {
-			if (isSidebarShown()) {
-				leftPos = Math.round((-mSidebarWidth + mOffset) * scrollRatio);
-			} else {
-				leftPos = 0;
-			}
-		}
-
-		return new Pair<Integer, Integer>(leftPos, leftPos + mContentWidth);
-	}
-
-	private Pair<Integer, Integer> calculateContentPositionWhenResizing() {
-		int leftPos;
-		int rightPos;
-
-		if (getLocation() == Location.LEFT) {
-			rightPos = getWidth();
-
-			if (isSidebarShown()) {
-				leftPos = mSidebarWidth;
-			} else {
-				leftPos = mOffset;
-			}
-		} else {
-			leftPos = 0;
-
-			if (isSidebarShown()) {
-				rightPos = getWidth() - mSidebarWidth;
-			} else {
-				rightPos = getWidth() - mOffset;
-			}
-		}
-
-		return new Pair<Integer, Integer>(leftPos, rightPos);
-	}
-
-	private void setShadowWidthInPixels(final int shadowWidth) {
-		ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
-		this.shadowWidth = shadowWidth;
-
-		if (sidebarView != null) {
-			sidebarView.setShadowWidth(shadowWidth);
-		}
-	}
-
-	private final void setMaxSidebarWidthInPixels(final int maxSidebarWidth) {
-		ensureAtLeast(maxSidebarWidth, -1,
-				"The max sidebar width must be at least -1");
-		this.maxSidebarWidth = maxSidebarWidth;
-
-		if (maxSidebarWidth != -1) {
-			mSidebarWidth = Math.max(mSidebarWidth, maxSidebarWidth);
-		}
-
-		requestLayout();
-	}
-
-	private void setMaxSidebarOffsetInPixels(final int maxSidebarOffset) {
-		ensureAtLeast(maxSidebarOffset, -1,
-				"The max sidebar offset must be at least -1");
-		this.maxSidebarOffset = maxSidebarOffset;
-
-		if (maxSidebarOffset != -1) {
-			mOffset = Math.min(mOffset, maxSidebarOffset);
-		}
-
-		requestLayout();
-	}
-
-	private int getDragSensitivityInPixels() {
-		int range = MAX_DRAG_SENSITIVITY - MIN_DRAG_SENSITIVITY;
-		return Math.round((1 - getDragSensitivity()) * range
-				+ MIN_DRAG_SENSITIVITY);
 	}
 
 	public Sidebar(final Context context) {
@@ -1154,7 +1723,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtMaximum(dragSensitivity, 1,
 				"The drag sensitivity must be at maximum 1");
 		this.dragSensitivity = dragSensitivity;
-		this.dragHelper = new DragHelper(getDragSensitivityInPixels());
+		this.dragHelper = new DragHelper(calculateDragSensitivity());
 	}
 
 	public final boolean isHiddenOnBackButton() {
@@ -1343,10 +1912,10 @@ public class Sidebar extends ViewGroup {
 			final int t, final int r, final int b) {
 		if (dragHelper.isResetted() && contentView.getAnimation() == null
 				&& sidebarView.getAnimation() == null) {
-			Pair<Integer, Integer> sidebarPos = calculateSidebarPosition();
+			Pair<Integer, Integer> sidebarPos = calculateSidebarConstraints();
 			sidebarView.layout(sidebarPos.first, t, sidebarPos.second, b);
 
-			Pair<Integer, Integer> contentPos = calculateContentPosition();
+			Pair<Integer, Integer> contentPos = calculateContentConstraints();
 			contentView
 					.setOverlayTransparency(calculateContentOverlayTransparency());
 			contentView.getLayoutParams().width = contentPos.second
