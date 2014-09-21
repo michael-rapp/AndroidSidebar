@@ -51,10 +51,11 @@ import de.mrapp.android.sidebar.view.SidebarView;
 
 /**
  * A custom view, which allows to show a sidebar, which overlaps the view's main
- * content at a specific edge. The sidebar can be shown and hidden in an
- * animated manner by either calling an appropriate method or via dragging on
- * the device's touch screen. Furthermore there are a lot of attributes, which
- * allow to specify the appearance and behavior of the sidebar.
+ * content and can be shown or hidden in an animated manner. The sidebar may be
+ * located at left or right edge of the parent view and its state can be changed
+ * by either calling an appropriate method or via dragging on the device's touch
+ * screen. Furthermore there are a lot of attributes, which allow to specify the
+ * appearance and behavior of the sidebar.
  * 
  * @author Michael Rapp
  * 
@@ -234,11 +235,7 @@ public class Sidebar extends ViewGroup {
 
 	/**
 	 * The ratio between the distance, the sidebar is moved by, when it becomes
-	 * shown or hidden, in relation to the distance, the content is moved by. If
-	 * set to 1.0, the content will be moved exactly as far as the sidebar, if
-	 * set to 0.0, the content will not moved at all and each value in between
-	 * causes the content to be moved by a fraction of the distance, the sidebar
-	 * is moved.
+	 * shown or hidden, in relation to the distance, the content is moved by.
 	 */
 	private float scrollRatio;
 
@@ -1479,45 +1476,95 @@ public class Sidebar extends ViewGroup {
 		return getContentOverlayTransparency() * (distance / totalDistance);
 	}
 
+	/**
+	 * Creates a new custom view, which allows to show a sidebar, which overlaps
+	 * the view's main content and can be shown or hidden in an animated manner.
+	 * 
+	 * @param context
+	 *            The context, the sidebar should belong to, as an instance of
+	 *            the class {@link Context}. The context may not be null
+	 */
 	public Sidebar(final Context context) {
 		this(context, null);
 	}
 
-	public Sidebar(final Context context, final AttributeSet attrs) {
-		super(context, attrs);
-		initialize(context, attrs);
+	/**
+	 * Creates a new custom view, which allows to show a sidebar, which overlaps
+	 * the view's main content and can be shown or hidden in an animated manner.
+	 * This constructor is called when a preference is being constructed from an
+	 * XML file, supplying attributes that were specified in the XML file. This
+	 * version uses a default style of 0, so the only attribute values applied
+	 * are those in the context's theme and the given attribute set.
+	 * 
+	 * @param context
+	 *            The context, the sidebar should belong to, as an instance of
+	 *            the class {@link Context}. The context may not be null
+	 * @param attributeSet
+	 *            The attributes of the XML tag that is inflating the
+	 *            preference, as an instance of the type {@link AttributeSet}.
+	 *            The attribute set may not be null
+	 */
+	public Sidebar(final Context context, final AttributeSet attributeSet) {
+		super(context, attributeSet);
+		initialize(context, attributeSet);
 	}
 
-	public Sidebar(final Context context, final AttributeSet attrs,
-			final int defStyle) {
-		super(context, attrs, defStyle);
-		initialize(context, attrs);
+	/**
+	 * Creates a new custom view, which allows to show a sidebar, which overlaps
+	 * the view's main content and can be shown or hidden in an animated manner.
+	 * This constructor allows subclasses to use their own base style when they
+	 * are inflating.
+	 * 
+	 * @param context
+	 *            The context, the sidebar should belong to, as an instance of
+	 *            the class {@link Context}. The context may not be null
+	 * @param attributeSet
+	 *            The attribute set, the preference's attributes should be
+	 *            obtained from, as an instance of the type {@link AttributeSet}
+	 * @param defaultStyle
+	 *            The default style to apply to this preference. If 0, no style
+	 *            will be applied (beyond what is included in the theme). This
+	 *            may either be an attribute resource, whose value will be
+	 *            retrieved from the current theme, or an explicit style
+	 *            resource
+	 */
+	public Sidebar(final Context context, final AttributeSet attributeSet,
+			final int defaultStyle) {
+		super(context, attributeSet, defaultStyle);
+		initialize(context, attributeSet);
 	}
 
+	/**
+	 * Returns, whether the sidebar is currently shown, or not.
+	 * 
+	 * @return True, if the sidebar is currently shown, false otherwise
+	 */
 	public final boolean isSidebarShown() {
 		return shown;
 	}
 
+	/**
+	 * Shows the sidebar, if it is currently hidden.
+	 */
 	public final void showSidebar() {
 		if (!isSidebarShown()) {
-			if (location == Location.LEFT) {
-				animateShowSidebar(calculateAnimationDistance(true));
-			} else {
-				animateShowSidebar(calculateAnimationDistance(true));
-			}
+			animateShowSidebar(calculateAnimationDistance(true));
 		}
 	}
 
+	/**
+	 * Hides the sidebar, if it is currently shown.
+	 */
 	public final void hideSidebar() {
 		if (isSidebarShown()) {
-			if (location == Location.LEFT) {
-				animateHideSidebar(calculateAnimationDistance(false));
-			} else {
-				animateHideSidebar(calculateAnimationDistance(false));
-			}
+			animateHideSidebar(calculateAnimationDistance(false));
 		}
 	}
 
+	/**
+	 * Hides the sidebar, if it is currently shown, or shows it, if it is
+	 * currently hidden.
+	 */
 	public final void toggleSidebar() {
 		if (isSidebarShown()) {
 			hideSidebar();
@@ -1526,34 +1573,87 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Returns the view, which is contained by the sidebar.
+	 * 
+	 * @return The view, which is contained by the sidebar, as an instance of
+	 *         the class {@link View} or null, if no sidebar view is set
+	 */
 	public final View getSidebarView() {
 		return sidebarView.getSidebarView();
 	}
 
+	/**
+	 * Sets the view, which should be contained by the sidebar.
+	 * 
+	 * @param sidebarViewId
+	 *            The resource id of the view, which should be set, as an
+	 *            {@link Integer} value. The id must be a valid resource id
+	 */
 	public final void setSidebarView(final int sidebarViewId) {
 		inflateSidebarView(InflaterFactory.createInflater(sidebarViewId));
 	}
 
+	/**
+	 * Sets the view, which should be contained by the sidebar.
+	 * 
+	 * @param sidebarView
+	 *            The view, which should be set, as an instance of the class
+	 *            {@link View}. The view may not be null
+	 */
 	public final void setSidebarView(final View sidebarView) {
 		inflateSidebarView(InflaterFactory.createInflater(sidebarView));
 	}
 
+	/**
+	 * Returns the view, which is used as the main content.
+	 * 
+	 * @return The view, which is used as the main content, as an instance of
+	 *         the class {@link View}
+	 */
 	public final View getContentView() {
 		return contentView.getContentView();
 	}
 
+	/**
+	 * Sets the view, which should be used as the main content.
+	 * 
+	 * @param contentViewId
+	 *            The resource id of the view, which should be set, as an
+	 *            {@link Integer} value. The id must be a valid resource id
+	 */
 	public final void setContentView(final int contentViewId) {
 		inflateContentView(InflaterFactory.createInflater(contentViewId));
 	}
 
+	/**
+	 * Sets the view, which should be used as the main content.
+	 * 
+	 * @param contentView
+	 *            The view, which should be set, as an instance of the class
+	 *            {@link View}. The view may not be null
+	 */
 	public final void setContentView(final View contentView) {
 		inflateContentView(InflaterFactory.createInflater(contentView));
 	}
 
+	/**
+	 * Returns the background of the sidebar.
+	 * 
+	 * @return The background of the sidebar as an instance of the class
+	 *         {@link Drawable} or null, if the default background is used
+	 */
 	public final Drawable getSidebarBackground() {
 		return sidebarBackground;
 	}
 
+	/**
+	 * Sets the background of the sidebar.
+	 * 
+	 * @param background
+	 *            The background, which should be set, as an instance of the
+	 *            class {@link Drawable}. The background may not be null
+	 */
 	public final void setSidebarBackground(final Drawable background) {
 		this.sidebarBackground = background;
 
@@ -1562,6 +1662,13 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Sets the background of the sidebar.
+	 * 
+	 * @param resourceId
+	 *            The resource id of the background, which should be set, as an
+	 *            {@link Integer} value. The id must be a valid resource id
+	 */
 	public final void setSidebarBackground(final int resourceId) {
 		if (resourceId == -1) {
 			this.sidebarBackground = null;
@@ -1575,10 +1682,25 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Returns the location of the sidebar.
+	 * 
+	 * @return The location of the sidebar as a value of the enum
+	 *         {@link Location}. The location may either be <code>LEFT</code> or
+	 *         <code>RIGHT</code>
+	 */
 	public final Location getLocation() {
 		return location;
 	}
 
+	/**
+	 * Sets the location of the sidebar.
+	 * 
+	 * @param location
+	 *            The location, which should be set, as a value of the enum
+	 *            {@link Location}. The location may either be <code>LEFT</code>
+	 *            or <code>RIGHT</code>
+	 */
 	public final void setLocation(final Location location) {
 		ensureNotNull(location, "The location may not be null");
 		this.location = location;
@@ -1590,27 +1712,64 @@ public class Sidebar extends ViewGroup {
 		requestLayout();
 	}
 
+	/**
+	 * Returns the speed of the animation, which is used to show or hide the
+	 * sidebar.
+	 * 
+	 * @return The speed of the animation in dp per millisecond as a
+	 *         {@link Float} value. The speed must be greater than 0
+	 */
 	public final float getAnimationSpeed() {
 		return DisplayUtil.convertPixelsToDp(getContext(), animationSpeed);
 	}
 
+	/**
+	 * Sets the speed of the animation, which is used to show or hide the
+	 * sidebar.
+	 * 
+	 * @param animationSpeed
+	 *            The speed, which should be set, in dp per millisecond as a
+	 *            {@link Float} value. The speed must be greater than 0
+	 */
 	public final void setAnimationSpeed(final float animationSpeed) {
 		this.animationSpeed = DisplayUtil.convertDpToPixels(getContext(),
 				animationSpeed);
 	}
 
+	/**
+	 * Returns the width of the sidebar in relation to the width of the parent
+	 * view.
+	 * 
+	 * @return The width of the sidebar in relation to the width of the parent
+	 *         view, as a {@link Float} value. The width must be at least 0 and
+	 *         at maximum 1
+	 */
 	public final float getSidebarWidth() {
 		return sidebarWidth;
 	}
 
+	/**
+	 * Sets the width of the sidebar in relation to the width of the parent
+	 * view.
+	 * 
+	 * @param sidebarWidth
+	 *            The width, which should be set, as a {@link Float} value. The
+	 *            width must be at least 0 and at maximum 1
+	 */
 	public final void setSidebarWidth(final float sidebarWidth) {
 		ensureAtLeast(sidebarWidth, 0, "The sidebar width must be at least 0");
-		ensureAtMaximum(sidebarWidth, 100,
-				"The sidebar width must be at maximum 100");
+		ensureAtMaximum(sidebarWidth, 1,
+				"The sidebar width must be at maximum 1");
 		this.sidebarWidth = sidebarWidth;
 		requestLayout();
 	}
 
+	/**
+	 * Returns the maximum width of the sidebar.
+	 * 
+	 * @return The maximum width of the sidebar in dp as an {@link Integer}
+	 *         value or -1, if the sidebar's width is not restricted
+	 */
 	public final int getMaxSidebarWidth() {
 		if (maxSidebarWidth != -1) {
 			return DisplayUtil.convertPixelsToDp(getContext(), maxSidebarWidth);
@@ -1619,6 +1778,14 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Sets the maximum width of the sidebar.
+	 * 
+	 * @param maxSidebarWidth
+	 *            The maximum width, which should be set, in dp as an
+	 *            {@link Integer} value or -1, if the sidebar's width should not
+	 *            be restricted
+	 */
 	public final void setMaxSidebarWidth(final int maxSidebarWidth) {
 		if (maxSidebarWidth != -1) {
 			setMaxSidebarWidthInPixels(DisplayUtil.convertDpToPixels(
@@ -1628,18 +1795,40 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Returns the amount of space in relation to the width of the parent view,
+	 * the sidebar is visible, even if it is currently hidden.
+	 * 
+	 * @return The offset of the sidebar as a {@link Float} value. The offset
+	 *         must be at least 0 and at maximum 1
+	 */
 	public final float getSidebarOffset() {
 		return sidebarOffset;
 	}
 
+	/**
+	 * Sets the amount of space in relation to the width of the parent view, the
+	 * sidebar should be visible, even if it is currently hidden.
+	 * 
+	 * @param sidebarOffset
+	 *            The offset of the sidebar, which should be set, as a
+	 *            {@link Float} value. The offset must be at least 0 and at
+	 *            maximum 1
+	 */
 	public final void setSidebarOffset(final float sidebarOffset) {
 		ensureAtLeast(sidebarOffset, 0, "The sidebar offset must be at least 0");
-		ensureAtMaximum(sidebarOffset, 100,
-				"The sidebar offset must be at maximum 100");
+		ensureAtMaximum(sidebarOffset, 1,
+				"The sidebar offset must be at maximum 1");
 		this.sidebarOffset = sidebarOffset;
 		requestLayout();
 	}
 
+	/**
+	 * Returns the maximum offset of the sidebar.
+	 * 
+	 * @return The maximum offset of the sidebar in dp as an {@link Integer}
+	 *         value or -1, if the sidebar's offset should not be restricted
+	 */
 	public final int getMaxSidebarOffset() {
 		if (maxSidebarOffset != -1) {
 			return DisplayUtil
@@ -1649,6 +1838,14 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Sets the maximum offset of the sidebar.
+	 * 
+	 * @param maxSidebarOffset
+	 *            The maximum offset of the sidebar, which should be set, in dp
+	 *            as an {@link Integer} value or -1, if the sidebar's offset
+	 *            should not be restricted
+	 */
 	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
 		if (maxSidebarOffset != -1) {
 			setMaxSidebarOffsetInPixels(DisplayUtil.convertDpToPixels(
@@ -1658,19 +1855,60 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Returns the content mode, which specifies how the main content is
+	 * handled, when the sidebar becomes shown or hidden.
+	 * 
+	 * @return The content mode as a value of the enum {@link ContentMode}. The
+	 *         content mode may either be <code>SCROLL</code> or
+	 *         <code>RESIZE</code>
+	 */
 	public final ContentMode getContentMode() {
 		return contentMode;
 	}
 
+	/**
+	 * Sets the content mode, which specifies how the main content should be
+	 * handled, when the sidebar becomes shown or hidden.
+	 * 
+	 * @param contentMode
+	 *            The content mode, which should be set, as a value of the enum
+	 *            {@link ContentMode}. The content mode may either be
+	 *            <code>SCROLL</code> or <code>RESIZE</code>
+	 */
 	public final void setContentMode(final ContentMode contentMode) {
 		this.contentMode = contentMode;
 		requestLayout();
 	}
 
+	/**
+	 * Returns the ratio between the distance, the sidebar is moved by, when it
+	 * becomes shown or hidden, in relation to the distance, the content is
+	 * moved by.
+	 * 
+	 * @return The scroll ratio as a {@link Float} value. The scroll ratio must
+	 *         be at least 0 and at maximum 1. If set to 1.0, the content is
+	 *         moved exactly as far as the sidebar, if set to 0.0, the content
+	 *         is not moved at all. The scroll ratio does only apply, if the
+	 *         content mode is set to <code>SCROLL</code>
+	 */
 	public final float getScrollRatio() {
 		return scrollRatio;
 	}
 
+	/**
+	 * Sets the ratio between the distance, the sidebar is moved by, when it
+	 * becomes shown or hidden, in relation to the distance, the content is
+	 * moved by.
+	 * 
+	 * @param scrollRatio
+	 *            The scroll ratio, which should be set, as a {@link Float}
+	 *            value. The scroll ratio must be at least 0 and at maximum 1.
+	 *            If set to 1.0, the content will be moved exactly as far as the
+	 *            sidebar, if set to 0.0, the content will not be moved at all.
+	 *            The scroll ratio will only apply, if the content mode is set
+	 *            to <code>SCROLL</code>
+	 */
 	public final void setScrollRatio(final float scrollRatio) {
 		ensureAtLeast(scrollRatio, 0, "The scroll ratio must be at least 0");
 		ensureAtMaximum(scrollRatio, 1, "The scroll ratio must be at maximum 1");
@@ -1678,38 +1916,105 @@ public class Sidebar extends ViewGroup {
 		requestLayout();
 	}
 
+	/**
+	 * Returns the drag mode, which specifies the region, where drag gestures
+	 * are recognized, when the sidebar is currently hidden.
+	 * 
+	 * @return The drag mode as a value of the enum {@link DragMode}. The drag
+	 *         mode may either be <code>BOTH</code>, <code>SIDEBAR_ONLY</code>,
+	 *         <code>CONTENT_ONLY</code> or <code>DISABLED</code>
+	 */
 	public final DragMode getDragModeWhenHidden() {
 		return dragModeWhenHidden;
 	}
 
+	/**
+	 * Sets the drag mode, which specifies the region, where drag gestures
+	 * should be recognized, when the sidebar is currently hidden.
+	 * 
+	 * @param dragMode
+	 *            The drag mode as a value of the enum {@link DragMode}. The
+	 *            drag mode may either be <code>BOTH</code>,
+	 *            <code>SIDEBAR_ONLY</code>, <code>CONTENT_ONLY</code> or
+	 *            <code>DISABLED</code>
+	 */
 	public final void setDragModeWhenHidden(final DragMode dragMode) {
 		ensureNotNull(dragMode, "The drag mode may not be null");
 		this.dragModeWhenHidden = dragMode;
 	}
 
+	/**
+	 * Returns the drag mode, which specifies the region, where drag gestures
+	 * are recognized, when the sidebar is currently shown.
+	 * 
+	 * @return The drag mode as a value of the enum {@link DragMode}. The drag
+	 *         mode may either be <code>BOTH</code>, <code>SIDEBAR_ONLY</code>,
+	 *         <code>CONTENT_ONLY</code> or <code>DISABLED</code>
+	 */
 	public final DragMode getDragModeWhenShown() {
 		return dragModeWhenShown;
 	}
 
+	/**
+	 * Sets the drag mode, which specifies the region, where drag gestures
+	 * should be recognized, when the sidebar is currently shown.
+	 * 
+	 * @param dragMode
+	 *            The drag mode as a value of the enum {@link DragMode}. The
+	 *            drag mode may either be <code>BOTH</code>,
+	 *            <code>SIDEBAR_ONLY</code>, <code>CONTENT_ONLY</code> or
+	 *            <code>DISABLED</code>
+	 */
 	public final void setDragModeWhenShown(final DragMode dragMode) {
 		ensureNotNull(dragMode, "The drag mode may not be null");
 		this.dragModeWhenShown = dragMode;
 	}
 
+	/**
+	 * Returns the distance, the sidebar has to be dragged until its state
+	 * changes, in relation to the whole distance.
+	 * 
+	 * @return The drag threshold as a {@link Float} value. The drag threshold
+	 *         must be at least 0 and at maximum 1
+	 */
 	public final float getDragThreshold() {
 		return dragThreshold;
 	}
 
+	/**
+	 * Sets the distance, the sidebar has to be dragged until its state changes,
+	 * in relation to the whole distance.
+	 * 
+	 * @param dragThreshold
+	 *            The drag threshold, which should be set, as a {@link Float}
+	 *            value. The drag threshold must be at least 0 and at maximum 1
+	 */
 	public final void setDragThreshold(final float dragThreshold) {
 		ensureAtLeast(dragThreshold, 0, "The threshold must be at least 0");
 		ensureAtMaximum(dragThreshold, 1, "The threshold must be at maximum 1");
 		this.dragThreshold = dragThreshold;
 	}
 
+	/**
+	 * Returns the sensitivity, which specifies the distance after which
+	 * dragging has an effect on the sidebar, in relation to an internal value
+	 * range.
+	 * 
+	 * @return The drag sensitivity as a {@link Float} value. The drag
+	 *         sensitivity must be at lest 0 and at maximum 1
+	 */
 	public final float getDragSensitivity() {
 		return dragSensitivity;
 	}
 
+	/**
+	 * Sets the sensitivity, which specifies the distance after which dragging
+	 * has an effect on the sidebar, in relation to an internal value range.
+	 * 
+	 * @param dragSensitivity
+	 *            The drag sensitivity, which should be set, as a {@link Float}
+	 *            value. The drag sensitivity must be at lest 0 and at maximum 1
+	 */
 	public final void setDragSensitivity(final float dragSensitivity) {
 		ensureAtLeast(dragSensitivity, 0,
 				"The drag sensitivity must be at least 0");
@@ -1719,34 +2024,93 @@ public class Sidebar extends ViewGroup {
 		this.dragHelper = new DragHelper(calculateDragSensitivity());
 	}
 
+	/**
+	 * Returns, whether the sidebar is hidden, when the device's back button is
+	 * clicked, or not.
+	 * 
+	 * @return True, if the sidebar is hidden, when the device's back button is
+	 *         clicked, false otherwise
+	 */
 	public final boolean isHiddenOnBackButton() {
 		return hideOnBackButton;
 	}
 
+	/**
+	 * Sets, whether the sidebar should be hidden, when the device's back button
+	 * is clicked, or not.
+	 * 
+	 * @param hideOnBackButton
+	 *            True, if the sidebar should be hidden, when the device's back
+	 *            button is clicked, false otherwise
+	 */
 	public final void hideOnBackButton(final boolean hideOnBackButton) {
 		this.hideOnBackButton = hideOnBackButton;
 	}
 
+	/**
+	 * Returns, whether the sidebar is hidden, when the content is clicked by
+	 * the user, or not.
+	 * 
+	 * @return True, if the sidebar is hidden, when the content is clicked by
+	 *         the user, false otherwise
+	 */
 	public final boolean isHiddenOnContentClick() {
 		return hideOnContentClick;
 	}
 
+	/**
+	 * Sets, whether the sidebar should be hidden, when the content is clicked
+	 * by the user, or not.
+	 * 
+	 * @param hideOnContentClick
+	 *            True, if the sidebar should be hidden, when the content is
+	 *            clicked by the user, false otherwise
+	 */
 	public final void hideOnContentClick(final boolean hideOnContentClick) {
 		this.hideOnContentClick = hideOnContentClick;
 	}
 
+	/**
+	 * Returns, whether the sidebar is shown, when it is clicked by the user, or
+	 * not.
+	 * 
+	 * @return True, if the sidebar is shown, when it is clicked by the user,
+	 *         false otherwise
+	 */
 	public final boolean isShownOnSidebarClick() {
 		return showOnSidebarClick;
 	}
 
+	/**
+	 * Sets, whether the sidebar should be shown, when it is clicked by the
+	 * user, or not.
+	 * 
+	 * @param showOnSidebarClick
+	 *            True, if the sidebar should be shown, when it is clicked by
+	 *            the user, false otherwise
+	 */
 	public final void showOnSidebarClick(final boolean showOnSidebarClick) {
 		this.showOnSidebarClick = showOnSidebarClick;
 	}
 
+	/**
+	 * Returns the color of the overlay, which is shown in front of the main
+	 * content, when the sidebar is shown.
+	 * 
+	 * @return The color of the overlay, which is shown in front of the main
+	 *         content, when the sidebar is shown, as an {@link Integer} value
+	 */
 	public final int getContentOverlayColor() {
 		return contentOverlayColor;
 	}
 
+	/**
+	 * Sets the color of the overlay, which is shown in front of the main
+	 * content, when the sidebar is shown.
+	 * 
+	 * @param contentOverlayColor
+	 *            The color, which should be set, as an {@link Integer} value
+	 */
 	public final void setContentOverlayColor(final int contentOverlayColor) {
 		this.contentOverlayColor = contentOverlayColor;
 
@@ -1755,10 +2119,31 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Returns the transparency of the overlay, which is shown in front of the
+	 * main content, when the sidebar is shown.
+	 * 
+	 * @return The transparency of the overlay, which is shown in front of the
+	 *         main content, when the sidebar is shown, as a {@link Float}
+	 *         value. The transparency must be at least 0 and at maximum 1. If
+	 *         the transparency is 1.0, the overlay is completely transparent,
+	 *         if it is 0.0, the overlay is not transparent at all
+	 */
 	public final float getContentOverlayTransparency() {
 		return contentOverlayTransparency;
 	}
 
+	/**
+	 * Sets the transparency of the overlay, which is shown in front of the main
+	 * content, when the sidebar is shown.
+	 * 
+	 * @param contentOverlayTransparency
+	 *            The transparency, which should be set, as a {@link Float}
+	 *            value. The transparency must be at least 0 and at maximum 1.
+	 *            If the transparency is 1.0, the overlay will be completely
+	 *            transparent, if it is 0.0, the overlay will not be transparent
+	 *            at all
+	 */
 	public final void setContentOverlayTransparency(
 			final float contentOverlayTransparency) {
 		ensureAtLeast(contentOverlayTransparency, 0,
@@ -1769,10 +2154,21 @@ public class Sidebar extends ViewGroup {
 		requestLayout();
 	}
 
+	/**
+	 * Returns the color of the sidebar's shadow.
+	 * 
+	 * @return The color of the sidebar's shadow as an {@link Integer} value
+	 */
 	public final int getShadowColor() {
 		return shadowColor;
 	}
 
+	/**
+	 * Sets the color of the sidebar's shadow.
+	 * 
+	 * @param shadowColor
+	 *            The color, which should be set, as an {@link Integer} value
+	 */
 	public final void setShadowColor(final int shadowColor) {
 		this.shadowColor = shadowColor;
 
@@ -1781,21 +2177,51 @@ public class Sidebar extends ViewGroup {
 		}
 	}
 
+	/**
+	 * Returns the width of the sidebar's shadow.
+	 * 
+	 * @return The width of the sidebar's shadow in dp as an {@link Integer}
+	 *         value. The width must be at least 0
+	 */
 	public final int getShadowWidth() {
 		return DisplayUtil.convertPixelsToDp(getContext(), shadowWidth);
 	}
 
+	/**
+	 * Sets the width of the sidebar's shadow.
+	 * 
+	 * @param shadowWidth
+	 *            The width, which should be set, in dp as an {@link Integer}
+	 *            value. The width must be at least 0
+	 */
 	public final void setShadowWidth(final int shadowWidth) {
 		setShadowWidthInPixels(DisplayUtil.convertDpToPixels(getContext(),
 				shadowWidth));
 	}
 
+	/**
+	 * Adds a new listener, which should be notified, when the sidebar becomes
+	 * shown or hidden.
+	 * 
+	 * @param listener
+	 *            The listener, which should be added, as an instance of the
+	 *            type {@link SidebarListener}. The listener may not be null
+	 */
 	public final void addSidebarListener(final SidebarListener listener) {
 		ensureNotNull(listener, "The listener may not be null");
 		listeners.add(listener);
 	}
 
+	/**
+	 * Removes a specific listener, which should not be notified, when the
+	 * sidebar becomes shown or hidden, anymore.
+	 * 
+	 * @param listener
+	 *            The listener, which should be removed, as an instance of the
+	 *            type {@link SidebarListener}. The listener may not be null
+	 */
 	public final void removeSidebarListener(final SidebarListener listener) {
+		ensureNotNull(listener, "The listener may not be null");
 		listeners.remove(listener);
 	}
 
