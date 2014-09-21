@@ -20,6 +20,8 @@ package de.mrapp.android.sidebar;
 import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
 import static de.mrapp.android.sidebar.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
+import static de.mrapp.android.sidebar.util.Condition.ensureGreaterThan;
+import static de.mrapp.android.sidebar.util.Condition.ensureLessThan;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -916,11 +918,11 @@ public class Sidebar extends ViewGroup {
 			if (getContentMode() == ContentMode.SCROLL) {
 				contentViewAnimation = new ContentViewScrollAnimation(
 						contentView, duration, distance, scrollRatio,
-						getContentOverlayTransparency(), show);
+						1 - getContentOverlayTransparency(), show);
 			} else {
 				contentViewAnimation = new ContentViewResizeAnimation(
 						contentView, duration, distance, getLocation(),
-						getContentOverlayTransparency(), show);
+						1 - getContentOverlayTransparency(), show);
 			}
 
 			Animation sidebarViewAnimation = new SidebarViewAnimation(distance,
@@ -1474,7 +1476,8 @@ public class Sidebar extends ViewGroup {
 	private float calculateContentOverlayTransparency() {
 		float totalDistance = mSidebarWidth - mOffset;
 		float distance = Math.abs(calculateAnimationDistance(false));
-		return getContentOverlayTransparency() * (distance / totalDistance);
+		return (1 - getContentOverlayTransparency())
+				* (distance / totalDistance);
 	}
 
 	/**
@@ -1548,7 +1551,11 @@ public class Sidebar extends ViewGroup {
 	 * Shows the sidebar, if it is currently hidden.
 	 */
 	public final void showSidebar() {
-		if (!isSidebarShown()) {
+		if (contentView == null) {
+			throw new IllegalStateException("The content view is not set");
+		} else if (sidebarView == null) {
+			throw new IllegalStateException("The sidebar view is not set");
+		} else if (!isSidebarShown()) {
 			animateShowSidebar(calculateAnimationDistance(true));
 		}
 	}
@@ -1557,7 +1564,11 @@ public class Sidebar extends ViewGroup {
 	 * Hides the sidebar, if it is currently shown.
 	 */
 	public final void hideSidebar() {
-		if (isSidebarShown()) {
+		if (contentView == null) {
+			throw new IllegalStateException("The content view is not set");
+		} else if (sidebarView == null) {
+			throw new IllegalStateException("The sidebar view is not set");
+		} else if (isSidebarShown()) {
 			animateHideSidebar(calculateAnimationDistance(false));
 		}
 	}
@@ -1741,6 +1752,8 @@ public class Sidebar extends ViewGroup {
 	 *            {@link Float} value. The speed must be greater than 0
 	 */
 	public final void setAnimationSpeed(final float animationSpeed) {
+		ensureGreaterThan(animationSpeed, 0,
+				"The animation speed must be greater than 0");
 		this.animationSpeed = DisplayUtil.convertDpToPixels(getContext(),
 				animationSpeed);
 	}
@@ -1769,6 +1782,8 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(sidebarWidth, 0, "The sidebar width must be at least 0");
 		ensureAtMaximum(sidebarWidth, 1,
 				"The sidebar width must be at maximum 1");
+		ensureGreaterThan(sidebarWidth, sidebarOffset,
+				"The sidebar width must be greater than the sidebar offset");
 		this.sidebarWidth = sidebarWidth;
 		requestLayout();
 	}
@@ -1797,6 +1812,8 @@ public class Sidebar extends ViewGroup {
 	 */
 	public final void setMaxSidebarWidth(final int maxSidebarWidth) {
 		if (maxSidebarWidth != -1) {
+			ensureGreaterThan(maxSidebarWidth, 0,
+					"The maximum sidebar width must be greater than 0");
 			setMaxSidebarWidthInPixels(DisplayUtil.convertDpToPixels(
 					getContext(), maxSidebarWidth));
 		} else {
@@ -1828,6 +1845,8 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(sidebarOffset, 0, "The sidebar offset must be at least 0");
 		ensureAtMaximum(sidebarOffset, 1,
 				"The sidebar offset must be at maximum 1");
+		ensureLessThan(sidebarOffset, sidebarWidth,
+				"The sidebar offset must be less than the sidebar width");
 		this.sidebarOffset = sidebarOffset;
 		requestLayout();
 	}
@@ -1857,6 +1876,8 @@ public class Sidebar extends ViewGroup {
 	 */
 	public final void setMaxSidebarOffset(final int maxSidebarOffset) {
 		if (maxSidebarOffset != -1) {
+			ensureGreaterThan(maxSidebarOffset, 0,
+					"The maximum sidebar offset must be greater than 0");
 			setMaxSidebarOffsetInPixels(DisplayUtil.convertDpToPixels(
 					getContext(), maxSidebarOffset));
 		} else {
@@ -1886,6 +1907,7 @@ public class Sidebar extends ViewGroup {
 	 *            <code>SCROLL</code> or <code>RESIZE</code>
 	 */
 	public final void setContentMode(final ContentMode contentMode) {
+		ensureNotNull(contentMode, "The content mode may not be null");
 		this.contentMode = contentMode;
 		requestLayout();
 	}
@@ -1999,8 +2021,9 @@ public class Sidebar extends ViewGroup {
 	 *            value. The drag threshold must be at least 0 and at maximum 1
 	 */
 	public final void setDragThreshold(final float dragThreshold) {
-		ensureAtLeast(dragThreshold, 0, "The threshold must be at least 0");
-		ensureAtMaximum(dragThreshold, 1, "The threshold must be at maximum 1");
+		ensureAtLeast(dragThreshold, 0, "The drag threshold must be at least 0");
+		ensureAtMaximum(dragThreshold, 1,
+				"The drag threshold must be at maximum 1");
 		this.dragThreshold = dragThreshold;
 	}
 
@@ -2159,7 +2182,7 @@ public class Sidebar extends ViewGroup {
 				"The transparency must be at least 0");
 		ensureAtMaximum(contentOverlayTransparency, 1,
 				"The transparency must be at maximum 1");
-		this.contentOverlayTransparency = 1 - contentOverlayTransparency;
+		this.contentOverlayTransparency = contentOverlayTransparency;
 		requestLayout();
 	}
 
