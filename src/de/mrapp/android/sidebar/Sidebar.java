@@ -1296,7 +1296,10 @@ public class Sidebar extends ViewGroup {
 						- contentPos.first;
 				contentView.layout(contentPos.first, contentView.getTop(),
 						contentPos.second, contentView.getBottom());
-				contentView.requestLayout();
+
+				if (getContentMode() == ContentMode.RESIZE) {
+					contentView.requestLayout();
+				}
 
 				return true;
 			}
@@ -2340,7 +2343,10 @@ public class Sidebar extends ViewGroup {
 			contentView.getLayoutParams().width = contentPos.second
 					- contentPos.first;
 			contentView.layout(contentPos.first, t, contentPos.second, b);
-			contentView.requestLayout();
+
+			if (getContentMode() == ContentMode.RESIZE) {
+				contentView.requestLayout();
+			}
 		}
 	}
 
