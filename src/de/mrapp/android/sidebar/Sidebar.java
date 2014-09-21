@@ -152,7 +152,7 @@ public class Sidebar extends ViewGroup {
 	 * Specifies, whether by default the sidebar should be shown, when it is
 	 * clicked by the user, or not.
 	 */
-	protected static final boolean DEFAULT_SHOW_ON_SIDEBAR_CLICKED = true;
+	protected static final boolean DEFAULT_SHOW_ON_SIDEBAR_CLICK = true;
 
 	/**
 	 * The default color of the overlay, which is shown in front of the main
@@ -715,7 +715,7 @@ public class Sidebar extends ViewGroup {
 	private void obtainShowOnSidebarClick(final TypedArray typedArray) {
 		showOnSidebarClick(typedArray.getBoolean(
 				R.styleable.Sidebar_showOnSidebarClick,
-				DEFAULT_SHOW_ON_SIDEBAR_CLICKED));
+				DEFAULT_SHOW_ON_SIDEBAR_CLICK));
 	}
 
 	/**
