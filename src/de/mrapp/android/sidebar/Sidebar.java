@@ -997,6 +997,36 @@ public class Sidebar extends ViewGroup {
 	}
 
 	/**
+	 * Calculates and returns the distance, the sidebar has to be moved by when
+	 * it should become shown or hidden, depending on its current position.
+	 * 
+	 * @param show
+	 *            True, if the sidebar should become shown, false otherwise
+	 * @return The distance, the sidebar has to be moved by, as a {@link Float}
+	 *         value
+	 */
+	private float calculateAnimationDistance(final boolean show) {
+		float distance;
+
+		if (getLocation() == Location.LEFT) {
+			if (show) {
+				distance = mSidebarWidth + shadowWidth - sidebarView.getRight();
+			} else {
+				distance = mOffset + shadowWidth - sidebarView.getRight();
+			}
+		} else {
+			if (show) {
+				distance = getWidth() - mSidebarWidth - shadowWidth
+						- sidebarView.getLeft();
+			} else {
+				distance = mContentWidth - shadowWidth - sidebarView.getLeft();
+			}
+		}
+
+		return distance;
+	}
+
+	/**
 	 * Calculates the duration of the animation, which is used to hide or show
 	 * the sidebar, depending on a specific distance and speed.
 	 * 
@@ -1289,15 +1319,15 @@ public class Sidebar extends ViewGroup {
 
 		if (getLocation() == Location.LEFT) {
 			if (sidebarView.getRight() - shadowWidth > thresholdPosition) {
-				animateShowSidebar(calculateSnapDistance(true), speed);
+				animateShowSidebar(calculateAnimationDistance(true), speed);
 			} else {
-				animateHideSidebar(calculateSnapDistance(false), speed);
+				animateHideSidebar(calculateAnimationDistance(false), speed);
 			}
 		} else {
 			if (sidebarView.getLeft() + shadowWidth < thresholdPosition) {
-				animateShowSidebar(calculateSnapDistance(true), speed);
+				animateShowSidebar(calculateAnimationDistance(true), speed);
 			} else {
-				animateHideSidebar(calculateSnapDistance(false), speed);
+				animateHideSidebar(calculateAnimationDistance(false), speed);
 			}
 		}
 	}
@@ -1419,43 +1449,6 @@ public class Sidebar extends ViewGroup {
 		return position;
 	}
 
-	private float calculateSnapDistance(final boolean shouldBeShown) {
-		float distance = 0;
-
-		if (getLocation() == Location.LEFT) {
-			if (shouldBeShown) {
-				distance = mSidebarWidth + shadowWidth - sidebarView.getRight();
-			} else {
-				distance = mOffset + shadowWidth - sidebarView.getRight();
-			}
-		} else {
-			if (shouldBeShown) {
-				distance = getWidth() - mSidebarWidth - shadowWidth
-						- sidebarView.getLeft();
-			} else {
-				distance = mContentWidth - shadowWidth - sidebarView.getLeft();
-			}
-		}
-
-		return distance;
-	}
-
-	private float calculateAnimationDistance() {
-		float distance = 0.0f;
-
-		distance = mSidebarWidth - mOffset;
-
-		if (!isSidebarShown()) {
-			distance = distance * -1;
-		}
-
-		if (getLocation() == Location.LEFT) {
-			distance = distance * -1;
-		}
-
-		return distance;
-	}
-
 	/**
 	 * Calculates and returns the distance after which dragging has an effect on
 	 * the sidebar in pixels. The distance depends on the current set drag
@@ -1482,7 +1475,7 @@ public class Sidebar extends ViewGroup {
 	 */
 	private float calculateContentOverlayTransparency() {
 		float totalDistance = mSidebarWidth - mOffset;
-		float distance = Math.abs(calculateSnapDistance(false));
+		float distance = Math.abs(calculateAnimationDistance(false));
 		return getContentOverlayTransparency() * (distance / totalDistance);
 	}
 
@@ -1508,9 +1501,9 @@ public class Sidebar extends ViewGroup {
 	public final void showSidebar() {
 		if (!isSidebarShown()) {
 			if (location == Location.LEFT) {
-				animateShowSidebar(calculateAnimationDistance());
+				animateShowSidebar(calculateAnimationDistance(true));
 			} else {
-				animateShowSidebar(calculateAnimationDistance());
+				animateShowSidebar(calculateAnimationDistance(true));
 			}
 		}
 	}
@@ -1518,9 +1511,9 @@ public class Sidebar extends ViewGroup {
 	public final void hideSidebar() {
 		if (isSidebarShown()) {
 			if (location == Location.LEFT) {
-				animateHideSidebar(calculateAnimationDistance());
+				animateHideSidebar(calculateAnimationDistance(false));
 			} else {
-				animateHideSidebar(calculateAnimationDistance());
+				animateHideSidebar(calculateAnimationDistance(false));
 			}
 		}
 	}
