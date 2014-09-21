@@ -100,6 +100,27 @@ public final class Condition {
 	}
 
 	/**
+	 * Ensures, that a {@link Float} value is less than a reference value.
+	 * Otherwise an {@link IllegalArgumentException} will be thrown.
+	 * 
+	 * @param value
+	 *            The value, which should be checked, as a {@link Float} value
+	 * @param referenceValue
+	 *            The value, the given value must be less than, as a
+	 *            {@link Float} value
+	 * @param exceptionMessage
+	 *            The message of the {@link IllegalArgumentException}, which is
+	 *            thrown, if the given value is greater or equal than the
+	 *            reference value, as a {@link String}
+	 */
+	public static void ensureLessThan(final float value,
+			final float referenceValue, final String exceptionMessage) {
+		if (value >= referenceValue) {
+			throw new IllegalArgumentException(exceptionMessage);
+		}
+	}
+
+	/**
 	 * Ensures, that a {@link Float} value is greater than a reference value.
 	 * Otherwise an {@link IllegalArgumentException} will be thrown.
 	 * 
