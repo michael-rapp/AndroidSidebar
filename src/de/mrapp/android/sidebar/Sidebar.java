@@ -909,8 +909,7 @@ public class Sidebar extends ViewGroup {
 	private void animateSidebar(final boolean show, final float distance,
 			final float animationSpeed,
 			final AnimationListener animationListener) {
-		if (contentView.getAnimation() == null
-				&& sidebarView.getAnimation() == null) {
+		if (!isDragging() && !isAnimationRunning()) {
 			long duration = calculateAnimationDuration(distance, animationSpeed);
 			Animation contentViewAnimation;
 
@@ -1278,8 +1277,7 @@ public class Sidebar extends ViewGroup {
 	 *         otherwise
 	 */
 	private boolean handleDrag(final float dragPosition) {
-		if (contentView.getAnimation() == null
-				&& sidebarView.getAnimation() == null) {
+		if (!isAnimationRunning()) {
 			dragHelper.update(dragPosition);
 
 			if (dragHelper.hasThresholdBeenReached()
@@ -2228,6 +2226,29 @@ public class Sidebar extends ViewGroup {
 		listeners.remove(listener);
 	}
 
+	/**
+	 * Returns, whether a drag gesture, which moves the sidebar, is currently
+	 * performed, or not.
+	 * 
+	 * @return True, if a drag gesture, which moves the sidebar, is currently
+	 *         performed, false otherwise
+	 */
+	public final boolean isDragging() {
+		return !dragHelper.isResetted() && dragHelper.hasThresholdBeenReached();
+	}
+
+	/**
+	 * Returns, whether an animation, which moves the sidebar, is currently
+	 * running, or not.
+	 * 
+	 * @return True, if an animation, which moves the sidebar, is currently
+	 *         running, false otherwise
+	 */
+	public final boolean isAnimationRunning() {
+		return contentView.getAnimation() != null
+				|| sidebarView.getAnimation() != null;
+	}
+
 	@Override
 	public final boolean onKeyPreIme(final int keyCode, final KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK
@@ -2332,8 +2353,7 @@ public class Sidebar extends ViewGroup {
 	@Override
 	protected final void onLayout(final boolean changed, final int l,
 			final int t, final int r, final int b) {
-		if (dragHelper.isResetted() && contentView.getAnimation() == null
-				&& sidebarView.getAnimation() == null) {
+		if (!isDragging() && !isAnimationRunning()) {
 			Pair<Integer, Integer> sidebarPos = calculateSidebarConstraints();
 			sidebarView.layout(sidebarPos.first, t, sidebarPos.second, b);
 
