@@ -2245,8 +2245,11 @@ public class Sidebar extends ViewGroup {
 	 *         running, false otherwise
 	 */
 	public final boolean isAnimationRunning() {
-		return contentView.getAnimation() != null
-				|| sidebarView.getAnimation() != null;
+		if (sidebarView != null) {
+			return sidebarView.getAnimation() != null;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
