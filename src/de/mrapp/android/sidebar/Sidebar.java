@@ -1581,7 +1581,11 @@ public class Sidebar extends ViewGroup {
 	 *         the class {@link View} or null, if no sidebar view is set
 	 */
 	public final View getSidebarView() {
-		return sidebarView.getSidebarView();
+		if (sidebarView != null) {
+			return sidebarView.getSidebarView();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -1613,7 +1617,11 @@ public class Sidebar extends ViewGroup {
 	 *         the class {@link View}
 	 */
 	public final View getContentView() {
-		return contentView.getContentView();
+		if (contentView != null) {
+			return contentView.getContentView();
+		} else {
+			return null;
+		}
 	}
 
 	/**
