@@ -749,6 +749,9 @@ public class Sidebar extends ViewGroup {
 		if (sidebarView != null) {
 			sidebarView.setShadowWidth(shadowWidth);
 		}
+
+		measureSidebarWidth();
+		requestLayout();
 	}
 
 	/**
@@ -762,11 +765,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(maxSidebarWidth, -1,
 				"The max sidebar width must be at least -1");
 		this.maxSidebarWidth = maxSidebarWidth;
-
-		if (maxSidebarWidth != -1) {
-			mSidebarWidth = Math.max(mSidebarWidth, maxSidebarWidth);
-		}
-
+		measureSidebarWidth();
 		requestLayout();
 	}
 
@@ -781,11 +780,7 @@ public class Sidebar extends ViewGroup {
 		ensureAtLeast(maxSidebarOffset, -1,
 				"The max sidebar offset must be at least -1");
 		this.maxSidebarOffset = maxSidebarOffset;
-
-		if (maxSidebarOffset != -1) {
-			mOffset = Math.min(mOffset, maxSidebarOffset);
-		}
-
+		measureSidebarOffset();
 		requestLayout();
 	}
 
@@ -991,6 +986,40 @@ public class Sidebar extends ViewGroup {
 	private void notifyOnSidebarHidden() {
 		for (SidebarListener listener : listeners) {
 			listener.onSidebarHidden(this);
+		}
+	}
+
+	/**
+	 * Measures the sidebar's actual width in pixels, depending on the width of
+	 * the parent view.
+	 */
+	private void measureSidebarWidth() {
+		mSidebarWidth = Math.round(getWidth() * sidebarWidth);
+
+		if (maxSidebarWidth != -1) {
+			mSidebarWidth = Math.min(maxSidebarWidth, mSidebarWidth);
+		}
+
+		if (sidebarView != null) {
+			sidebarView.getLayoutParams().width = mSidebarWidth + shadowWidth;
+		}
+	}
+
+	/**
+	 * Measures the sidebar's actual offset in pixels, depending on the width of
+	 * the parent view.
+	 */
+	private void measureSidebarOffset() {
+		mOffset = Math.round(getWidth() * sidebarOffset);
+
+		if (maxSidebarOffset != -1) {
+			mOffset = Math.min(maxSidebarOffset, mOffset);
+		}
+
+		mContentWidth = getWidth() - mOffset;
+
+		if (contentView != null) {
+			contentView.getLayoutParams().width = mContentWidth;
 		}
 	}
 
@@ -1785,6 +1814,7 @@ public class Sidebar extends ViewGroup {
 		ensureGreaterThan(sidebarWidth, sidebarOffset,
 				"The sidebar width must be greater than the sidebar offset");
 		this.sidebarWidth = sidebarWidth;
+		measureSidebarWidth();
 		requestLayout();
 	}
 
@@ -1848,6 +1878,7 @@ public class Sidebar extends ViewGroup {
 		ensureLessThan(sidebarOffset, sidebarWidth,
 				"The sidebar offset must be less than the sidebar width");
 		this.sidebarOffset = sidebarOffset;
+		measureSidebarOffset();
 		requestLayout();
 	}
 
@@ -2365,23 +2396,8 @@ public class Sidebar extends ViewGroup {
 	protected final void onSizeChanged(final int width, final int height,
 			final int oldWidth, final int oldHeigth) {
 		super.onSizeChanged(width, height, oldWidth, oldHeigth);
-
-		mSidebarWidth = Math.round(width * sidebarWidth);
-
-		if (maxSidebarWidth != -1) {
-			mSidebarWidth = Math.min(maxSidebarWidth, mSidebarWidth);
-		}
-
-		mOffset = Math.round(width * sidebarOffset);
-
-		if (maxSidebarOffset != -1) {
-			mOffset = Math.min(maxSidebarOffset, mOffset);
-		}
-
-		mContentWidth = width - mOffset;
-
-		sidebarView.getLayoutParams().width = mSidebarWidth + shadowWidth;
-		contentView.getLayoutParams().width = mContentWidth;
+		measureSidebarWidth();
+		measureSidebarOffset();
 	}
 
 	@Override
