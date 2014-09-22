@@ -3,7 +3,7 @@ AndroidSidebar - RELEASE NOTES
 
 
 Version: 		1.0.0 
-Release date:	09.21.2014
+Release date:	09.22.2014
 --------------------------
 
 The first stable release, which provides a Preference implementation, which provides a custom view 
