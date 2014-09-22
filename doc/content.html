@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>AndroidSidebar &#150; Documentation: Content</title>
+        <link rel=stylesheet type=text/css href=style.css />
+        <link rel="icon" type="image/png" href="images/favicon.png" />
+    </head>
+    
+    <body>
+        <div class="content">
+            <div class="header">
+                <h1>AndroidSidebar &#150; Documentation</h1>
+                <h2>Documentation of the Android-library "AndroidSidebar".</h2>
+            </div>
+
+            <div class="navigation">
+                <div class="navigation-item"><a href="index.html">GENERAL</a></div>
+                <div class="navigation-item-selected"><a href="content.html">CONTENT</a></div>
+                <div class="navigation-item"><a href="examples.html">EXAMPLES</a></div>
+            </div>
+
+            <div class="text">
+                <h3>Content</h3>
+        
+                <h4>Table of contents</h4>
+
+                <ol class="table-of-contents">
+                    <li><a href="content.html#implementation-details">Implementation details</a></li>
+                    <li><a href="content.html#showing-or-hiding-the-sidebar">Showing or hiding the sidebar</a></li>
+                    <li><a href="content.html#observing-the-sidebars-state">Observing the sidebar's state</a></li>
+                    <li><a href="content.html#getter-and-setter-methods">Getter and setter methods</a></li>
+                    <li><a href="content.html#xml-attributes">XML attributes</a></li>
+                </ol>
+
+                <h4><a name="implementation-details">1 Implementation details</a></h4>
+
+                <p>The sidebar, which is provided by this library, is implemented as a custom view within the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a>. This class is delegated from the class <a href="http://developer.android.com/reference/android/view/ViewGroup.html" target="_blank" class="code">ViewGroup</a> of the Android API. Just like its parent class, the subclass provides three different constructors. The one of them, which only expects a <tt>Context</tt> object to be passed as a parameter, can be used to instantiate the <tt>Sidebar</tt> programatically, the others are implicitly used by the Android API, when the view is defined by using a XML resource file.</p>
+
+                <p>Furthermore, the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a> overrides the method <tt>onSaveInstanceState():Parceable</tt> to store the sidebar's current state within an instance of the class <a href="javadoc/de/mrapp/android/sidebar/savedstate/SidebarSavedState.html" target="_blank" class="code">SidebarSavedState</a> when the view is destroyed, e.g. when the activity, it belongs to, loses its focus. This method is implicitly called by the Android API. For restoring a saved state afterwards, the method <tt>onRestoreInstanceState(Parceable):void</tt>, which is also implicitly called, is overridden. Overriding these methods i.a. ensures, that the sidebar remains shown, when the orientation of the Android device changes.</p>
+
+                <p>The view <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a> is designed to be the parent view for two child views: The view, which contains the main content, and the view, which contains the sidebar. These child views are implemented in the class <a href="javadoc/de/mrapp/android/sidebar/view/ContentView.html" target="_blank" class="code">ContentView</a>, which contains the main content as wells as the overlay, which is shown when the sidebar is shwon, respectively the class <a href="javadoc/de/mrapp/android/sidebar/view/SidebarView.html" target="_blank" class="code">SidebarView</a>, which contains the sidebar and a shadow, which is rendered in front of the content. The main task of the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a> is to calculate the position and size of its child views, depending on the sidebar's current state, e.g. the location of the sidebar, whether it is currently shown or whether it is currently dragged by the user. Furthermore, the different animations, which are located within the package <a href="javadoc/de/mrapp/android/sidebar/animation/package-summary.html" target="_blank" class="code">de.mrapp.android.sidebar.animation</a> are used to animate the <a href="javadoc/de/mrapp/android/sidebar/view/ContentView.html" target="_blank" class="code">ContentView</a> and <a href="javadoc/de/mrapp/android/sidebar/view/SidebarView.html" target="_blank" class="code">SidebarView</a>, when the sidebar should become shown or hidden.</p>
+
+                <h4><a name="showing-or-hiding-the-sidebar">2 Showing or hiding the sidebar</a></h4>
+
+                <p>There are multiple possibilities to show or hide the sidebar. Besides the possibility to use dedicated methods, which are provided by the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a>, the sidebar can be moved by performing drag gestures on the touch screen or it can be shown or hidden by clicking the main content, the sidebar itself or the back button of the Android device. The behavior of the sidebar towards these possibilities can be freely adjusted using setter methods or XML attributes, which are discussed in the following sections. If the sidebar should be shown or hidden programatically instead, the methods <tt>showSidebar():void</tt>, <tt>hideSidebar():void</tt> or <tt>toggleSidebar():void</tt> of the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a> can be used instead. Toggeling the sidebar means, that the sidebar will become shown, if it is currently hidden or vice versa. To retrieve, whether the sidebar is currently shown or not, the method <tt>isSidebarShown():boolean</tt> is provided.</p>
+
+                <div class="warning-box">These methods are only allowed to be called after the sidebar's child views are initialized, otherwise an <tt>IllegalStateException</tt> will be thrown. This may be the case, if the sidebar is instantiated programatically and one of the methods mentioned above is called before the <tt>setContentView</tt>- and <tt>setSidebarView</tt>-methods are called to inflate the sidebar's child views (see the following section for further details about these methods).</div>
+
+                <h4><a name="observing-the-sidebars-state">3 Observing the sidebar's state</a></h4>
+
+                <p>The type <a href="javadoc/de/mrapp/android/sidebar/SidebarListener.html" target="_blank" class="code">SidebarListener</a> defines an interface, which may be used by implementing classes to be notified, when a sidebar becomes shown or hidden. Therefore a class instance, which implements this interface, must be registered by using the method <tt>addSidebarListener(SidebarListener):void</tt> of the class  <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a>. This will cause the method <tt>onSidebarShown(Sidebar):void</tt>, respectively the method <tt>onSidebarHidden(Sidebar):void</tt>, to be called when the sidebar becomes shown or hidden. When no events about the sidebar's state should be received anymore, the listener can be unregistered by calling the method <tt>removeSidebarListener(SidebarListener):void</tt> of the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a> afterwards.</p>
+
+                <h4><a name="getter-and-setter-methods">4 Getter and setter methods</a></h4>
+
+                <p>For setting the attributes of the sidebar, if it has been instantiated programatically, the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a> provides various getter and setter methods, which are documented in the following table. An example on how to instanciate a <tt>Sidebar</tt> and set its attributes programatically is available in the "Examples" section of this documentation.</p>
+
+                <table>
+                    <tr>
+                        <th>Getter and setter methods</th>
+                        <th>Explaination</th>
+                        <th style="min-width: 90px;">Default value</th>
+                        <th style="min-width: 190px;">Restrictions</th>
+                    </tr>
+                    <tr>
+                        <td><tt>getSidebarView():View</br>setSidebarView(View):void</br>setSidebarView(int):void</tt></td>
+                        <td>Returns or sets the view, which is used as the sidebar. The view can either be passed as an instance of the class <a href="http://developer.android.com/reference/android/view/View.html" target="_blank" class="code">View</a> or as a resource ID.</td>
+                        <td><center><tt>null</tt></center></td>
+                        <td>The view may not be null, respectively it must be referenced by a valid resource ID</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getContentView():View</br>setContentView(View):void</br>setContentView(int):void</tt></td>
+                        <td>Returns or sets the view, which is used as the main content. The view can either be passed as an instance of the class <a href="http://developer.android.com/reference/android/view/View.html" target="_blank" class="code">View</a> or as a resource ID.</td>
+                        <td><center><tt>null</tt></center></td>
+                        <td>The view may not be null, respectively it must be referenced by a valid resource ID</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getSidebarBackground():Drawable</br>setSidebarBackground(Drawable):void</br>setSidebarBackground(int):void</tt></td>
+                        <td>Returns or sets the background of the sidebar. The background can either be passed as an instance of the class <a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank" class="code">Drawable</a> or as a resource ID. If set to null or -1, a default background will be used.</td>
+                        <td><center><tt>null</tt></center></td>
+                        <td>The background must be referenced by a valid resource ID</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getLocation():Location</br>setLocation(Location):void</tt></td>
+                        <td>Returns or sets the location of the sidebar.</td>
+                        <td><center><tt>RIGHT</tt></center></td>
+                        <td>The location may not be null</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getAnimationSpeed():float</br>setAnimationSpeed(float):void</tt></td>
+                        <td>Returns or sets the speed of the animation, which is used to show or hide the sidebar, in dp per millisecond.</td>
+                        <td><center><tt>1.5</tt></center></td>
+                        <td>The value must be greater than 0</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getSidebarWidth():float</br>setSidebarWidth(float):void</tt></td>
+                        <td>Returns or sets the width of the sidebar in relation to the width of its parent view.</td>
+                        <td><center><tt>0.75</tt></center></td>
+                        <td>The value must be at least 0, at maximum 1 and greater than the offset</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getMaxSidebarWidth():int</br>setMaxSidebarWidth(int):void</tt></td>
+                        <td>Returns or sets the maximum width of the sidebar in dp. If set to -1, the width of the sidebar is not restricted.</td>
+                        <td><center><tt>-1</tt></center></td>
+                        <td>If the value is not -1, it must be greater than 0</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getSidebarOffset():float</br>setSidebarOffset(float):void</tt></td>
+                        <td>Returns or sets the amount of space in relation to the width of its parent view, the sidebar is visible, even if it is not shown.</td>
+                        <td><center><tt>0.125</tt></center></td>
+                        <td>The value must be at leat 0 and at maximum 1</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getMaxSidebarOffset():int</br>setMaxSidebarOffset(int):void</tt></td>
+                        <td>Returns or sets the maximum offset of the sidebar in dp. If set to -1, the offset of the sidebar is not restricted.</td>
+                        <td><center><tt>-1</tt></center></td>
+                        <td>If the value is not -1, it must be greater than 0</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getContentMode():ContentMode</br>setContentMode(ContentMode):void</tt></td>
+                        <td>Returns or sets the content mode, which specifies how the main content is handled, when the sidebar becomes shown or hidden. If set to <tt>SCROLL</tt>, the content will be moved along with the sidebar, if set to <tt>RESIZE</tt>, the content will be resized.</td>
+                        <td><center><tt>SCROLL</tt></center></td>
+                        <td>The content mode may not be null</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getScrollRatio():float</br>setScrollRatio(float):void</tt></td>
+                        <td>Returns or sets the ratio between the distance, the sidebar is moved by, when it becomes shown or hidden, in relation to the distance, the content is moved by. The scroll ratio does only apply, if the content mode is set to <tt>SCROLL</tt>.</td>
+                        <td><center><tt>0.5</tt></center></td>
+                        <td>The value must be at least 0 and at maximum 1</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getDragModeWhenHidden():DragMode</br>setDragModeWhenHidden(DragMode):void</tt></td>
+                        <td>Returns or sets the drag mode, which specifies the region where drag gestures are recognized, when the sidebar is hidden. If set to <tt>BOTH</tt>, all gestures will be recognized, if set to <tt>SIDEBAR_ONLY</tt>, dragging is only allowed on the sidebar, if set to <tt>CONTENT_ONLY</tt>, dragging is only allowed on the content and if set to <tt>DISABLED</tt> no dragging is allowed at all.</td>
+                        <td><center><tt>SIDEBAR_ONLY</tt></center></td>
+                        <td>The drag mode may not be null</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getDragModeWhenShown():DragMode</br>setDragModeWhenShown(DragMode):void</tt></td>
+                        <td>Returns or sets the drag mode, which specifies the region where drag gestures are recognized, when the sidebar is shown. If set to <tt>BOTH</tt>, all gestures will be recognized, if set to <tt>SIDEBAR_ONLY</tt>, dragging is only allowed on the sidebar, if set to <tt>CONTENT_ONLY</tt>, dragging is only allowed on the content and if set to <tt>DISABLED</tt> no dragging is allowed at all.</td>
+                        <td><center><tt>BOTH</tt></center></td>
+                        <td>The drag mode may not be null</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getDragThreshold():float</br>setDragThreshold(float):void</tt></td>
+                        <td>Returns or sets the distance, the sidebar has to be dragged by, until its state changes from shown to hidden or vice versa, in relation to the whole distance, the sidebar has to be moved when changing its state.</td>
+                        <td><center><tt>0.25</tt></center></td>
+                        <td>The value must be at least 0 and at maximum 1</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getDragSensitivity():float</br>setDragSensitivity(float):void</tt></td>
+                        <td>Returns or sets the sensitivity, which specifies the distance after which dragging has an effect on the sidebar, in relation to an internal value range. The value range starts at 10 pixels and ends at 260 pixels.</td>
+                        <td><center><tt>0.25</tt></center></td>
+                        <td>The value must be at least 0 and at maximum 1</td>
+                    </tr>
+                    <tr>
+                        <td><tt>isHiddenOnBackButton():boolean</br>hideOnBackButton(boolean):void</tt></td>
+                        <td>Returns or sets, whether the sidebar should be hidden, when the back button of the Android device is clicked, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>isHiddenOnContentClick():boolean</br>hideOnContentClick(boolean):void</tt></td>
+                        <td>Returns or sets, whether the sidebar should be hidden, when the main content is clicked by the user, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>isShownOnSidebarClick():boolean</br>showOnSidebarClick(boolean):void</tt></td>
+                        <td>Returns or sets, whether the sidebar should be shown, when it is clicked by the user, or not.</td>
+                        <td><center><tt>true</tt></center></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getContentOverlayColor():int</br>setContentOverlayColor(int):void</tt></td>
+                        <td>Returns or sets the color of the overlay, which is shown in front of the main content, when the sidebar is shown. If no overlay should be shown, the color may be set to be transparent.</td>
+                        <td><center><tt>BLACK</tt></center></td>
+                        <td>The value must represent a valid color (refer <a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank">this</a> link for further information)</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getContentOverlayTransparency():float</br>setContentOverlayTransparency(float):void</tt></td>
+                        <td>Returns or sets the transparency of the overlay, which is shown in front of the main content, when the sidebar is shown. If set to 1, the overlay will be completely transparent, if set to 0, the overlay will not be transparent at all.</td>
+                        <td><center><tt>0.5</tt></center></td>
+                        <td>The value must be at least 0 and at maximum 1</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getShadowColor():int</br>setShadowWidth(int):void</tt></td>
+                        <td>Returns or sets the color of the sidebar's shadow. If no shadow should be shown, the color may be set to be transparent.</td>
+                        <td><center><tt>0x22000000</tt></center></td>
+                        <td>The value must represent a valid color (refer <a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank">this</a> link for further information)</td>
+                    </tr>
+                    <tr>
+                        <td><tt>getShadowWidth():int</br>setShadowWidth(int):void</tt></td>
+                        <td>Returns or sets the width of the sidebar's shadow in dp.</td>
+                        <td><center><tt>16</tt></center></td>
+                        <td>The value must be at least 0</td>
+                    </tr>
+                </table>
+
+                <p>If a value, which violates the appropriate restrictions, should be set by using one of the setter methods mentioned above, an exception will be thrown at runtime.</p>
+
+                <div class="warning-box">Although all setter methods mentioned in this section can be used at runtime to adapt the attributes of an sidebar, which will cause the GUI to be refreshed, the methods should not be called while the sidebar is currently dragged or animated to avoid unexpected behavior. To ensure, that no animation is running and no dragging gesture is currently performed on the sidebar, the methods <tt>isAnimationRunning():boolean</tt> and <tt>isDragging():boolean</tt> of the class <a href="javadoc/de/mrapp/android/sidebar/Sidebar.html" target="_blank" class="code">Sidebar</a> can be used.</div>
+
+                <h4><a name="xml-attributes">5 XML attributes</a></h4>
+
+                <p>If the <tt>Sidebar</tt> is created by beeing specified within a XML resource file, XML attributes can be used to customize the view's behaviour and appearance. Besides the inherited attributes, which are defined by the Android API, the <tt>Sidebar</tt> does provide various custom attributes, which can be used to set the same attributes as the setter methods already mentioned above. The custom attributes are defined within the file <tt>/res/values/attrs.xml</tt>. In the following table all custom attributes will be introduced. An example on how to define a <tt>Sidebar</tt> by using a XML resource file, is available in the "Examples" section of this documentation.</p>
+
+                <table>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Explaination</th>
+                        <th style="min-width: 80px;">Value type</th>
+                        <th style="min-width: 90px;">Default value</th>
+                        <th style="min-width: 120px;">Restrictions</th>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:sidebarView</tt></td>
+                        <td>The view, which is used as the sidebar.</td>
+                        <td style="text-align: center;"><tt>reference</tt></td>
+                        <td style="text-align: center;"><tt>null</tt></td>
+                        <td>The resource ID must be valid</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:contentView</tt></td>
+                        <td>The view, which is used as the main content.</td>
+                        <td style="text-align: center;"><tt>reference</tt></td>
+                        <td style="text-align: center;"><tt>null</tt></td>
+                        <td>The resource ID must be valid</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:sidebarBackground</tt></td>
+                        <td>The background of the sidebar. If not set, a default background will be used.</td>
+                        <td style="text-align: center;"><tt>reference</tt></td>
+                        <td style="text-align: center;"><tt>null</tt></td>
+                        <td>The resource ID must be valid</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:location</tt></td>
+                        <td>The location of the sidebar.</td>
+                        <td style="text-align: center;"><tt>enum</tt></td>
+                        <td style="text-align: center;"><tt>right</tt></td>
+                        <td>The value must be <tt>left</tt> or <tt>right</tt></td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:animationSpeed</tt></td>
+                        <td>The speed of the animation, which is used to show or hide the sidebar.</td>
+                        <td style="text-align: center;"><tt>float</tt></td>
+                        <td style="text-align: center;"><tt>1.5</tt></td>
+                        <td>The value must be greater than 0</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:sidebarWidth</tt></td>
+                        <td>The width of the sidebar in relation to the width of its parent view.</td>
+                        <td style="text-align: center;"><tt>fraction</tt></td>
+                        <td style="text-align: center;"><tt>75%</tt></td>
+                        <td>The value must be at least 0% and at maximum 100%</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:maxSidebarWidth</tt></td>
+                        <td>The maximum width of the sidebar in dp. If not set, the width of the sidebar will not be restricted.</td>
+                        <td style="text-align: center;"><tt>dimension</tt></td>
+                        <td style="text-align: center;"><tt>-1</tt></td>
+                        <td>The value must be greater than 0dp</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:sidebarOffset</tt></td>
+                        <td>The amount of space, in relation to the width of the parent view, the sidebar is visible, even if it is not shown.</td>
+                        <td style="text-align: center;"><tt>fraction</tt></td>
+                        <td style="text-align: center;"><tt>12.5%</tt></td>
+                        <td>The value must be at least 0% and at maximum 100%</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:maxSidebarOffset</tt></td>
+                        <td>The maximum offset of the sidebar in dp. If not set, the offset will not be restricted.</td>
+                        <td style="text-align: center;"><tt>dimension</tt></td>
+                        <td style="text-align: center;"><tt>-1</tt></td>
+                        <td>The value must be greater than 0dp</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:contentMode</tt></td>
+                        <td>The content mode, which specifies how the main content is handled, when the sidebar becomes shown or hidden. If set to <tt>scroll</tt>, the content will be moved along with the sidebar, if set to <tt>resize</tt>, the content will be resized.</td>
+                        <td style="text-align: center;"><tt>enum</tt></td>
+                        <td style="text-align: center;"><tt>scroll</tt></td>
+                        <td>The value must be <tt>scroll</tt> or <tt>resize</tt></td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:scrollRatio</tt></td>
+                        <td>The ratio between the distance, the sidebar is moved by, when it becomes shown or hidden, in relation to the distance, the content is moved by. The scroll ratio does only apply, if the content mode is set to <tt>scroll</tt>.</td>
+                        <td style="text-align: center;"><tt>float</tt></td>
+                        <td style="text-align: center;"><tt>0.5</tt></td>
+                        <td>The value must be at leat 0 and at maximum 1</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:dragModeWhenHidden</tt></td>
+                        <td>The drag mode, which specifies the region where drag gestures are recognized, when the sidebar is hidden. If set to <tt>both</tt>, all gestures will be recognized, if set to <tt>sidebar_only</tt>, dragging is only allowed on the sidebar, if set to <tt>content_only</tt>, dragging is only allowed on the content and if set to <tt>disabled</tt> no dragging is allowed at all.</td>
+                        <td style="text-align: center;"><tt>enum</tt></td>
+                        <td style="text-align: center;"><tt>sidebar_only</tt></td>
+                        <td>The value must be <tt>both</tt>, <tt>sidebar_only</tt>, <tt>content_only</tt> or <tt>disabled</tt></td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:dragModeWhenShown</tt></td>
+                        <td>The drag mode, which specifies the region where drag gestures are recognized, when the sidebar is shown. If set to <tt>both</tt>, all gestures will be recognized, if set to <tt>sidebar_only</tt>, dragging is only allowed on the sidebar, if set to <tt>content_only</tt>, dragging is only allowed on the content and if set to <tt>disabled</tt> no dragging is allowed at all.</td>
+                        <td style="text-align: center;"><tt>enum</tt></td>
+                        <td style="text-align: center;"><tt>both</tt></td>
+                        <td>The value must be <tt>both</tt>, <tt>sidebar_only</tt>, <tt>content_only</tt> or <tt>disabled</tt></td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:dragThreshold</tt></td>
+                        <td>The distance, the sidebar has to be dragged by, until its state changes from shown to hidden or vice versa, in relation to the whole distance, the sidebar has to be moved when changing its state.</td>
+                        <td style="text-align: center;"><tt>fraction</tt></td>
+                        <td style="text-align: center;"><tt>25%</tt></td>
+                        <td>The value must be at least 0% and at maximum 100%</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:dragSensitivity</tt></td>
+                        <td>The sensitivity, which specifies the distance after which dragging has an effect on the sidebar, in relation to an internal value range. The value range starts at 10 pixels and ends at 260 pixels.</td>
+                        <td style="text-align: center;"><tt>fraction</tt></td>
+                        <td style="text-align: center;"><tt>25%</tt></td>
+                        <td>The value must be at least 0% and at maximum 100%</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:hideOnBackButton</tt></td>
+                        <td>Whether the sidebar should be hidden, when the back button of the Android device is clicked, or not.</td>
+                        <td style="text-align: center;"><tt>boolean</tt></td>
+                        <td style="text-align: center;"><tt>true</tt></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:hideOnContentClick</tt></td>
+                        <td>Whether the sidebar should be hidden, when the main content is clicked by the user, or not.</td>
+                        <td style="text-align: center;"><tt>boolean</tt></td>
+                        <td style="text-align: center;"><tt>true</tt></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:showOnSidebarClick</tt></td>
+                        <td>Whether the sidebar should be shown, when it is clicked by the user, or not.</td>
+                        <td style="text-align: center;"><tt>boolean</tt></td>
+                        <td style="text-align: center;"><tt>true</tt></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:contentOverlayColor</tt></td>
+                        <td>The color of the overlay, which is shown in front of the main content, when the sidebar is shown. If no overlay should be shown, the color may be set to be transparent.</td>
+                        <td style="text-align: center;"><tt>color</tt></td>
+                        <td style="text-align: center;"><tt>@android:color/black</tt></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:contentOverlayTransparency</tt></td>
+                        <td>The transparency of the overlay, which is shown in front of the main content, when the sidebar is shown. If set to 100%, the overlay will be completely transparent, if set to 0%, the overlay will not be transparent at all.</td>
+                        <td style="text-align: center;"><tt>fraction</tt></td>
+                        <td style="text-align: center;"><tt>50%</tt></td>
+                        <td>The value must be at least 0% and at maximum 100%</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:shadowColor</tt></td>
+                        <td>The color of the sidebar's shadow. If no shadow should be shown, the color may be set to be transparent.</td>
+                        <td style="text-align: center;"><tt>color</tt></td>
+                        <td style="text-align: center;"><tt>#22000000</tt></td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td><tt>custom:shadowWidth</tt></td>
+                        <td>The width of the sidebar's shadow in dp.</td>
+                        <td style="text-align: center;"><tt>dimension</tt></td>
+                        <td style="text-align: center;"><tt>16dp</tt></td>
+                        <td>The value must be at least 16dp</td>
+                    </tr>
+                </table>
+
+                <p>For using these custom attributes within a XML resource file, the following namespace has to be added to the root node of the XML file:</p>
+
+                <p><center><tt>xmlns:custom="http://schemas.android.com/apk/res/de.mrapp.android.sidebar"</tt></center></p>
+            
+                <p>If the restrictions of an attribute mentioned in the table above are violated, exceptions will be thrown at runtime. </p>
+
+                <div class="warning-box">Setting the attribute <tt>maxSidebarWidth</tt> or <tt>maxSidebarWidth</tt> via XML or by calling the setter methods mentioned in the previous section, may cause unexpected behavior, if e.g. the maximum width of the sidebar is set to less than the actual offset in dp. Althought the values are checked for validity when set, it is not possible to check such constraints, because the actual width of the sidebar might be unknown at the time, these methods are called.</div>
+
+                <h4>External references:</h4>
+
+                <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/reference/android/view/ViewGroup.html" target="_blank">http://developer.android.com/reference/android/view/ViewGroup.html</a> &#150; Android API class ViewGroup</div>
+
+                <div class="reference"><a name="reference2" class="reference">[2]</a><a href="http://developer.android.com/reference/android/view/View.html" target="_blank">http://developer.android.com/reference/android/view/View.html</a> &#150; Android API class View</div>
+
+                <div class="reference"><a name="reference3" class="reference">[3]</a><a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank">http://developer.android.com/reference/android/graphics/drawable/Drawable.html</a> &#150; Android API class Drawable</div>
+
+                <div class="reference"><a name="reference4" class="reference">[4]</a><a href="http://developer.android.com/reference/android/graphics/Color.html" target="_blank">http://developer.android.com/reference/android/graphics/Color.html</a> &#150; Android API class Drawable</div>
+            </div>
+
+            <div class="copyright">
+                &#169; Copyright 2014, Michael Rapp. All rights reserved.
+            </div>
+        </div>
+    </body>
+</html>
