@@ -2330,9 +2330,11 @@ public class Sidebar extends ViewGroup {
 	public final boolean dispatchTouchEvent(final MotionEvent event) {
 		boolean handled = false;
 
-		if (isSidebarClicked(event.getX()) && !isSidebarShown()) {
+		if (isSidebarClicked(event.getX()) && !isSidebarShown()
+				&& isShownOnSidebarClick()) {
 			handled = true;
-		} else if (isContentClicked(event.getX()) && isSidebarShown()) {
+		} else if (isContentClicked(event.getX()) && isSidebarShown()
+				&& isHiddenOnContentClick()) {
 			handled = true;
 		}
 
