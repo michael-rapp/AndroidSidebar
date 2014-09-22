@@ -14,34 +14,51 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public 
-License along with this program.  If not, see
+License along with this program. If not, see
 <http://www.gnu.org/licenses/>. 
 -->
 <resources>
 
     <declare-styleable name="Sidebar">
-        <attr name="android:background" />
+        <attr name="sidebarBackground" format="reference" />
         <attr name="contentView" format="reference" />
         <attr name="sidebarView" format="reference" />
+        <attr name="showSidebar" format="boolean" />
         <attr name="location" format="enum">
             <enum name="left" value="0" />
             <enum name="right" value="1" />
         </attr>
-        <attr name="animationDuration" format="integer" />
-        <attr name="sidebarWidth" format="integer" />
-        <attr name="sidebarOffset" format="integer" />
-        <attr name="scrollRatio" format="float" />
-        <attr name="dragMode" format="enum">
+        <attr name="animationSpeed" format="float" />
+        <attr name="sidebarWidth" format="fraction" />
+        <attr name="maxSidebarWidth" format="dimension" />
+        <attr name="sidebarOffset" format="fraction" />
+        <attr name="maxSidebarOffset" format="dimension" />
+        <attr name="contentMode" format="enum">
+            <enum name="scroll" value="0" />
+            <enum name="resize" value="1" />
+        </attr>
+        <attr name="scrollRatio" format="fraction" />
+        <attr name="dragModeWhenHidden" format="enum">
             <enum name="both" value="0" />
             <enum name="sidebar_only" value="1" />
             <enum name="content_only" value="2" />
             <enum name="disabled" value="3" />
         </attr>
-        <attr name="dragThreshold" format="float" />
-        <attr name="dragSensitivity" format="integer" />
+        <attr name="dragModeWhenShown" format="enum">
+            <enum name="both" value="0" />
+            <enum name="sidebar_only" value="1" />
+            <enum name="content_only" value="2" />
+            <enum name="disabled" value="3" />
+        </attr>
+        <attr name="dragThreshold" format="fraction" />
+        <attr name="dragSensitivity" format="fraction" />
         <attr name="hideOnBackButton" format="boolean" />
         <attr name="hideOnContentClick" format="boolean" />
         <attr name="showOnSidebarClick" format="boolean" />
+        <attr name="contentOverlayColor" format="color" />
+        <attr name="contentOverlayTransparency" format="fraction" />
+        <attr name="shadowColor" format="color" />
+        <attr name="shadowWidth" format="dimension" />
     </declare-styleable>
 
 </resources>

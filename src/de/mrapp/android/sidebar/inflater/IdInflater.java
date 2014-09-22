@@ -51,10 +51,11 @@ public class IdInflater implements Inflater {
 	}
 
 	@Override
-	public final View inflate(final Context context, final ViewGroup parent) {
+	public final View inflate(final Context context, final ViewGroup parent,
+			final boolean attachToRoot) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		return inflater.inflate(viewId, parent);
+		return inflater.inflate(viewId, parent, attachToRoot);
 	}
 
 }
