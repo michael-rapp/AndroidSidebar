@@ -2,6 +2,15 @@ AndroidSidebar - RELEASE NOTES
 ==============================
 
 
+Version:        1.0.2
+Release date:   10.21.2014
+--------------------------
+
+A minor release, which provides the following changes:
+    
+    -   Prepared for Android 5.0 (API level 21).
+
+
 Version:        1.0.1
 Release date:   09.22.2014
 --------------------------
@@ -9,8 +18,8 @@ Release date:   09.22.2014
 A bugfix release, which fixes the following issues:
     
     -   https://sourceforge.net/p/androidsidebar/tickets/1/
-    
-    
+
+
 Version: 		1.0.0 
 Release date:	09.22.2014
 --------------------------

@@ -364,7 +364,7 @@ public class Sidebar extends ViewGroup {
 	 */
 	private void initialize(final Context context,
 			final AttributeSet attributeSet) {
-		this.listeners = new LinkedHashSet<>();
+		this.listeners = new LinkedHashSet<SidebarListener>();
 		this.shown = false;
 		this.dragHelper = new DragHelper(calculateDragSensitivity());
 		this.setFocusableInTouchMode(true);
