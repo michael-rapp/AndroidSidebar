@@ -46,7 +46,13 @@ public enum DragMode {
 	/**
 	 * If dragging should be not recognized at all.
 	 */
-	DISABLED(3);
+	DISABLED(3),
+
+	/**
+	 * If dragging should only be recognized when started at the edge of the
+	 * sidebar's parent view.
+	 */
+	EDGE(4);
 
 	/**
 	 * The value of the drag mode.
