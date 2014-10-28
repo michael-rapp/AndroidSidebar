@@ -955,12 +955,15 @@ public class Sidebar extends ViewGroup {
 				contentView.clearAnimation();
 				sidebarView.clearAnimation();
 				requestLayout();
-				shown = show;
 
-				if (shown) {
-					notifyOnSidebarShown();
-				} else {
-					notifyOnSidebarHidden();
+				if (shown != show) {
+					shown = show;
+
+					if (shown) {
+						notifyOnSidebarShown();
+					} else {
+						notifyOnSidebarHidden();
+					}
 				}
 			}
 
@@ -2345,7 +2348,8 @@ public class Sidebar extends ViewGroup {
 			handled = handleDrag(event.getX());
 			break;
 		case MotionEvent.ACTION_UP:
-			if (dragHelper.hasThresholdBeenReached()) {
+			if (dragHelper.hasThresholdBeenReached()
+					&& isDraggingAllowed(dragHelper.getStartPosition())) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
@@ -2373,7 +2377,8 @@ public class Sidebar extends ViewGroup {
 			return true;
 		case MotionEvent.ACTION_UP:
 
-			if (dragHelper.hasThresholdBeenReached()) {
+			if (dragHelper.hasThresholdBeenReached()
+					&& isDraggingAllowed(dragHelper.getStartPosition())) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
