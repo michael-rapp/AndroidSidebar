@@ -199,6 +199,13 @@ public class Sidebar extends ViewGroup {
 	private static final int MAX_DRAG_SENSITIVITY = 260;
 
 	/**
+	 * The tolerance in dp, which is used to determine, if a drag gesture has
+	 * been started at the edge of the sidebar's parent view, when using the
+	 * drag mode <code>DragMode.EDGE</code>.
+	 */
+	private static final int EDGE_DRAGGING_TOLERANCE = 4;
+
+	/**
 	 * The location of the sidebar.
 	 */
 	private Location location;
@@ -1463,8 +1470,6 @@ public class Sidebar extends ViewGroup {
 			return clickPosition >= getWidth() - tolerance;
 		}
 	}
-
-	private static final int EDGE_DRAGGING_TOLERANCE = 4;
 
 	/**
 	 * Returns, whether a drag gesture, which has been started at a specific
