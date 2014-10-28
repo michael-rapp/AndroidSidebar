@@ -43,6 +43,7 @@ License along with this program. If not, see
             <enum name="sidebar_only" value="1" />
             <enum name="content_only" value="2" />
             <enum name="disabled" value="3" />
+            <enum name="edge" value="4" />
         </attr>
         <attr name="dragModeWhenShown" format="enum">
             <enum name="both" value="0" />
