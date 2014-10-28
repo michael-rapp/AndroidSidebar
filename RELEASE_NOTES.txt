@@ -2,6 +2,20 @@ AndroidSidebar - RELEASE NOTES
 ==============================
 
 
+Version:        1.1.0
+Release date:   10.28.2014
+--------------------------
+
+A feature release, which introduces the following functionalities:
+    
+    -   Added the drag mode EDGE, which can be used as the hidden drag mode. When using this
+        drag mode, only drag gesture's, which have been started at the edge of the sidebar's
+        parent view (usually the edge of the display), are recognized.
+    
+    -   Non-linear interpolators are now used to animate the sidebar in order to create a more 
+        natural impression.
+    
+    
 Version:        1.0.3
 Release date:   10.28.2014
 --------------------------
