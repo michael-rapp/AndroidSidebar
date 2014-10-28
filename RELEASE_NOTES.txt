@@ -2,6 +2,15 @@ AndroidSidebar - RELEASE NOTES
 ==============================
 
 
+Version:        1.0.3
+Release date:   10.28.2014
+--------------------------
+
+A bugfix release, which fixes the following issues:
+    
+    -   https://sourceforge.net/p/androidsidebar/tickets/3/
+    
+    
 Version:        1.0.2
 Release date:   10.21.2014
 --------------------------
