@@ -1445,16 +1445,37 @@ public class Sidebar extends ViewGroup {
 	}
 
 	/**
-	 * Returns, whether dragging at a specific position is allowed, depending on
-	 * the current drag mode and whether the sidebar is currently shown or
-	 * hidden, or not.
+	 * Returns, whether a click at a specific position targets the edge of the
+	 * sidebar's parent view, or not.
 	 * 
-	 * @param dragPosition
-	 *            The horizontal position of the drag gesture as a {@link Float}
-	 *            value
-	 * @return True, if dragging is allowed, false otherwise
+	 * @param clickPosition
+	 *            The horizontal position of the click as a {@link Float} value
+	 * @return True, if the edge of the sidebar's parent view has been clicked,
+	 *         false otherwise
 	 */
-	private boolean isDraggingAllowed(final float dragPosition) {
+	private boolean isEdgeClicked(final float clickPosition) {
+		int tolerance = DisplayUtil.convertDpToPixels(getContext(),
+				EDGE_DRAGGING_TOLERANCE);
+
+		if (getLocation() == Location.LEFT) {
+			return clickPosition <= tolerance;
+		} else {
+			return clickPosition >= getWidth() - tolerance;
+		}
+	}
+
+	private static final int EDGE_DRAGGING_TOLERANCE = 4;
+
+	/**
+	 * Returns, whether a drag gesture, which has been started at a specific
+	 * position, is allowed, depending on the used drag modes, or not.
+	 * 
+	 * @param dragStartPosition
+	 *            The horizontal position, the drag gesture has been started at,
+	 *            as an {@link Integer} value
+	 * @return True, if the drag gesture is allowed, false otherwise
+	 */
+	private boolean isDraggingAllowed(final int dragStartPosition) {
 		DragMode currentDragMode = dragModeWhenHidden;
 
 		if (isSidebarShown()) {
@@ -1464,9 +1485,11 @@ public class Sidebar extends ViewGroup {
 		if (currentDragMode == DragMode.DISABLED) {
 			return false;
 		} else if (currentDragMode == DragMode.SIDEBAR_ONLY) {
-			return isSidebarClicked(dragPosition);
+			return isSidebarClicked(dragStartPosition);
 		} else if (currentDragMode == DragMode.CONTENT_ONLY) {
-			return isContentClicked(dragPosition);
+			return isContentClicked(dragStartPosition);
+		} else if (currentDragMode == DragMode.EDGE) {
+			return isEdgeClicked(dragStartPosition);
 		}
 
 		return true;
@@ -2013,7 +2036,8 @@ public class Sidebar extends ViewGroup {
 	 * 
 	 * @return The drag mode as a value of the enum {@link DragMode}. The drag
 	 *         mode may either be <code>BOTH</code>, <code>SIDEBAR_ONLY</code>,
-	 *         <code>CONTENT_ONLY</code> or <code>DISABLED</code>
+	 *         <code>CONTENT_ONLY</code>, <code>DISABLED</code> or
+	 *         <code>EDGE</code>
 	 */
 	public final DragMode getDragModeWhenHidden() {
 		return dragModeWhenHidden;
@@ -2026,8 +2050,8 @@ public class Sidebar extends ViewGroup {
 	 * @param dragMode
 	 *            The drag mode as a value of the enum {@link DragMode}. The
 	 *            drag mode may either be <code>BOTH</code>,
-	 *            <code>SIDEBAR_ONLY</code>, <code>CONTENT_ONLY</code> or
-	 *            <code>DISABLED</code>
+	 *            <code>SIDEBAR_ONLY</code>, <code>CONTENT_ONLY</code>,
+	 *            <code>DISABLED</code> or <code>EDGE</code>
 	 */
 	public final void setDragModeWhenHidden(final DragMode dragMode) {
 		ensureNotNull(dragMode, "The drag mode may not be null");
@@ -2058,6 +2082,12 @@ public class Sidebar extends ViewGroup {
 	 */
 	public final void setDragModeWhenShown(final DragMode dragMode) {
 		ensureNotNull(dragMode, "The drag mode may not be null");
+
+		if (dragMode == DragMode.EDGE) {
+			throw new IllegalArgumentException(
+					"The drag mode when shown may not be " + DragMode.EDGE);
+		}
+
 		this.dragModeWhenShown = dragMode;
 	}
 
