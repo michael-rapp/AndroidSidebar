@@ -38,8 +38,11 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import de.mrapp.android.sidebar.animation.ContentViewResizeAnimation;
 import de.mrapp.android.sidebar.animation.ContentViewScrollAnimation;
 import de.mrapp.android.sidebar.animation.SidebarViewAnimation;
@@ -837,9 +840,13 @@ public class Sidebar extends ViewGroup {
 	 * @param distance
 	 *            The distance, the sidebar has to be moved by, as a
 	 *            {@link Float} value
+	 * @param interpolator
+	 *            The interpolator, which should be used by the animation, as an
+	 *            instance of the type {@link Interpolator}
 	 */
-	private void animateShowSidebar(final float distance) {
-		animateShowSidebar(distance, animationSpeed);
+	private void animateShowSidebar(final float distance,
+			final Interpolator interpolator) {
+		animateShowSidebar(distance, animationSpeed, interpolator);
 	}
 
 	/**
@@ -851,11 +858,14 @@ public class Sidebar extends ViewGroup {
 	 * @param animationSpeed
 	 *            The speed of the animation in pixels per milliseconds as a
 	 *            {@link Float} value
+	 * @param interpolator
+	 *            The interpolator, which should be used by the animation, as an
+	 *            instance of the type {@link Interpolator}
 	 */
 	private void animateShowSidebar(final float distance,
-			final float animationSpeed) {
+			final float animationSpeed, final Interpolator interpolator) {
 		animateSidebar(true, distance, animationSpeed,
-				createAnimationListener(true));
+				createAnimationListener(true), interpolator);
 	}
 
 	/**
@@ -864,9 +874,13 @@ public class Sidebar extends ViewGroup {
 	 * @param distance
 	 *            The distance, the sidebar has to be moved by, as a
 	 *            {@link Float} value
+	 * @param interpolator
+	 *            The interpolator, which should be used by the animation, as an
+	 *            instance of the type {@link Interpolator}
 	 */
-	private void animateHideSidebar(final float distance) {
-		animateHideSidebar(distance, animationSpeed);
+	private void animateHideSidebar(final float distance,
+			final Interpolator interpolator) {
+		animateHideSidebar(distance, animationSpeed, interpolator);
 	}
 
 	/**
@@ -878,11 +892,14 @@ public class Sidebar extends ViewGroup {
 	 * @param animationSpeed
 	 *            The speed of the animation in pixels per millisecond as a
 	 *            {@link Float} value
+	 * @param interpolator
+	 *            The interpolator, which should be used by the animation, as an
+	 *            instance of the type {@link Interpolator}
 	 */
 	private void animateHideSidebar(final float distance,
-			final float animationSpeed) {
+			final float animationSpeed, final Interpolator interpolator) {
 		animateSidebar(false, distance, animationSpeed,
-				createAnimationListener(false));
+				createAnimationListener(false), interpolator);
 	}
 
 	/**
@@ -902,10 +919,14 @@ public class Sidebar extends ViewGroup {
 	 * @param animationListener
 	 *            The listener, which should be notified about the animation's
 	 *            progress, as an instance of the type {@link AnimationListener}
+	 * @param interpolator
+	 *            The interpolator, which should be used by the animation, as an
+	 *            instance of the type {@link Interpolator}
 	 */
 	private void animateSidebar(final boolean show, final float distance,
 			final float animationSpeed,
-			final AnimationListener animationListener) {
+			final AnimationListener animationListener,
+			final Interpolator interpolator) {
 		if (!isDragging() && !isAnimationRunning()) {
 			long duration = calculateAnimationDuration(distance, animationSpeed);
 			Animation contentViewAnimation;
@@ -922,6 +943,8 @@ public class Sidebar extends ViewGroup {
 
 			Animation sidebarViewAnimation = new SidebarViewAnimation(distance,
 					duration, animationListener);
+			contentViewAnimation.setInterpolator(interpolator);
+			sidebarViewAnimation.setInterpolator(interpolator);
 			contentView.startAnimation(contentViewAnimation);
 			sidebarView.startAnimation(sidebarViewAnimation);
 		}
@@ -955,15 +978,12 @@ public class Sidebar extends ViewGroup {
 				contentView.clearAnimation();
 				sidebarView.clearAnimation();
 				requestLayout();
+				shown = show;
 
-				if (shown != show) {
-					shown = show;
-
-					if (shown) {
-						notifyOnSidebarShown();
-					} else {
-						notifyOnSidebarHidden();
-					}
+				if (shown) {
+					notifyOnSidebarShown();
+				} else {
+					notifyOnSidebarHidden();
 				}
 			}
 
@@ -1351,15 +1371,19 @@ public class Sidebar extends ViewGroup {
 
 		if (getLocation() == Location.LEFT) {
 			if (sidebarView.getRight() - shadowWidth > thresholdPosition) {
-				animateShowSidebar(calculateAnimationDistance(true), speed);
+				animateShowSidebar(calculateAnimationDistance(true), speed,
+						new DecelerateInterpolator());
 			} else {
-				animateHideSidebar(calculateAnimationDistance(false), speed);
+				animateHideSidebar(calculateAnimationDistance(false), speed,
+						new DecelerateInterpolator());
 			}
 		} else {
 			if (sidebarView.getLeft() + shadowWidth < thresholdPosition) {
-				animateShowSidebar(calculateAnimationDistance(true), speed);
+				animateShowSidebar(calculateAnimationDistance(true), speed,
+						new DecelerateInterpolator());
 			} else {
-				animateHideSidebar(calculateAnimationDistance(false), speed);
+				animateHideSidebar(calculateAnimationDistance(false), speed,
+						new DecelerateInterpolator());
 			}
 		}
 	}
@@ -1588,7 +1612,8 @@ public class Sidebar extends ViewGroup {
 		} else if (sidebarView == null) {
 			throw new IllegalStateException("The sidebar view is not set");
 		} else if (!isSidebarShown()) {
-			animateShowSidebar(calculateAnimationDistance(true));
+			animateShowSidebar(calculateAnimationDistance(true),
+					new AccelerateDecelerateInterpolator());
 		}
 	}
 
@@ -1601,7 +1626,8 @@ public class Sidebar extends ViewGroup {
 		} else if (sidebarView == null) {
 			throw new IllegalStateException("The sidebar view is not set");
 		} else if (isSidebarShown()) {
-			animateHideSidebar(calculateAnimationDistance(false));
+			animateHideSidebar(calculateAnimationDistance(false),
+					new AccelerateDecelerateInterpolator());
 		}
 	}
 
@@ -2348,8 +2374,7 @@ public class Sidebar extends ViewGroup {
 			handled = handleDrag(event.getX());
 			break;
 		case MotionEvent.ACTION_UP:
-			if (dragHelper.hasThresholdBeenReached()
-					&& isDraggingAllowed(dragHelper.getStartPosition())) {
+			if (dragHelper.hasThresholdBeenReached()) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
@@ -2377,8 +2402,7 @@ public class Sidebar extends ViewGroup {
 			return true;
 		case MotionEvent.ACTION_UP:
 
-			if (dragHelper.hasThresholdBeenReached()
-					&& isDraggingAllowed(dragHelper.getStartPosition())) {
+			if (dragHelper.hasThresholdBeenReached()) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
