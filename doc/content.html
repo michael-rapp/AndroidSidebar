@@ -131,7 +131,7 @@
                     </tr>
                     <tr>
                         <td><tt>getDragModeWhenHidden():DragMode</br>setDragModeWhenHidden(DragMode):void</tt></td>
-                        <td>Returns or sets the drag mode, which specifies the region where drag gestures are recognized, when the sidebar is hidden. If set to <tt>BOTH</tt>, all gestures will be recognized, if set to <tt>SIDEBAR_ONLY</tt>, dragging is only allowed on the sidebar, if set to <tt>CONTENT_ONLY</tt>, dragging is only allowed on the content and if set to <tt>DISABLED</tt> no dragging is allowed at all.</td>
+                        <td>Returns or sets the drag mode, which specifies the region where drag gestures are recognized, when the sidebar is hidden. If set to <tt>BOTH</tt>, all gestures will be recognized, if set to <tt>SIDEBAR_ONLY</tt>, dragging is only allowed on the sidebar, if set to <tt>CONTENT_ONLY</tt>, dragging is only allowed on the content and if set to <tt>DISABLED</tt> no dragging is allowed at all. Since version 1.1.0 the value <tt>EDGE</tt> can also be used to only recognize gestures, which have been started at the edge of the sidebar's parent view.</td>
                         <td><center><tt>SIDEBAR_ONLY</tt></center></td>
                         <td>The drag mode may not be null</td>
                     </tr>
@@ -292,7 +292,7 @@
                     </tr>
                     <tr>
                         <td><tt>custom:dragModeWhenHidden</tt></td>
-                        <td>The drag mode, which specifies the region where drag gestures are recognized, when the sidebar is hidden. If set to <tt>both</tt>, all gestures will be recognized, if set to <tt>sidebar_only</tt>, dragging is only allowed on the sidebar, if set to <tt>content_only</tt>, dragging is only allowed on the content and if set to <tt>disabled</tt> no dragging is allowed at all.</td>
+                        <td>The drag mode, which specifies the region where drag gestures are recognized, when the sidebar is hidden. If set to <tt>both</tt>, all gestures will be recognized, if set to <tt>sidebar_only</tt>, dragging is only allowed on the sidebar, if set to <tt>content_only</tt>, dragging is only allowed on the content and if set to <tt>disabled</tt> no dragging is allowed at all. Since version 1.1.0 the value <tt>edge</tt> can also be used to only recognize gestures, which have been started at the edge of the sidebar's parent view.</td>
                         <td style="text-align: center;"><tt>enum</tt></td>
                         <td style="text-align: center;"><tt>sidebar_only</tt></td>
                         <td>The value must be <tt>both</tt>, <tt>sidebar_only</tt>, <tt>content_only</tt> or <tt>disabled</tt></td>
