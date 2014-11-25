@@ -2409,7 +2409,8 @@ public class Sidebar extends ViewGroup {
 			handled = handleDrag(event.getX());
 			break;
 		case MotionEvent.ACTION_UP:
-			if (dragHelper.hasThresholdBeenReached()) {
+			if (dragHelper.hasThresholdBeenReached()
+					&& isDraggingAllowed(dragHelper.getStartPosition())) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
@@ -2437,7 +2438,8 @@ public class Sidebar extends ViewGroup {
 			return true;
 		case MotionEvent.ACTION_UP:
 
-			if (dragHelper.hasThresholdBeenReached()) {
+			if (dragHelper.hasThresholdBeenReached()
+					&& isDraggingAllowed(dragHelper.getStartPosition())) {
 				handleRelease();
 			} else {
 				handleClick(event.getX());
