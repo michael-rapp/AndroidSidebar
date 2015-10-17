@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * An animation, which allows to resize a view horizontally.

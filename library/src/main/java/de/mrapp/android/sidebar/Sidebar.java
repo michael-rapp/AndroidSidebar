@@ -51,14 +51,13 @@ import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
 
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtMaximum;
+import static de.mrapp.android.util.Condition.ensureGreater;
+import static de.mrapp.android.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureSmaller;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
-
-import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
-import static de.mrapp.android.sidebar.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.sidebar.util.Condition.ensureGreaterThan;
-import static de.mrapp.android.sidebar.util.Condition.ensureLessThan;
-import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
 
 /**
  * A custom view, which allows to show a sidebar, which overlaps the view's main content and can be
@@ -1774,7 +1773,7 @@ public class Sidebar extends ViewGroup {
      *         speed must be greater than 0
      */
     public final void setAnimationSpeed(final float animationSpeed) {
-        ensureGreaterThan(animationSpeed, 0, "The animation speed must be greater than 0");
+        ensureGreater(animationSpeed, 0, "The animation speed must be greater than 0");
         this.animationSpeed = dpToPixels(getContext(), animationSpeed);
     }
 
@@ -1798,7 +1797,7 @@ public class Sidebar extends ViewGroup {
     public final void setSidebarWidth(final float sidebarWidth) {
         ensureAtLeast(sidebarWidth, 0, "The sidebar width must be at least 0");
         ensureAtMaximum(sidebarWidth, 1, "The sidebar width must be at maximum 1");
-        ensureGreaterThan(sidebarWidth, sidebarOffset,
+        ensureGreater(sidebarWidth, sidebarOffset,
                 "The sidebar width must be greater than the sidebar offset");
         this.sidebarWidth = sidebarWidth;
         measureSidebarWidth();
@@ -1828,8 +1827,7 @@ public class Sidebar extends ViewGroup {
      */
     public final void setMaxSidebarWidth(final int maxSidebarWidth) {
         if (maxSidebarWidth != -1) {
-            ensureGreaterThan(maxSidebarWidth, 0,
-                    "The maximum sidebar width must be greater than 0");
+            ensureGreater(maxSidebarWidth, 0, "The maximum sidebar width must be greater than 0");
             setMaxSidebarWidthInPixels(dpToPixels(getContext(), maxSidebarWidth));
         } else {
             setMaxSidebarWidthInPixels(-1);
@@ -1858,7 +1856,7 @@ public class Sidebar extends ViewGroup {
     public final void setSidebarOffset(final float sidebarOffset) {
         ensureAtLeast(sidebarOffset, 0, "The sidebar offset must be at least 0");
         ensureAtMaximum(sidebarOffset, 1, "The sidebar offset must be at maximum 1");
-        ensureLessThan(sidebarOffset, sidebarWidth,
+        ensureSmaller(sidebarOffset, sidebarWidth,
                 "The sidebar offset must be less than the sidebar width");
         this.sidebarOffset = sidebarOffset;
         measureSidebarOffset();
@@ -1888,8 +1886,7 @@ public class Sidebar extends ViewGroup {
      */
     public final void setMaxSidebarOffset(final int maxSidebarOffset) {
         if (maxSidebarOffset != -1) {
-            ensureGreaterThan(maxSidebarOffset, 0,
-                    "The maximum sidebar offset must be greater than 0");
+            ensureGreater(maxSidebarOffset, 0, "The maximum sidebar offset must be greater than 0");
             setMaxSidebarOffsetInPixels(dpToPixels(getContext(), maxSidebarOffset));
         } else {
             setMaxSidebarOffsetInPixels(-1);

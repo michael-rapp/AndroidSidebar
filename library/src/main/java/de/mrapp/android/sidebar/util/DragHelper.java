@@ -14,7 +14,7 @@
  */
 package de.mrapp.android.sidebar.util;
 
-import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtLeast;
 
 /**
  * A helper class, which may be used to recognize drag gestures.

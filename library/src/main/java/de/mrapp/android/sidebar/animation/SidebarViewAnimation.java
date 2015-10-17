@@ -17,7 +17,7 @@ package de.mrapp.android.sidebar.animation;
 import android.support.annotation.NonNull;
 import android.view.animation.TranslateAnimation;
 
-import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * An animation, which allows to move a sidebar's sidebar view, when the sidebar should be shown or

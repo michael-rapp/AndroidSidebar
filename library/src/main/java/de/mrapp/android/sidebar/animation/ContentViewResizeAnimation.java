@@ -22,7 +22,7 @@ import android.view.animation.TranslateAnimation;
 import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.view.ContentView;
 
-import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * An animation, which allows to resize a sidebar's content view, when the sidebar should be shown
