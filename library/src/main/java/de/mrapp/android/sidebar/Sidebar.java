@@ -47,10 +47,12 @@ import de.mrapp.android.sidebar.animation.SidebarViewAnimation;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
 import de.mrapp.android.sidebar.savedstate.SidebarSavedState;
-import de.mrapp.android.sidebar.util.DisplayUtil;
 import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
+
+import static de.mrapp.android.util.DisplayUtil.dpToPixels;
+import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
 import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
 import static de.mrapp.android.sidebar.util.Condition.ensureAtMaximum;
@@ -471,7 +473,7 @@ public class Sidebar extends ViewGroup {
      */
     private void obtainShadowWidth(@NonNull final TypedArray typedArray) {
         setShadowWidthInPixels(typedArray.getDimensionPixelSize(R.styleable.Sidebar_shadowWidth,
-                DisplayUtil.convertDpToPixels(getContext(), DEFAULT_SHADOW_WIDTH)));
+                dpToPixels(getContext(), DEFAULT_SHADOW_WIDTH)));
     }
 
     /**
@@ -1389,7 +1391,7 @@ public class Sidebar extends ViewGroup {
      * @return True, if the edge of the sidebar's parent view has been clicked, false otherwise
      */
     private boolean isEdgeClicked(final float clickPosition) {
-        int tolerance = DisplayUtil.convertDpToPixels(getContext(), EDGE_DRAGGING_TOLERANCE);
+        int tolerance = dpToPixels(getContext(), EDGE_DRAGGING_TOLERANCE);
 
         if (getLocation() == Location.LEFT) {
             return clickPosition <= tolerance;
@@ -1761,7 +1763,7 @@ public class Sidebar extends ViewGroup {
      * must be greater than 0
      */
     public final float getAnimationSpeed() {
-        return DisplayUtil.convertPixelsToDp(getContext(), animationSpeed);
+        return pixelsToDp(getContext(), animationSpeed);
     }
 
     /**
@@ -1773,7 +1775,7 @@ public class Sidebar extends ViewGroup {
      */
     public final void setAnimationSpeed(final float animationSpeed) {
         ensureGreaterThan(animationSpeed, 0, "The animation speed must be greater than 0");
-        this.animationSpeed = DisplayUtil.convertDpToPixels(getContext(), animationSpeed);
+        this.animationSpeed = dpToPixels(getContext(), animationSpeed);
     }
 
     /**
@@ -1811,7 +1813,7 @@ public class Sidebar extends ViewGroup {
      */
     public final int getMaxSidebarWidth() {
         if (maxSidebarWidth != -1) {
-            return DisplayUtil.convertPixelsToDp(getContext(), maxSidebarWidth);
+            return pixelsToDp(getContext(), maxSidebarWidth);
         } else {
             return -1;
         }
@@ -1828,8 +1830,7 @@ public class Sidebar extends ViewGroup {
         if (maxSidebarWidth != -1) {
             ensureGreaterThan(maxSidebarWidth, 0,
                     "The maximum sidebar width must be greater than 0");
-            setMaxSidebarWidthInPixels(
-                    DisplayUtil.convertDpToPixels(getContext(), maxSidebarWidth));
+            setMaxSidebarWidthInPixels(dpToPixels(getContext(), maxSidebarWidth));
         } else {
             setMaxSidebarWidthInPixels(-1);
         }
@@ -1872,7 +1873,7 @@ public class Sidebar extends ViewGroup {
      */
     public final int getMaxSidebarOffset() {
         if (maxSidebarOffset != -1) {
-            return DisplayUtil.convertPixelsToDp(getContext(), maxSidebarOffset);
+            return pixelsToDp(getContext(), maxSidebarOffset);
         } else {
             return -1;
         }
@@ -1889,8 +1890,7 @@ public class Sidebar extends ViewGroup {
         if (maxSidebarOffset != -1) {
             ensureGreaterThan(maxSidebarOffset, 0,
                     "The maximum sidebar offset must be greater than 0");
-            setMaxSidebarOffsetInPixels(
-                    DisplayUtil.convertDpToPixels(getContext(), maxSidebarOffset));
+            setMaxSidebarOffsetInPixels(dpToPixels(getContext(), maxSidebarOffset));
         } else {
             setMaxSidebarOffsetInPixels(-1);
         }
@@ -2208,7 +2208,7 @@ public class Sidebar extends ViewGroup {
      * be at least 0
      */
     public final int getShadowWidth() {
-        return DisplayUtil.convertPixelsToDp(getContext(), shadowWidth);
+        return pixelsToDp(getContext(), shadowWidth);
     }
 
     /**
@@ -2219,7 +2219,7 @@ public class Sidebar extends ViewGroup {
      *         at least 0
      */
     public final void setShadowWidth(final int shadowWidth) {
-        setShadowWidthInPixels(DisplayUtil.convertDpToPixels(getContext(), shadowWidth));
+        setShadowWidthInPixels(dpToPixels(getContext(), shadowWidth));
     }
 
     /**
