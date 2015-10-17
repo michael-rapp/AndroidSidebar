@@ -16,6 +16,7 @@ package de.mrapp.android.sidebar.inflater;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,12 +36,12 @@ public interface Inflater {
      *         context may not be null
      * @param parent
      *         The parent, that this view will eventually be attached to, as an instance of the
-     *         class {@link ViewGroup}. The parent may not be null
+     *         class {@link ViewGroup} or null, if no parent is available
      * @param attachToRoot
      *         True, if the inflated view should also be attached to the parent, false otherwise
      * @return The view, which has been inflated, as an instance of the class {@link View} The view
      * may not be null
      */
-    View inflate(@NonNull Context context, @NonNull ViewGroup parent, boolean attachToRoot);
+    View inflate(@NonNull Context context, @Nullable ViewGroup parent, boolean attachToRoot);
 
 }

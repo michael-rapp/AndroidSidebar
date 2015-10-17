@@ -16,6 +16,7 @@ package de.mrapp.android.sidebar.inflater;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -49,7 +50,7 @@ public class InstanceInflater implements Inflater {
     }
 
     @Override
-    public final View inflate(@NonNull final Context context, @NonNull final ViewGroup parent,
+    public final View inflate(@NonNull final Context context, @Nullable final ViewGroup parent,
                               final boolean attachToRoot) {
         return view;
     }
