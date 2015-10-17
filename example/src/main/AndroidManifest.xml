@@ -16,9 +16,7 @@ not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest
     package="de.mrapp.android.sidebar.example"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="6"
-    android:versionName="1.1.1">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
