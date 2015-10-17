@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidSidebar Copyright 2014 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify 
+it under the terms of the GNU Lesser General Public License as published 
+by the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public 
+License along with this program. If not, see
+<http://www.gnu.org/licenses/>. 
+-->
+<resources>
+
+    <declare-styleable name="Sidebar">
+        <attr name="sidebarBackground" format="reference" />
+        <attr name="contentView" format="reference" />
+        <attr name="sidebarView" format="reference" />
+        <attr name="showSidebar" format="boolean" />
+        <attr name="location" format="enum">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="animationSpeed" format="float" />
+        <attr name="sidebarWidth" format="fraction" />
+        <attr name="maxSidebarWidth" format="dimension" />
+        <attr name="sidebarOffset" format="fraction" />
+        <attr name="maxSidebarOffset" format="dimension" />
+        <attr name="contentMode" format="enum">
+            <enum name="scroll" value="0" />
+            <enum name="resize" value="1" />
+        </attr>
+        <attr name="scrollRatio" format="fraction" />
+        <attr name="dragModeWhenHidden" format="enum">
+            <enum name="both" value="0" />
+            <enum name="sidebar_only" value="1" />
+            <enum name="content_only" value="2" />
+            <enum name="disabled" value="3" />
+            <enum name="edge" value="4" />
+        </attr>
+        <attr name="dragModeWhenShown" format="enum">
+            <enum name="both" value="0" />
+            <enum name="sidebar_only" value="1" />
+            <enum name="content_only" value="2" />
+            <enum name="disabled" value="3" />
+        </attr>
+        <attr name="dragThreshold" format="fraction" />
+        <attr name="dragSensitivity" format="fraction" />
+        <attr name="hideOnBackButton" format="boolean" />
+        <attr name="hideOnContentClick" format="boolean" />
+        <attr name="showOnSidebarClick" format="boolean" />
+        <attr name="contentOverlayColor" format="color" />
+        <attr name="contentOverlayTransparency" format="fraction" />
+        <attr name="shadowColor" format="color" />
+        <attr name="shadowWidth" format="dimension" />
+    </declare-styleable>
+
+</resources>
