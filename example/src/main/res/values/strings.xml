@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidSidebar Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+-->
+<resources>
+
+    <string name="app_name">AndroidSidebar Example</string>
+    <string name="show_sidebar">Show Sidebar</string>
+    <string name="hide_sidebar">Hide Sidebar</string>
+    <string name="hint">Click the button above or the sidebar itself to show the sidebar. Alternatively, perform a drag gesture on the screen. The behaviour of the sidebar depends on the app\'s settings.</string>
+    <string name="sidebar_title">Alternative Title</string>
+    <string name="preference_activity_title">Settings</string>
+    <string name="settings_menu_item">Settings</string>
+    <string name="measurements_preference_category">Measurements</string>
+    <string name="location_preference_title">Location</string>
+    <string name="location_preference_summary">The location of the sidebar</string>
+    <string name="location_preference_key">location_preference_key</string>
+    <string name="location_preference_default_value">1</string>
+    <string name="sidebar_width_preference_title">Sidebar width</string>
+    <string name="sidebar_width_preference_summary">The preferred width of the sidebar in relation to the display\'s width</string>
+    <string name="sidebar_width_preference_key">sidebar_width_preference_key</string>
+    <string name="sidebar_width_default_value">0.75</string>
+    <string name="max_sidebar_width_preference_title">Maximum sidebar width</string>
+    <string name="max_sidebar_width_preference_summary">The maximum width of the sidebar in dp</string>
+    <string name="max_sidebar_width_preference_key">max_sidebar_width_preference_key</string>
+    <string name="max_sidebar_width_preference_default_value">-1</string>
+    <string name="sidebar_offset_preference_title">Sidebar offset</string>
+    <string name="sidebar_offset_preference_summary">The space, which is used to show the sidebar even if it currently hidden, in relation to the display\'s width</string>
+    <string name="sidebar_offset_preference_key">sidebar_offset_preference_key</string>
+    <string name="sidebar_offset_preference_default_value">0.125</string>
+    <string name="max_sidebar_offset_preference_title">Maximum sidebar offset</string>
+    <string name="max_sidebar_offset_preference_summary">The maximum space, which is used to show the sidebar even if it is currently hidden, in dp</string>
+    <string name="max_sidebar_offset_preference_key">max_sidebar_offset_preference_key</string>
+    <string name="max_sidebar_offset_preference_default_value">-1</string>
+    <string name="behavior_preference_category">Behavior</string>
+    <string name="show_preference_title">Show by default</string>
+    <string name="show_preference_summary">Whether the sidebar should be shown by default, or not</string>
+    <string name="show_preference_key">show_preference_key</string>
+    <string name="show_preference_default_value">false</string>
+    <string name="content_mode_preference_title">Content mode</string>
+    <string name="content_mode_preference_summary">The content mode, which specifies how the content is handled, when the sidebar becomes shown or hidden</string>
+    <string name="content_mode_preference_key">content_mode_preference_key</string>
+    <string name="content_mode_preference_default_value">0</string>
+    <string name="scroll_ratio_preference_title">Scroll ratio</string>
+    <string name="scroll_ratio_preference_summary">The ratio between the movement of the sidebar and the main content</string>
+    <string name="scroll_ratio_preference_key">scroll_ratio_preference_key</string>
+    <string name="scroll_ratio_preference_default_value">0.5</string>
+    <string name="hide_on_back_button_preference_title">Hide on back button</string>
+    <string name="hide_on_back_button_preference_summary">Whether the sidebar should be hidden when the device\'s back button is clicked, or not</string>
+    <string name="hide_on_back_button_preference_key">hide_on_back_button_preference_key</string>
+    <string name="hide_on_back_button_default_value">true</string>
+    <string name="hide_on_content_click_preference_title">Hide on content click</string>
+    <string name="hide_on_content_click_preference_summary">Whether the sidebar should be hidden when the main content is clicked, or not</string>
+    <string name="hide_on_content_click_preference_key">hide_on_content_click_preference_key</string>
+    <string name="hide_on_content_click_preference_default_value">true</string>
+    <string name="show_on_sidebar_click_preference_title">Show on sidebar click</string>
+    <string name="show_on_sidebar_click_preference_summary">Whether the sidebar should be shown when it is clicked, or not</string>
+    <string name="show_on_sidebar_click_preference_key">show_on_sidebar_click_preference_key</string>
+    <string name="show_on_sidebar_click_preference_default_value">true</string>
+    <string name="animation_speed_preference_title">Animation speed</string>
+    <string name="animation_speed_preference_summary">The speed of the animation, which is used to show or hide the sidebar, in dp/ms</string>
+    <string name="animation_speed_preference_key">animation_speed_preference_key</string>
+    <string name="animation_speed_preference_default_value">1.5</string>
+    <string name="dragging_preference_category">Dragging</string>
+    <string name="drag_threshold_preference_title">Drag threshold</string>
+    <string name="drag_threshold_preference_summary">The distance, the sidebar has to be dragged until its state changes, in relation to the whole distance</string>
+    <string name="drag_threshold_preference_key">drag_threshold_preference_key</string>
+    <string name="drag_threshold_preference_default_value">0.25</string>
+    <string name="drag_sensitivity_preference_title">Drag sensitivity</string>
+    <string name="drag_sensitivity_preference_summary">Specifies the distance until dragging has an effect on the sidebar</string>
+    <string name="drag_sensitivity_preference_key">drag_sensitivity_preference_key</string>
+    <string name="drag_sensitivity_preference_default_value">0.25</string>
+    <string name="drag_mode_when_hidden_preference_title">Drag mode when hidden</string>
+    <string name="drag_mode_when_hidden_preference_summary">The drag mode, which should be used when the sidebar is currently hidden</string>
+    <string name="drag_mode_when_hidden_preference_key">drag_mode_when_hidden_preference_key</string>
+    <string name="drag_mode_when_hidden_preference_default_value">1</string>
+    <string name="drag_mode_when_shown_preference_title">Drag mode when shown</string>
+    <string name="drag_mode_when_shown_preference_summary">The drag mode, which should be used when the sidebar is currently shown</string>
+    <string name="drag_mode_when_shown_preference_key">drag_mode_when_shown_preference_key</string>
+    <string name="drag_mode_when_shown_preference_default_value">0</string>
+    <string name="appearance_preference_category">Appearance</string>
+    <string name="shadow_color_preference_title">Shadow color</string>
+    <string name="shadow_color_preference_summary">The color of the sidebar\'s shadow</string>
+    <string name="shadow_color_preference_key">shadow_color_preference_key</string>
+    <string name="shadow_color_preference_default_value">#22000000</string>
+    <string name="shadow_width_preference_title">Shadow width</string>
+    <string name="shadow_width_preference_summary">The width of the sidebar\'s shadow in dp</string>
+    <string name="shadow_width_preference_key">shadow_width_preference_key</string>
+    <string name="shadow_width_preference_default_value">16</string>
+    <string name="content_overlay_color_preference_title">Content overlay color</string>
+    <string name="content_overlay_color_preference_summary">The color of the overlay, which is shown when the sidebar is shown</string>
+    <string name="content_overlay_color_preference_key">content_overlay_color_preference_key</string>
+    <string name="content_overlay_color_preference_default_value">#ff000000</string>
+    <string name="content_overlay_transparency_title">Content overlay transparency</string>
+    <string name="content_overlay_transparency_summary">The transparency of the overlay, which is shown when the sidebar is shown</string>
+    <string name="content_overlay_transparency_key">content_overlay_transparency_key</string>
+    <string name="content_overlay_transparency_default_value">0.5</string>
+
+    <string-array name="list">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+        <item>Item 5</item>
+        <item>Item 6</item>
+        <item>Item 7</item>
+        <item>Item 8</item>
+        <item>Item 9</item>
+        <item>Item 10</item>
+        <item>Item 11</item>
+        <item>Item 12</item>
+        <item>Item 13</item>
+        <item>Item 14</item>
+        <item>Item 15</item>
+        <item>Item 16</item>
+        <item>Item 17</item>
+        <item>Item 18</item>
+        <item>Item 19</item>
+        <item>Item 20</item>
+    </string-array>
+    <string-array name="location_list_entries">
+        <item>Left</item>
+        <item>Right (default)</item>
+    </string-array>
+    <string-array name="location_list_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="animation_speed_list_entries">
+        <item>0.5 dp/ms</item>
+        <item>1.0 dp/ms</item>
+        <item>1.5 dp/ms (default)</item>
+        <item>2.0 dp/ms</item>
+    </string-array>
+    <string-array name="animation_speed_list_values">
+        <item>0.5</item>
+        <item>1.0</item>
+        <item>1.5</item>
+        <item>2.0</item>
+    </string-array>
+    <string-array name="sidebar_width_list_entries">
+        <item>50 %</item>
+        <item>75 % (default)</item>
+        <item>100 %</item>
+    </string-array>
+    <string-array name="sidebar_width_list_values">
+        <item>0.50</item>
+        <item>0.75</item>
+        <item>1.0</item>
+    </string-array>
+    <string-array name="max_sidebar_width_list_entries">
+        <item>none (default)</item>
+        <item>400 dp</item>
+        <item>500 dp</item>
+    </string-array>
+    <string-array name="max_sidebar_width_list_values">
+        <item>-1</item>
+        <item>400</item>
+        <item>500</item>
+    </string-array>
+    <string-array name="sidebar_offset_list_entries">
+        <item>0 %</item>
+        <item>12,5 % (default)</item>
+        <item>25 %</item>
+    </string-array>
+    <string-array name="sidebar_offset_list_values">
+        <item>0.0</item>
+        <item>0.125</item>
+        <item>0.25</item>
+    </string-array>
+    <string-array name="max_sidebar_offset_list_entries">
+        <item>none (default)</item>
+        <item>50 dp</item>
+        <item>100 dp</item>
+    </string-array>
+    <string-array name="max_sidebar_offset_list_values">
+        <item>-1</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+    <string-array name="content_mode_list_entries">
+        <item>Scroll (default)</item>
+        <item>Resize</item>
+    </string-array>
+    <string-array name="content_mode_list_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="scroll_ratio_list_entries">
+        <item>0 %</item>
+        <item>50 % (default)</item>
+        <item>100 %</item>
+    </string-array>
+    <string-array name="scroll_ratio_list_values">
+        <item>0.0</item>
+        <item>0.5</item>
+        <item>1.0</item>
+    </string-array>
+    <string-array name="drag_threshold_list_entries">
+        <item>25 % (default)</item>
+        <item>50 %</item>
+        <item>75 %</item>
+    </string-array>
+    <string-array name="drag_threshold_list_values">
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>0.75</item>
+    </string-array>
+    <string-array name="drag_sensitivity_list_entries">
+        <item>0 %</item>
+        <item>25 % (default)</item>
+        <item>50 %</item>
+        <item>75 %</item>
+        <item>100 %</item>
+    </string-array>
+    <string-array name="drag_sensitivity_list_values">
+        <item>0.0</item>
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>0.75</item>
+        <item>1.0</item>
+    </string-array>
+    <string-array name="drag_mode_when_hidden_list_entries">
+        <item>Both</item>
+        <item>Sidebar only (default)</item>
+        <item>Content only</item>
+        <item>Disabled</item>
+        <item>Edge</item>
+    </string-array>
+    <string-array name="drag_mode_when_hidden_list_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="drag_mode_when_shown_list_entries">
+        <item>Both (default)</item>
+        <item>Sidebar only</item>
+        <item>Content only</item>
+        <item>Disabled</item>
+    </string-array>
+    <string-array name="drag_mode_when_shown_list_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="shadow_color_list_entries">
+        <item>Transparent</item>
+        <item>Gray (default)</item>
+        <item>Black</item>
+    </string-array>
+    <string-array name="shadow_color_list_values">
+        <item>#00000000</item>
+        <item>#22000000</item>
+        <item>#ff000000</item>
+    </string-array>
+    <string-array name="shadow_width_list_entries">
+        <item>0 dp</item>
+        <item>16 dp (default)</item>
+        <item>32 dp</item>
+        <item>64 dp</item>
+    </string-array>
+    <string-array name="shadow_width_list_values">
+        <item>0</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+    </string-array>
+    <string-array name="content_overlay_color_list_entries">
+        <item>Transparent</item>
+        <item>Gray</item>
+        <item>Black (default)</item>
+    </string-array>
+    <string-array name="content_overlay_color_list_values">
+        <item>#00000000</item>
+        <item>#ff888888</item>
+        <item>#ff000000</item>
+    </string-array>
+    <string-array name="content_overlay_transparency_list_entries">
+        <item>0 %</item>
+        <item>25 %</item>
+        <item>50 % (default)</item>
+        <item>75 %</item>
+        <item>100 %</item>
+    </string-array>
+    <string-array name="content_overlay_transparency_list_values">
+        <item>0.0</item>
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>0.75</item>
+        <item>1.0</item>
+    </string-array>
+
+</resources>

@@ -22,21 +22,9 @@
             </div>
 
             <div class="text">
-                 <h3>Examples</h3>
+                <h3>Examples</h3>
 
-                 <p>Before the library "AndroidSidebar" can be used, its source code must be retrieved. The latest release can be downloaded as a zip archive via the direct link <a href="https://sourceforge.net/p/androidsidebar/files">https://sourceforge.net/p/androidsidebar/files</a>. Alternatively, the Mercurial repository, which hosts the project's source code, can be cloned by using the following command line command:</p>
-
-                <div class="code-block">hg clone http://hg.code.sf.net/p/androidsidebar/code androidsidebar-code</div>
-                
-                <p>To use the library within a project, the downloaded source code has to be added to the workspace of the appropriate IDE. When using Eclipse, the source code can be added as a new project by using the option "File" -> "Import..." -> "Android" -> "Existing Android Code Into Workspace" like shown in the screenshot below:</p>
-
-                <p><center><a href="images/import-dialog.png" target="_blank".><img src="images/import-dialog.png" width="480" alt="The Eclipse import dialog"></center></a></p>
-
-                <p>To be able to use the newly imported library project from within another project, a reference to the library project has to be created. This can be established in the Eclipse IDE by right-clicking the dependent project and choosing the option "Properties". Then the group "Android" at the left of the recently opened window has to be chosen. Finally, the button "Add..." has to be clicked to add the library project as a new dependency. The screenshots below illustrate this procedure:</p>
-
-                <p><center><a href="images/add-dependency.png" target="_blank".><img src="images/add-dependency.png" width="95%" alt="The dialog, which allows to add a library to an Android project"></center></a></p>
-
-                <p>For further information about how to reference an Android library project, refer to <a href="http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject">this</a> article of the official Android developer documentation.</p>
+		<p>The following examples show how the library can be used for adding a sidebar to an activity by either declaring it within a XML layout resource, or programmatically.</p>
 
                 <h4>Declaring the preference via XML</h4>
 
@@ -44,7 +32,7 @@
 
                 <div class="xml-block"><font color='#3f7f5f'>&lt;?xml</font>&nbsp;version=<font color='#2a00ff'>"1.0"</font>&nbsp;encoding=<font color='#2a00ff'>"utf-8"</font>?&gt;
 <br/><font color='#3f7f5f'>&lt;de.mrapp.android.sidebar.Sidebar&nbsp;</font>xmlns:android="<font color='#2a00ff'>http://schemas.android.com/apk/res/android</font>"
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;xmlns:custom=<font color='#2a00ff'>"http://schemas.android.com/apk/res/de.mrapp.android.sidebar"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;xmlns:custom=<font color='#2a00ff'>"http://schemas.android.com/apk/res-auto"</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;android:layout_width=<font color='#2a00ff'>"match_parent"</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;android:layout_height=<font color='#2a00ff'>"match_parent"</font>
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;android:animationSpeed=<font color='#2a00ff'>"1.0"</font>
@@ -103,13 +91,10 @@
 <br/>sidebar.setSidebarWidth(0.5f);
 <br/>addContentView(sidebar, <strong><font color='#7f0055'>new</font></strong> LayoutParams(LayoutParams.<font color='#2a00ff'>MATCH_PARENT</font>, LayoutParams.<font color='#2a00ff'>MATCH_PARENT</font>);</div>
 
-                <h4>External references:</h4>
-
-                <div class="reference"><a name="reference1" class="reference">[1]</a><a href="http://developer.android.com/tools/projects/projects-eclipse.html" target="_blank">http://developer.android.com/tools/projects/projects-eclipse.html</a> &#150; Managing Projects from Eclipse with ADT</div>
             </div>
 
             <div class="copyright">
-                &#169; Copyright 2014, Michael Rapp. All rights reserved.
+                &#169; Copyright 2014 - 2015, Michael Rapp. All rights reserved.
             </div>
         </div>
     </body>

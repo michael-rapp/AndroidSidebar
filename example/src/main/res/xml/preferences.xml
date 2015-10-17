@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+AndroidSidebar Copyright 2014 - 2015 Michael Rapp
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+Lesser General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program. If
+not, see <http://www.gnu.org/licenses/>.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/measurements_preference_category">
+        <ListPreference
+            android:defaultValue="@string/location_preference_default_value"
+            android:entries="@array/location_list_entries"
+            android:entryValues="@array/location_list_values"
+            android:key="@string/location_preference_key"
+            android:summary="@string/location_preference_summary"
+            android:title="@string/location_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/sidebar_width_default_value"
+            android:entries="@array/sidebar_width_list_entries"
+            android:entryValues="@array/sidebar_width_list_values"
+            android:key="@string/sidebar_width_preference_key"
+            android:summary="@string/sidebar_width_preference_summary"
+            android:title="@string/sidebar_width_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/max_sidebar_width_preference_default_value"
+            android:entries="@array/max_sidebar_width_list_entries"
+            android:entryValues="@array/max_sidebar_width_list_values"
+            android:key="@string/max_sidebar_width_preference_key"
+            android:summary="@string/max_sidebar_width_preference_summary"
+            android:title="@string/max_sidebar_width_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/sidebar_offset_preference_default_value"
+            android:entries="@array/sidebar_offset_list_entries"
+            android:entryValues="@array/sidebar_offset_list_values"
+            android:key="@string/sidebar_offset_preference_key"
+            android:summary="@string/sidebar_offset_preference_summary"
+            android:title="@string/sidebar_offset_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/max_sidebar_offset_preference_default_value"
+            android:entries="@array/max_sidebar_offset_list_entries"
+            android:entryValues="@array/max_sidebar_offset_list_values"
+            android:key="@string/max_sidebar_offset_preference_key"
+            android:summary="@string/max_sidebar_offset_preference_summary"
+            android:title="@string/max_sidebar_offset_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/behavior_preference_category">
+        <CheckBoxPreference
+            android:defaultValue="@string/show_preference_default_value"
+            android:key="@string/show_preference_key"
+            android:summary="@string/show_preference_summary"
+            android:title="@string/show_preference_title"/>
+
+        <ListPreference
+            android:defaultValue="@string/content_mode_preference_default_value"
+            android:entries="@array/content_mode_list_entries"
+            android:entryValues="@array/content_mode_list_values"
+            android:key="@string/content_mode_preference_key"
+            android:summary="@string/content_mode_preference_summary"
+            android:title="@string/content_mode_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/scroll_ratio_preference_default_value"
+            android:entries="@array/scroll_ratio_list_entries"
+            android:entryValues="@array/scroll_ratio_list_values"
+            android:key="@string/scroll_ratio_preference_key"
+            android:summary="@string/scroll_ratio_preference_summary"
+            android:title="@string/scroll_ratio_preference_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@string/hide_on_back_button_default_value"
+            android:key="@string/hide_on_back_button_preference_key"
+            android:summary="@string/hide_on_back_button_preference_summary"
+            android:title="@string/hide_on_back_button_preference_title"/>
+        <CheckBoxPreference
+            android:defaultValue="@string/hide_on_content_click_preference_default_value"
+            android:key="@string/hide_on_content_click_preference_key"
+            android:summary="@string/hide_on_content_click_preference_summary"
+            android:title="@string/hide_on_content_click_preference_title"/>
+        <CheckBoxPreference
+            android:defaultValue="@string/show_on_sidebar_click_preference_default_value"
+            android:key="@string/show_on_sidebar_click_preference_key"
+            android:summary="@string/show_on_sidebar_click_preference_summary"
+            android:title="@string/show_on_sidebar_click_preference_title"/>
+
+        <ListPreference
+            android:defaultValue="@string/animation_speed_preference_default_value"
+            android:entries="@array/animation_speed_list_entries"
+            android:entryValues="@array/animation_speed_list_values"
+            android:key="@string/animation_speed_preference_key"
+            android:summary="@string/animation_speed_preference_summary"
+            android:title="@string/animation_speed_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dragging_preference_category">
+        <ListPreference
+            android:defaultValue="@string/drag_threshold_preference_default_value"
+            android:entries="@array/drag_threshold_list_entries"
+            android:entryValues="@array/drag_threshold_list_values"
+            android:key="@string/drag_threshold_preference_key"
+            android:summary="@string/drag_threshold_preference_summary"
+            android:title="@string/drag_threshold_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/drag_sensitivity_preference_default_value"
+            android:entries="@array/drag_sensitivity_list_entries"
+            android:entryValues="@array/drag_sensitivity_list_values"
+            android:key="@string/drag_sensitivity_preference_key"
+            android:summary="@string/drag_sensitivity_preference_summary"
+            android:title="@string/drag_sensitivity_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/drag_mode_when_hidden_preference_default_value"
+            android:entries="@array/drag_mode_when_hidden_list_entries"
+            android:entryValues="@array/drag_mode_when_hidden_list_values"
+            android:key="@string/drag_mode_when_hidden_preference_key"
+            android:summary="@string/drag_mode_when_hidden_preference_summary"
+            android:title="@string/drag_mode_when_hidden_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/drag_mode_when_shown_preference_default_value"
+            android:entries="@array/drag_mode_when_shown_list_entries"
+            android:entryValues="@array/drag_mode_when_shown_list_values"
+            android:key="@string/drag_mode_when_shown_preference_key"
+            android:summary="@string/drag_mode_when_shown_preference_summary"
+            android:title="@string/drag_mode_when_shown_preference_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/appearance_preference_category">
+        <ListPreference
+            android:defaultValue="@string/shadow_color_preference_default_value"
+            android:entries="@array/shadow_color_list_entries"
+            android:entryValues="@array/shadow_color_list_values"
+            android:key="@string/shadow_color_preference_key"
+            android:summary="@string/shadow_color_preference_summary"
+            android:title="@string/shadow_color_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/shadow_width_preference_default_value"
+            android:entries="@array/shadow_width_list_entries"
+            android:entryValues="@array/shadow_width_list_values"
+            android:key="@string/shadow_width_preference_key"
+            android:summary="@string/shadow_width_preference_summary"
+            android:title="@string/shadow_width_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/content_overlay_color_preference_default_value"
+            android:entries="@array/content_overlay_color_list_entries"
+            android:entryValues="@array/content_overlay_color_list_values"
+            android:key="@string/content_overlay_color_preference_key"
+            android:summary="@string/content_overlay_color_preference_summary"
+            android:title="@string/content_overlay_color_preference_title"/>
+        <ListPreference
+            android:defaultValue="@string/content_overlay_transparency_default_value"
+            android:entries="@array/content_overlay_transparency_list_entries"
+            android:entryValues="@array/content_overlay_transparency_list_values"
+            android:key="@string/content_overlay_transparency_key"
+            android:summary="@string/content_overlay_transparency_summary"
+            android:title="@string/content_overlay_transparency_title"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
