@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <title>AndroidSidebar &#150; Documentation: Examples</title>
+        <link rel=stylesheet type=text/css href=style.css />
+        <link rel="icon" type="image/png" href="images/favicon.png" />
+    </head>
+    
+    <body>
+        <div class="content">
+            <div class="header">
+                <h1>AndroidSidebar &#150; Documentation</h1>
+                <h2>Documentation of the Android-library "AndroidSidebar".</h2>
+            </div>
+
+            <div class="navigation">
+                <div class="navigation-item"><a href="index.html">GENERAL</a></div>
+                <div class="navigation-item"><a href="content.html">CONTENT</a></div>
+                <div class="navigation-item-selected"><a href="examples.html">EXAMPLES</a></div>
+            </div>
+
+            <div class="text">
+                <h3>Examples</h3>
+
+		<p>The following examples show how the library can be used for adding a sidebar to an activity by either declaring it within a XML layout resource, or programmatically.</p>
+
+                <h4>Declaring the preference via XML</h4>
+
+                <p>The XML code below shows how to declare a view, which is provided by the library "AndroidSidebar", as a XML resource:</p>
+
+                <div class="xml-block"><font color='#3f7f5f'>&lt;?xml</font>&nbsp;version=<font color='#2a00ff'>"1.0"</font>&nbsp;encoding=<font color='#2a00ff'>"utf-8"</font>?&gt;
+<br/><font color='#3f7f5f'>&lt;de.mrapp.android.sidebar.Sidebar&nbsp;</font>xmlns:android="<font color='#2a00ff'>http://schemas.android.com/apk/res/android</font>"
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;xmlns:custom=<font color='#2a00ff'>"http://schemas.android.com/apk/res-auto"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:layout_width=<font color='#2a00ff'>"match_parent"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:layout_height=<font color='#2a00ff'>"match_parent"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:animationSpeed=<font color='#2a00ff'>"1.0"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:contentMode=<font color='#2a00ff'>"scroll"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:contentOverlayColor=<font color='#2a00ff'>"@android:color/black"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:contentOverlayTransparency=<font color='#2a00ff'>"25%"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:contentView=<font color='#2a00ff'>"@layout/content_view"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:dragModeWhenHidden=<font color='#2a00ff'>"both"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:dragModeWhenShown=<font color='#2a00ff'>"disabled"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:dragSensitivity=<font color='#2a00ff'>"100%"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:dragThreshold=<font color='#2a00ff'>"10%"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:hideOnBackButton=<font color='#2a00ff'>"false"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:hideOnContentClick=<font color='#2a00ff'>"false"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:location=<font color='#2a00ff'>"left"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:maxSidebarOffset=<font color='#2a00ff'>"100dp"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:maxSidebarWidth=<font color='#2a00ff'>"600dp"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:scrollRatio=<font color='#2a00ff'>"100%"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:shadowColor=<font color='#2a00ff'>"@android:color/black"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:shadowWidth=<font color='#2a00ff'>"25dp"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:showOnSidebarClick=<font color='#2a00ff'>"true"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:showSidebar=<font color='#2a00ff'>"true"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:sidebarBackground=<font color='#2a00ff'>"@drawable/sidebar_background_left_dark"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:sidebarOffset=<font color='#2a00ff'>"10%"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:sidebarView=<font color='#2a00ff'>"@layout/sidebar_view"</font>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;android:sidebarWidth=<font color='#2a00ff'>"50%"</font><font color='#3f7f5f'>&nbsp;/&gt;</font></div>
+
+                <p>The example shown above contains all custom attributes, which can be set via XML. For a more detailed explaination of the single attribute, refer to the chapter "Content" of this documentation.</p>
+
+                <h4>Instantiating the preference programatically</h4>
+
+                <p>The Java code below shows how a <tt>Sidebar</tt> can be initialized programmatically within an activity. The attributes, which are configured by using the view's setter methods, are the same as shown in the previous example.</p>
+
+                <div class="code-block">Sidebar&nbsp;sidebar&nbsp;=&nbsp;<strong><font color='#7f0055'>new</font></strong>&nbsp;Sidebar(<strong><font color='#7f0055'>this</font></strong>);
+<br/>sidebar.setAnimationSpeed(1.0f);
+<br/>sidebar.setContentMode(ContentMode.<font color='#2a00ff'>SCROLL</font>);
+<br/>sidebar.setContentOverlayColor(Color.<font color='#2a00ff'>BLACK</font>);
+<br/>sidebar.setContentOverlayTransparency(0.25f);
+<br/>sidebar.setContentView(R.layout.<font color='#2a00ff'>content_view</font>);
+<br/>sidebar.setDragModeWhenHidden(DragMode.<font color='#2a00ff'>BOTH</font>);
+<br/>sidebar.setDragModeWhenShown(DragMode.<font color='#2a00ff'>DISABLED</font>);
+<br/>sidebar.setDragSensitivity(1.0f);
+<br/>sidebar.setDragThreshold(0.1f);
+<br/>sidebar.hideOnBackButton(<strong><font color='#7f0055'>false</font></strong>);
+<br/>sidebar.hideOnContentClick(<strong><font color='#7f0055'>false</font></strong>);
+<br/>sidebar.setLocation(Location.<font color='#2a00ff'>LEFT</font>);
+<br/>sidebar.setMaxSidebarOffset(100);
+<br/>sidebar.setMaxSidebarWidth(600);
+<br/>sidebar.setScrollRatio(1.0f);
+<br/>sidebar.setShadowColor(Color.<font color='2a00ff'>BLACK</font>);
+<br/>sidebar.setShadowWidth(25);
+<br/>sidebar.showOnSidebarClick(<strong><font color='#7f0055'>true</font></strong>);
+<br/>sidebar.showSidebar(<strong><font color='#7f0055'>true</font></strong>);
+<br/>sidebar.setSidebarBackground(R.drawable.<font color='#2a00ff'>sidebar_background_left_dark</font>);
+<br/>sidebar.setSidebarOffset(0.1f);
+<br/>sidebar.setSidebarView(R.layout.<font color='#2a00ff'>sidebar_view</font>);
+<br/>sidebar.setSidebarWidth(0.5f);
+<br/>addContentView(sidebar, <strong><font color='#7f0055'>new</font></strong> LayoutParams(LayoutParams.<font color='#2a00ff'>MATCH_PARENT</font>, LayoutParams.<font color='#2a00ff'>MATCH_PARENT</font>);</div>
+
+            </div>
+
+            <div class="copyright">
+                &#169; Copyright 2014 - 2015, Michael Rapp. All rights reserved.
+            </div>
+        </div>
+    </body>
+</html>
