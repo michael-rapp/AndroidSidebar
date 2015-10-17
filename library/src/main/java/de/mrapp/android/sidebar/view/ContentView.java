@@ -24,7 +24,7 @@ import android.widget.FrameLayout;
 
 import de.mrapp.android.sidebar.inflater.Inflater;
 
-import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A custom view, which contains the content view of a sidebar, as well as a view, which is used as
