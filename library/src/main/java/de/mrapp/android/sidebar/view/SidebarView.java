@@ -29,8 +29,8 @@ import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.inflater.Inflater;
 
-import static de.mrapp.android.sidebar.util.Condition.ensureAtLeast;
-import static de.mrapp.android.sidebar.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureNotNull;
 
 /**
  * A custom view, which contains the sidebar view of a sidebar, as well as a view, which is used to
