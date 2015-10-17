@@ -72,8 +72,7 @@ public class ResizeAnimation extends Animation {
     protected final void applyTransformation(final float interpolatedTime,
                                              final Transformation transformation) {
         super.applyTransformation(interpolatedTime, transformation);
-        int newWidth = Math.round(originalWidth + widthOffset * interpolatedTime);
-        view.getLayoutParams().width = newWidth;
+        view.getLayoutParams().width = Math.round(originalWidth + widthOffset * interpolatedTime);
         view.layout(view.getLeft(), view.getTop(),
                 view.getLeft() + Math.max(targetWidth, originalWidth), view.getBottom());
         view.requestLayout();
