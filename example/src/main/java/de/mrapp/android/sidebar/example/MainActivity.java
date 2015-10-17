@@ -14,6 +14,7 @@
  */
 package de.mrapp.android.sidebar.example;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -412,7 +413,12 @@ public class MainActivity extends Activity implements SidebarListener {
         super.onResume();
 
         if (sidebar.isSidebarShown()) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            ActionBar actionBar = getActionBar();
+
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+
             setTitle(R.string.sidebar_title);
         }
     }
@@ -427,13 +433,23 @@ public class MainActivity extends Activity implements SidebarListener {
 
     @Override
     public final void onSidebarShown(final Sidebar sidebar) {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         setTitle(R.string.sidebar_title);
     }
 
     @Override
     public final void onSidebarHidden(final Sidebar sidebar) {
-        getActionBar().setDisplayHomeAsUpEnabled(false);
+        ActionBar actionBar = getActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+
         setTitle(R.string.app_name);
     }
 

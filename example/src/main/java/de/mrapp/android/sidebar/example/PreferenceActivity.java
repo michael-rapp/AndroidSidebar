@@ -35,11 +35,6 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private Preference scrollRatioPreference;
 
     /**
-     * The preference, which allows to set the content mode.
-     */
-    private Preference contentModePreference;
-
-    /**
      * Creates and returns a listener, which allows to enable or disable the preference, which
      * allows to set the scroll ratio, when the content mode has been changed.
      *
@@ -74,7 +69,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         scrollRatioPreference = findPreference(scrollRatioKey);
         String contentModeKey = getString(R.string.content_mode_preference_key);
         String contentModeDefaultValue = getString(R.string.content_mode_preference_default_value);
-        contentModePreference = findPreference(contentModeKey);
+        Preference contentModePreference = findPreference(contentModeKey);
         contentModePreference.setOnPreferenceChangeListener(createContentModeChangeListener());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         int contentMode = Integer.valueOf(
