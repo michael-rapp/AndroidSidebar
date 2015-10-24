@@ -12,7 +12,7 @@ The library provides the following features:
 - The way, the main content is animated, when the sidebar becomes shown or hidden, can be adjusted in many ways, including the possibility to move it or to resize it.
 - The sidebar's state can be changed via drag gestures or by clicking the touch screen of the device. For each possibility multiple settings exist, e.g. it is possible to change the sensibility for recognizing drag gestures.
 - The speed of the animation, which is used to show or hide the sidebar, can be chosen freely.
-- The sidebar may render a semi-transparent shadow in front of the main content, whose appearance can be adjusted concerning size and color.
+- The sidebar allows to specify an elevation, which causes a shadow to be rendered in front of the main content.
 - It is possible to fade in a semi-transparent overlay, which is shown in front of the main content, when the sidebar becomes shown. The transparency and color of the overlay can be adjusted.
 
 ## License Agreement
