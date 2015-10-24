@@ -184,16 +184,10 @@
                         <td>The value must be at least 0 and at maximum 1</td>
                     </tr>
                     <tr>
-                        <td><tt>getShadowColor():int</br>setShadowWidth(int):void</tt></td>
-                        <td>Returns or sets the color of the sidebar's shadow. If no shadow should be shown, the color may be set to be transparent.</td>
-                        <td><center><tt>0x22000000</tt></center></td>
-                        <td>The value must represent a valid color (refer <a href="http://developer.android.com/reference/android/graphics/drawable/Drawable.html" target="_blank">this</a> link for further information)</td>
-                    </tr>
-                    <tr>
-                        <td><tt>getShadowWidth():int</br>setShadowWidth(int):void</tt></td>
-                        <td>Returns or sets the width of the sidebar's shadow in dp.</td>
-                        <td><center><tt>16</tt></center></td>
-                        <td>The value must be at least 0</td>
+                        <td><tt>getSidebarElevation():int</br>setSidebarElevation(int):void</tt></td>
+                        <td>Returns or sets the elevation of the sidebar in dp.</td>
+                        <td><center><tt>16dp</tt></center></td>
+                        <td>The value must be at least 0dp and at maximum 16dp.</td>
                     </tr>
                 </table>
 
@@ -354,18 +348,11 @@
                         <td>The value must be at least 0% and at maximum 100%</td>
                     </tr>
                     <tr>
-                        <td><tt>custom:shadowColor</tt></td>
-                        <td>The color of the sidebar's shadow. If no shadow should be shown, the color may be set to be transparent.</td>
-                        <td style="text-align: center;"><tt>color</tt></td>
-                        <td style="text-align: center;"><tt>@color/shadow</tt></td>
-                        <td>none</td>
-                    </tr>
-                    <tr>
-                        <td><tt>custom:shadowWidth</tt></td>
-                        <td>The width of the sidebar's shadow in dp.</td>
+                        <td><tt>custom:sidebarElevation</tt></td>
+                        <td>The elevation of the sidebar in dp.</td>
                         <td style="text-align: center;"><tt>dimension</tt></td>
                         <td style="text-align: center;"><tt>16dp</tt></td>
-                        <td>The value must be at least 16dp</td>
+                        <td>The value must be at least 0dp and at maximum 16dp.</td>
                     </tr>
                 </table>
 
