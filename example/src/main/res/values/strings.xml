@@ -94,7 +94,7 @@ not, see <http://www.gnu.org/licenses/>.
     <string name="sidebar_elevation_preference_title">Sidebar elevation</string>
     <string name="sidebar_elevation_preference_summary">The elevation of the sidebar</string>
     <string name="sidebar_elevation_preference_key">sidebar_elevation_preference_key</string>
-    <string name="sidebar_elevation_preference_default_value">8</string>
+    <string name="sidebar_elevation_preference_default_value">16</string>
     <string name="content_overlay_color_preference_title">Content overlay color</string>
     <string name="content_overlay_color_preference_summary">The color of the overlay, which is shown when the sidebar is shown</string>
     <string name="content_overlay_color_preference_key">content_overlay_color_preference_key</string>
@@ -257,9 +257,9 @@ not, see <http://www.gnu.org/licenses/>.
     <string-array name="sidebar_elevation_list_entries">
         <item>0 dp</item>
         <item>4 dp</item>
-        <item>8 dp (default)</item>
+        <item>8 dp</item>
         <item>12 dp</item>
-        <item>16 dp</item>
+        <item>16 dp (default)</item>
     </string-array>
     <string-array name="sidebar_elevation_list_values">
         <item>0</item>

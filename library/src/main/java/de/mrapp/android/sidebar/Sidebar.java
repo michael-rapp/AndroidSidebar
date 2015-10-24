@@ -175,7 +175,7 @@ public class Sidebar extends ViewGroup {
     /**
      * The default elevation of the sidebar in dp.
      */
-    protected static final int DEFAULT_SIDEBAR_ELEVATION = 8;
+    protected static final int DEFAULT_SIDEBAR_ELEVATION = 16;
 
     /**
      * True, if the sidebar should be shown by default, false otherwise.
