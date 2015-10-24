@@ -5,7 +5,6 @@
 A feature release, which introduces the following changes:
 
 - Version 1.2.0 of the library "AndroidUtil" is now used to emulate the elevation of the sidebar. The methods and XML attributes, which previously allowed to specify a shadow width and color, have been replaced by one single method and attribute, which allows to set an elevation.
-- Default values are now specified using XML resources instead of Java constants.
 
 ## Version 2.0.0 (Oct. 17th 2015)
 
