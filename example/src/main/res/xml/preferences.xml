@@ -130,20 +130,14 @@ not, see <http://www.gnu.org/licenses/>.
             android:title="@string/drag_mode_when_shown_preference_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/appearance_preference_category">
+
         <ListPreference
-            android:defaultValue="@string/shadow_color_preference_default_value"
-            android:entries="@array/shadow_color_list_entries"
-            android:entryValues="@array/shadow_color_list_values"
-            android:key="@string/shadow_color_preference_key"
-            android:summary="@string/shadow_color_preference_summary"
-            android:title="@string/shadow_color_preference_title"/>
-        <ListPreference
-            android:defaultValue="@string/shadow_width_preference_default_value"
-            android:entries="@array/shadow_width_list_entries"
-            android:entryValues="@array/shadow_width_list_values"
-            android:key="@string/shadow_width_preference_key"
-            android:summary="@string/shadow_width_preference_summary"
-            android:title="@string/shadow_width_preference_title"/>
+            android:defaultValue="@string/sidebar_elevation_preference_default_value"
+            android:entries="@array/sidebar_elevation_list_entries"
+            android:entryValues="@array/sidebar_elevation_list_values"
+            android:key="@string/sidebar_elevation_preference_key"
+            android:summary="@string/sidebar_elevation_preference_summary"
+            android:title="@string/sidebar_elevation_preference_title"/>
         <ListPreference
             android:defaultValue="@string/content_overlay_color_preference_default_value"
             android:entries="@array/content_overlay_color_list_entries"

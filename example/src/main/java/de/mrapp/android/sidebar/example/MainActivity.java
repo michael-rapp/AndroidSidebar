@@ -285,33 +285,18 @@ public class MainActivity extends Activity implements SidebarListener {
     }
 
     /**
-     * Initializes the shadow color by retrieving the appropriate setting from the shared
+     * Initializes the sidebar elevation by retrieving the appropriate setting from the shared
      * preferences.
      *
      * @param sharedPreferences
      *         The shared preferences, the settings should be retrieved from, as an instance of the
      *         type {@link SharedPreferences}
      */
-    private void initializeShadowColor(final SharedPreferences sharedPreferences) {
-        String key = getString(R.string.shadow_color_preference_key);
-        String defaultValue = getString(R.string.shadow_color_preference_default_value);
-        String shadowColor = sharedPreferences.getString(key, defaultValue);
-        //sidebar.setShadowColor(Color.parseColor(shadowColor));
-    }
-
-    /**
-     * Initializes the shadow width by retrieving the appropriate setting from the shared
-     * preferences.
-     *
-     * @param sharedPreferences
-     *         The shared preferences, the settings should be retrieved from, as an instance of the
-     *         type {@link SharedPreferences}
-     */
-    private void initializeShadowWidth(final SharedPreferences sharedPreferences) {
-        String key = getString(R.string.shadow_width_preference_key);
-        String defaultValue = getString(R.string.shadow_width_preference_default_value);
-        int shadowWidth = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        //sidebar.setShadowWidth(shadowWidth);
+    private void initializeSidebarElevation(final SharedPreferences sharedPreferences) {
+        String key = getString(R.string.sidebar_elevation_preference_key);
+        String defaultValue = getString(R.string.sidebar_elevation_preference_default_value);
+        String sidebarElevation = sharedPreferences.getString(key, defaultValue);
+        sidebar.setSidebarElevation(Integer.valueOf(sidebarElevation));
     }
 
     /**
@@ -401,8 +386,7 @@ public class MainActivity extends Activity implements SidebarListener {
             initializeDragThreshold(sharedPreferences);
             initializeDragModeWhenHidden(sharedPreferences);
             initializeDragModeWhenShown(sharedPreferences);
-            initializeShadowColor(sharedPreferences);
-            initializeShadowWidth(sharedPreferences);
+            initializeSidebarElevation(sharedPreferences);
             initializeContentOverlayColor(sharedPreferences);
             initializeContentOverlayTransparency(sharedPreferences);
         }
