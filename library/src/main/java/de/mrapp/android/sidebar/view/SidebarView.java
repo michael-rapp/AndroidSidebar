@@ -15,22 +15,24 @@
 package de.mrapp.android.sidebar.view;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.inflater.Inflater;
+import de.mrapp.android.util.ElevationUtil;
+import de.mrapp.android.util.ElevationUtil.Orientation;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
+import static de.mrapp.android.util.Condition.ensureAtMaximum;
 import static de.mrapp.android.util.Condition.ensureNotNull;
+import static de.mrapp.android.util.ElevationUtil.createElevationShadow;
 
 /**
  * A custom view, which contains the sidebar view of a sidebar, as well as a view, which is used to
@@ -47,9 +49,9 @@ public class SidebarView extends LinearLayout {
     private View sidebarView;
 
     /**
-     * The view, which is used to visualize a shadow.
+     * The view, which is used to emulate the sidebar's elevation.
      */
-    private View shadowView;
+    private ImageView shadowView;
 
     /**
      * The location of the sidebar.
@@ -57,14 +59,9 @@ public class SidebarView extends LinearLayout {
     private Location location;
 
     /**
-     * The color of the shadow.
+     * The elevation of the sidebar in dp.
      */
-    private int shadowColor;
-
-    /**
-     * The width of the shadow in pixels.
-     */
-    private int shadowWidth;
+    private int sidebarElevation;
 
     /**
      * The background of the sidebar view or null, if the default background is used.
@@ -92,7 +89,9 @@ public class SidebarView extends LinearLayout {
      * Inflates and adds the view, which is used to visualize a shadow.
      */
     private void inflateShadowView() {
-        shadowView = new View(getContext());
+        shadowView = new ImageView(getContext());
+        shadowView.setScaleType(ImageView.ScaleType.FIT_XY);
+        shadowView.setContentDescription(null);
         addShadowView();
     }
 
@@ -100,8 +99,8 @@ public class SidebarView extends LinearLayout {
      * Adds the view, which is used to visualize a shadow.
      */
     private void addShadowView() {
-        LayoutParams layoutParams = new LayoutParams(shadowWidth, LayoutParams.MATCH_PARENT);
-        layoutParams.weight = 0;
+        LayoutParams layoutParams =
+                new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         addView(shadowView, layoutParams);
     }
 
@@ -143,55 +142,48 @@ public class SidebarView extends LinearLayout {
      * @param sidebarBackground
      *         The background of the sidebar view as an instance of the class {@link Drawable} or
      *         null, if the default background should be used
-     * @param shadowWidth
-     *         The width of the shadow in pixels as an {@link Integer} value. The width must be at
-     *         least 0
-     * @param shadowColor
-     *         The color of the shadow as an {@link Integer} value
+     * @param sidebarElevation
+     *         The elevation of the sidebar in dp as an {@link Integer}. The elevation must be at
+     *         least 0 and at maximum 16
      */
     public SidebarView(@NonNull final Context context, @NonNull final Inflater inflater,
                        @NonNull final Location location, @Nullable final Drawable sidebarBackground,
-                       final int shadowWidth, @ColorInt final int shadowColor) {
+                       final int sidebarElevation) {
         super(context, null);
         ensureNotNull(location, "The location may not be null");
         ensureNotNull(inflater, "The inflater may not be null");
-        ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
         this.location = location;
-        this.shadowWidth = shadowWidth;
-        this.shadowColor = shadowColor;
         this.sidebarBackground = sidebarBackground;
         setOrientation(LinearLayout.HORIZONTAL);
         inflateViews(inflater);
-        setShadowColor(shadowColor);
+        setSidebarElevation(sidebarElevation);
     }
 
     /**
-     * Returns the color of the shadow.
+     * Returns the elevation of the sidebar.
      *
-     * @return The color of the shadow as an {@link Integer} value
+     * @return The elevation of the sidebar in dp as an {@link Integer} value
      */
-    public final int getShadowColor() {
-        return shadowColor;
+    public final int getSidebarElevation() {
+        return sidebarElevation;
     }
 
     /**
-     * Sets the color of the shadow.
+     * Sets the elevation of the sidebar.
      *
-     * @param shadowColor
-     *         The color, which should be set, as an {@link Integer} value
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 0 and at maximum 16
      */
-    @SuppressWarnings("deprecation")
-    public final void setShadowColor(@ColorInt final int shadowColor) {
-        this.shadowColor = shadowColor;
-        Orientation orientation = Orientation.LEFT_RIGHT;
-
-        if (location == Location.LEFT) {
-            orientation = Orientation.RIGHT_LEFT;
-        }
-
-        GradientDrawable gradient =
-                new GradientDrawable(orientation, new int[]{Color.TRANSPARENT, shadowColor});
-        shadowView.setBackgroundDrawable(gradient);
+    public final void setSidebarElevation(final int elevation) {
+        ensureAtLeast(elevation, 0, "The sidebar elevation must be at least 0");
+        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+                "The sidebar elevation must be at least " + ElevationUtil.MAX_ELEVATION);
+        this.sidebarElevation = elevation;
+        Bitmap shadow = createElevationShadow(getContext(), elevation,
+                getLocation() == Location.LEFT ? Orientation.RIGHT : Orientation.LEFT);
+        shadowView.setImageBitmap(shadow);
+        setLocation(getLocation());
     }
 
     /**
@@ -225,29 +217,6 @@ public class SidebarView extends LinearLayout {
         }
 
         setSidebarBackground(sidebarBackground);
-        setShadowColor(shadowColor);
-    }
-
-    /**
-     * Returns the width of the shadow in pixels.
-     *
-     * @return The width of the shadow in pixels as an {@link Integer} value
-     */
-    public final int getShadowWidth() {
-        return shadowWidth;
-    }
-
-    /**
-     * Sets the width of the shadow in pixels.
-     *
-     * @param shadowWidth
-     *         The width, which should be set, as an {@link Integer} value. The width must be at
-     *         least 0
-     */
-    public final void setShadowWidth(final int shadowWidth) {
-        ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
-        this.shadowWidth = shadowWidth;
-        setLocation(location);
     }
 
     /**
@@ -285,11 +254,20 @@ public class SidebarView extends LinearLayout {
     /**
      * Returns the sidebar view.
      *
-     * @return The sidebar view as an instance of the class {@link View}. The sidebar view may not
-     * be null
+     * @return The sidebar view as an instance of the class {@link View}
      */
     public final View getSidebarView() {
         return sidebarView;
+    }
+
+    /**
+     * Returns the width of the view, which is used to visualize the sidebar's elevation.
+     *
+     * @return The width of the view, which is used to visualize the sidebar's elevation, in pixels
+     * as an {@link Integer} value
+     */
+    public final int getShadowWidth() {
+        return shadowView.getWidth();
     }
 
 }

@@ -14,15 +14,15 @@
  */
 package de.mrapp.android.sidebar.savedstate;
 
-import static org.mockito.Mockito.mock;
+import android.os.Parcelable;
+
+import junit.framework.TestCase;
 
 import de.mrapp.android.sidebar.ContentMode;
 import de.mrapp.android.sidebar.DragMode;
 import de.mrapp.android.sidebar.Location;
 
-import android.os.Parcelable;
-
-import junit.framework.TestCase;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests the functionality of the class {@link SidebarSavedState}.
@@ -237,26 +237,14 @@ public class SidebarSavedStateTest extends TestCase {
 
     /**
      * Tests the functionality of the method, which allows to set the saved value of the attribute
-     * "shadowWidth".
+     * "sidebarElevation".
      */
-    public final void testSetShadowWidth() {
+    public final void testSetSidebarElevation() {
         int value = 1;
         Parcelable parcelable = mock(Parcelable.class);
         SidebarSavedState sidebarSavedState = new SidebarSavedState(parcelable);
-        sidebarSavedState.setShadowWidth(value);
-        assertEquals(value, sidebarSavedState.getShadowWidth());
-    }
-
-    /**
-     * Tests the functionality of the method, which allows to set the saved value of the attribute
-     * "shadowColor".
-     */
-    public final void testSetShadowColor() {
-        int value = 1;
-        Parcelable parcelable = mock(Parcelable.class);
-        SidebarSavedState sidebarSavedState = new SidebarSavedState(parcelable);
-        sidebarSavedState.setShadowColor(value);
-        assertEquals(value, sidebarSavedState.getShadowColor());
+        sidebarSavedState.setSidebarElevation(value);
+        assertEquals(value, sidebarSavedState.getSidebarElevation());
     }
 
     /**

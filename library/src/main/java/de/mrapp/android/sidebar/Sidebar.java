@@ -50,6 +50,7 @@ import de.mrapp.android.sidebar.savedstate.SidebarSavedState;
 import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
+import de.mrapp.android.util.ElevationUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureAtMaximum;
@@ -172,14 +173,9 @@ public class Sidebar extends ViewGroup {
     protected static final float DEFAULT_CONTENT_OVERLAY_TRANSPARENCY = 0.5f;
 
     /**
-     * The default width of the sidebar's shadow in dp.
+     * The default elevation of the sidebar in dp.
      */
-    protected static final int DEFAULT_SHADOW_WIDTH = 16;
-
-    /**
-     * The default color of the sidebar's shadow.
-     */
-    protected static final int DEFAULT_SHADOW_COLOR = 0x22000000;
+    protected static final int DEFAULT_SIDEBAR_ELEVATION = 16;
 
     /**
      * True, if the sidebar should be shown by default, false otherwise.
@@ -304,14 +300,9 @@ public class Sidebar extends ViewGroup {
     private float contentOverlayTransparency;
 
     /**
-     * The width of the sidebar's shadow in dp.
+     * The elevation of the sidebar in dp.
      */
-    private int shadowWidth;
-
-    /**
-     * The color of the sidebar's shadow.
-     */
-    private int shadowColor;
+    private int sidebarElevation;
 
     /**
      * True, if the sidebar is currently shown, false otherwise.
@@ -388,8 +379,7 @@ public class Sidebar extends ViewGroup {
         try {
             obtainContentOverlayColor(typedArray);
             obtainContentOverlayTransparency(typedArray);
-            obtainShadowColor(typedArray);
-            obtainShadowWidth(typedArray);
+            obtainSidebarElevation(typedArray);
             obtainLocation(typedArray);
             obtainSidebarBackground(typedArray);
             obtainSidebarView(typedArray);
@@ -453,26 +443,16 @@ public class Sidebar extends ViewGroup {
     }
 
     /**
-     * Obtains the color of the sidebar's shadow from a specific typed array.
+     * Obtains the elevation of the sidebar from a specific typed array.
      *
      * @param typedArray
-     *         The typed array, the color of the sidebar's shadow should be obtained from, as an
-     *         instance of the class {@link TypedArray}. The typed array may not be null
+     *         The typed array, the elevation of the sidebar should be obtained from, as an instance
+     *         of the class {@link TypedArray}. The typed array may not be null
      */
-    private void obtainShadowColor(@NonNull final TypedArray typedArray) {
-        setShadowColor(typedArray.getColor(R.styleable.Sidebar_shadowColor, DEFAULT_SHADOW_COLOR));
-    }
-
-    /**
-     * Obtains the width of the sidebar's shadow from a specific typed array.
-     *
-     * @param typedArray
-     *         The typed array, the width of the sidebar's shadow should be obtained from, as an
-     *         instance of the class {@link TypedArray}. The typed array may not be null
-     */
-    private void obtainShadowWidth(@NonNull final TypedArray typedArray) {
-        setShadowWidthInPixels(typedArray.getDimensionPixelSize(R.styleable.Sidebar_shadowWidth,
-                dpToPixels(getContext(), DEFAULT_SHADOW_WIDTH)));
+    private void obtainSidebarElevation(@NonNull final TypedArray typedArray) {
+        setSidebarElevation(pixelsToDp(getContext(), typedArray
+                .getDimensionPixelSize(R.styleable.Sidebar_sidebarElevation,
+                        dpToPixels(getContext(), DEFAULT_SIDEBAR_ELEVATION))));
     }
 
     /**
@@ -716,24 +696,6 @@ public class Sidebar extends ViewGroup {
     }
 
     /**
-     * Sets the width of the sidebar's shadow in pixels.
-     *
-     * @param shadowWidth
-     *         The width, which should be set, in pixels as an {@link Integer} value
-     */
-    private void setShadowWidthInPixels(final int shadowWidth) {
-        ensureAtLeast(shadowWidth, 0, "The shadow width must be at least 0");
-        this.shadowWidth = shadowWidth;
-
-        if (sidebarView != null) {
-            sidebarView.setShadowWidth(shadowWidth);
-        }
-
-        measureSidebarWidth();
-        requestLayout();
-    }
-
-    /**
      * Sets the maximum width of the sidebar in pixels.
      *
      * @param maxSidebarWidth
@@ -772,7 +734,7 @@ public class Sidebar extends ViewGroup {
         }
 
         sidebarView = new SidebarView(getContext(), inflater, getLocation(), sidebarBackground,
-                shadowWidth, shadowColor);
+                sidebarElevation);
         addView(sidebarView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         bringSidebarToFront();
@@ -981,7 +943,7 @@ public class Sidebar extends ViewGroup {
         }
 
         if (sidebarView != null) {
-            sidebarView.getLayoutParams().width = mSidebarWidth + shadowWidth;
+            sidebarView.getLayoutParams().width = mSidebarWidth + sidebarView.getShadowWidth();
         }
     }
 
@@ -1015,15 +977,16 @@ public class Sidebar extends ViewGroup {
 
         if (getLocation() == Location.LEFT) {
             if (show) {
-                distance = mSidebarWidth + shadowWidth - sidebarView.getRight();
+                distance = mSidebarWidth + sidebarView.getShadowWidth() - sidebarView.getRight();
             } else {
-                distance = mOffset + shadowWidth - sidebarView.getRight();
+                distance = mOffset + sidebarView.getShadowWidth() - sidebarView.getRight();
             }
         } else {
             if (show) {
-                distance = getWidth() - mSidebarWidth - shadowWidth - sidebarView.getLeft();
+                distance = getWidth() - mSidebarWidth - sidebarView.getShadowWidth() -
+                        sidebarView.getLeft();
             } else {
-                distance = mContentWidth - shadowWidth - sidebarView.getLeft();
+                distance = mContentWidth - sidebarView.getShadowWidth() - sidebarView.getLeft();
             }
         }
 
@@ -1076,13 +1039,13 @@ public class Sidebar extends ViewGroup {
             }
         } else {
             if (shown) {
-                leftEdge = getWidth() - mSidebarWidth - shadowWidth;
+                leftEdge = getWidth() - mSidebarWidth - sidebarView.getShadowWidth();
             } else {
-                leftEdge = getWidth() - mOffset - shadowWidth;
+                leftEdge = getWidth() - mOffset - sidebarView.getShadowWidth();
             }
         }
 
-        rightEdge = leftEdge + mSidebarWidth + shadowWidth;
+        rightEdge = leftEdge + mSidebarWidth + sidebarView.getShadowWidth();
         return new Pair<>(leftEdge, rightEdge);
     }
 
@@ -1185,7 +1148,7 @@ public class Sidebar extends ViewGroup {
             leftEdge = Math.min(hiddenSidebarConstraints.first, leftEdge);
         }
 
-        int rightEdge = leftEdge + mSidebarWidth + shadowWidth;
+        int rightEdge = leftEdge + mSidebarWidth + sidebarView.getShadowWidth();
         return new Pair<>(leftEdge, rightEdge);
     }
 
@@ -1225,11 +1188,13 @@ public class Sidebar extends ViewGroup {
         int rightEdge;
 
         if (getLocation() == Location.LEFT) {
-            leftEdge = mOffset +
-                    Math.round((sidebarConstraints.second - shadowWidth - mOffset) * scrollRatio);
+            leftEdge = mOffset + Math.round(
+                    (sidebarConstraints.second - sidebarView.getShadowWidth() - mOffset) *
+                            scrollRatio);
         } else {
             leftEdge = Math.round(
-                    (sidebarConstraints.first + shadowWidth - mContentWidth) * scrollRatio);
+                    (sidebarConstraints.first + sidebarView.getShadowWidth() - mContentWidth) *
+                            scrollRatio);
         }
 
         rightEdge = leftEdge + mContentWidth;
@@ -1253,11 +1218,11 @@ public class Sidebar extends ViewGroup {
         int rightEdge;
 
         if (getLocation() == Location.LEFT) {
-            leftEdge = sidebarConstraints.second - shadowWidth;
+            leftEdge = sidebarConstraints.second - sidebarView.getShadowWidth();
             rightEdge = getWidth();
         } else {
             leftEdge = 0;
-            rightEdge = sidebarConstraints.first + shadowWidth;
+            rightEdge = sidebarConstraints.first + sidebarView.getShadowWidth();
         }
 
         return new Pair<>(leftEdge, rightEdge);
@@ -1309,7 +1274,7 @@ public class Sidebar extends ViewGroup {
         float speed = Math.max(dragHelper.getDragSpeed(), animationSpeed);
 
         if (getLocation() == Location.LEFT) {
-            if (sidebarView.getRight() - shadowWidth > thresholdPosition) {
+            if (sidebarView.getRight() - sidebarView.getShadowWidth() > thresholdPosition) {
                 animateShowSidebar(calculateAnimationDistance(true), speed,
                         new DecelerateInterpolator());
             } else {
@@ -1317,7 +1282,7 @@ public class Sidebar extends ViewGroup {
                         new DecelerateInterpolator());
             }
         } else {
-            if (sidebarView.getLeft() + shadowWidth < thresholdPosition) {
+            if (sidebarView.getLeft() + sidebarView.getShadowWidth() < thresholdPosition) {
                 animateShowSidebar(calculateAnimationDistance(true), speed,
                         new DecelerateInterpolator());
             } else {
@@ -2176,47 +2141,33 @@ public class Sidebar extends ViewGroup {
     }
 
     /**
-     * Returns the color of the sidebar's shadow.
+     * Returns the elevation of the sidebar.
      *
-     * @return The color of the sidebar's shadow as an {@link Integer} value
+     * @return The elevation of the sidebar in dp as an {@link Integer} value
      */
-    public final int getShadowColor() {
-        return shadowColor;
+    public final int getSidebarElevation() {
+        return sidebarElevation;
     }
 
     /**
-     * Sets the color of the sidebar's shadow.
+     * Sets the elevation of the sidebar.
      *
-     * @param shadowColor
-     *         The color, which should be set, as an {@link Integer} value
+     * @param elevation
+     *         The elevation, which should be set, in dp as an {@link Integer} value. The elevation
+     *         must be at least 0 and at maximum 16
      */
-    public final void setShadowColor(@ColorInt final int shadowColor) {
-        this.shadowColor = shadowColor;
+    public final void setSidebarElevation(final int elevation) {
+        ensureAtLeast(elevation, 0, "The sidebar elevation must be at least 0");
+        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+                "The sidebar elevation must be at least " + ElevationUtil.MAX_ELEVATION);
+        this.sidebarElevation = elevation;
 
         if (sidebarView != null) {
-            sidebarView.setShadowColor(shadowColor);
+            sidebarView.setSidebarElevation(elevation);
         }
-    }
 
-    /**
-     * Returns the width of the sidebar's shadow.
-     *
-     * @return The width of the sidebar's shadow in dp as an {@link Integer} value. The width must
-     * be at least 0
-     */
-    public final int getShadowWidth() {
-        return pixelsToDp(getContext(), shadowWidth);
-    }
-
-    /**
-     * Sets the width of the sidebar's shadow.
-     *
-     * @param shadowWidth
-     *         The width, which should be set, in dp as an {@link Integer} value. The width must be
-     *         at least 0
-     */
-    public final void setShadowWidth(final int shadowWidth) {
-        setShadowWidthInPixels(dpToPixels(getContext(), shadowWidth));
+        measureSidebarWidth();
+        requestLayout();
     }
 
     /**
@@ -2391,8 +2342,7 @@ public class Sidebar extends ViewGroup {
         savedState.setShowOnSidebarClick(isShownOnSidebarClick());
         savedState.setContentOverlayColor(getContentOverlayColor());
         savedState.setContentOverlayTransparency(getContentOverlayTransparency());
-        savedState.setShadowWidth(getShadowWidth());
-        savedState.setShadowColor(getShadowColor());
+        savedState.setSidebarElevation(getSidebarElevation());
         savedState.setShown(isSidebarShown());
         return savedState;
     }
@@ -2418,8 +2368,7 @@ public class Sidebar extends ViewGroup {
             showOnSidebarClick(savedState.isShowOnSidebarClick());
             setContentOverlayColor(savedState.getContentOverlayColor());
             setContentOverlayTransparency(savedState.getContentOverlayTransparency());
-            setShadowWidth(savedState.getShadowWidth());
-            setShadowColor(savedState.getShadowColor());
+            setSidebarElevation(savedState.getSidebarElevation());
             shown = savedState.isShown();
             requestLayout();
             super.onRestoreInstanceState(savedState.getSuperState());

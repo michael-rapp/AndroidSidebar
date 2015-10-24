@@ -1,5 +1,11 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.0 (Oct. 24th 2015)
+
+A feature release, which introduces the following changes:
+
+- Version 1.2.0 of the library "AndroidUtil" is now used to emulate the elevation of the sidebar. The methods and XML attributes, which previously allowed to specify a shadow width and color, have been replaced by one single method and attribute, which allows to set an elevation.
+
 ## Version 2.0.0 (Oct. 17th 2015)
 
 A major release, which introduces the following changes:

@@ -29,6 +29,7 @@ import junit.framework.Assert;
 import org.xmlpull.v1.XmlPullParser;
 
 import de.mrapp.android.sidebar.savedstate.SidebarSavedState;
+import de.mrapp.android.util.ElevationUtil;
 
 import static org.mockito.Mockito.mock;
 
@@ -67,8 +68,7 @@ public class SidebarTest extends AndroidTestCase {
                 sidebar.getContentOverlayTransparency());
         assertNull(sidebar.getContentView());
         assertNull(sidebar.getSidebarView());
-        assertEquals(Sidebar.DEFAULT_SHADOW_WIDTH, sidebar.getShadowWidth());
-        assertEquals(Sidebar.DEFAULT_SHADOW_COLOR, sidebar.getShadowColor());
+        assertEquals(Sidebar.DEFAULT_SIDEBAR_ELEVATION, sidebar.getSidebarElevation());
         assertEquals(Sidebar.SHOW_SIDEBAR_BY_DEFAULT, sidebar.isShown());
         assertNull(sidebar.getSidebarBackground());
         assertFalse(sidebar.isAnimationRunning());
@@ -105,8 +105,7 @@ public class SidebarTest extends AndroidTestCase {
                 sidebar.getContentOverlayTransparency());
         assertNull(sidebar.getContentView());
         assertNull(sidebar.getSidebarView());
-        assertEquals(Sidebar.DEFAULT_SHADOW_WIDTH, sidebar.getShadowWidth());
-        assertEquals(Sidebar.DEFAULT_SHADOW_COLOR, sidebar.getShadowColor());
+        assertEquals(Sidebar.DEFAULT_SIDEBAR_ELEVATION, sidebar.getSidebarElevation());
         assertEquals(Sidebar.SHOW_SIDEBAR_BY_DEFAULT, sidebar.isShown());
         assertNull(sidebar.getSidebarBackground());
         assertFalse(sidebar.isAnimationRunning());
@@ -144,8 +143,7 @@ public class SidebarTest extends AndroidTestCase {
                 sidebar.getContentOverlayTransparency());
         assertNull(sidebar.getContentView());
         assertNull(sidebar.getSidebarView());
-        assertEquals(Sidebar.DEFAULT_SHADOW_WIDTH, sidebar.getShadowWidth());
-        assertEquals(Sidebar.DEFAULT_SHADOW_COLOR, sidebar.getShadowColor());
+        assertEquals(Sidebar.DEFAULT_SIDEBAR_ELEVATION, sidebar.getSidebarElevation());
         assertEquals(Sidebar.SHOW_SIDEBAR_BY_DEFAULT, sidebar.isShown());
         assertNull(sidebar.getSidebarBackground());
         assertFalse(sidebar.isAnimationRunning());
@@ -750,33 +748,37 @@ public class SidebarTest extends AndroidTestCase {
     }
 
     /**
-     * Tests the functionality of the method, which allows to set the color of the shadow.
+     * Tests the functionality of the method, which allows to set the elevation of the sidebar.
      */
-    public final void testSetShadowColor() {
+    public final void testSetSidebarElevation() {
         Sidebar sidebar = new Sidebar(getContext());
-        int shadowColor = Color.BLACK;
-        sidebar.setShadowColor(shadowColor);
-        assertEquals(shadowColor, sidebar.getShadowColor());
-    }
-
-    /**
-     * Tests the functionality of the method, which allows to set the width of the shadow.
-     */
-    public final void testSetShadowWidth() {
-        Sidebar sidebar = new Sidebar(getContext());
-        int shadowWidth = 1;
-        sidebar.setShadowWidth(shadowWidth);
-        assertEquals(shadowWidth, sidebar.getShadowWidth());
+        int elevation = 2;
+        sidebar.setSidebarElevation(elevation);
+        assertEquals(elevation, sidebar.getSidebarElevation());
     }
 
     /**
      * Ensures, that an {@link IllegalArgumentException} is thrown by the method, which allows to
-     * set the width of the shadow, if the width is less than 0.
+     * set the elevation of the sidebar, if the elevation is less than 0.
      */
-    public final void testSetShadowWidthThrowsException() {
+    public final void testSetSidebarElevationThrowsExceptionWhenElevationIsLessThan0() {
         try {
             Sidebar sidebar = new Sidebar(getContext());
-            sidebar.setShadowWidth(-1);
+            sidebar.setSidebarElevation(-1);
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+    }
+
+    /**
+     * Ensures, that an {@link IllegalArgumentException} is thrown by the method, which allows to
+     * set the elevation of the sidebar, if the elevation is greater than the maximum.
+     */
+    public final void testSetSidebarElevationThrowsExceptioWhenElevationIsGreaterThanMaximum() {
+        try {
+            Sidebar sidebar = new Sidebar(getContext());
+            sidebar.setSidebarElevation(ElevationUtil.MAX_ELEVATION + 1);
             Assert.fail();
         } catch (IllegalArgumentException e) {
             return;
@@ -980,8 +982,7 @@ public class SidebarTest extends AndroidTestCase {
         assertEquals(savedState.getContentOverlayColor(), sidebar.getContentOverlayColor());
         assertEquals(savedState.getContentOverlayTransparency(),
                 sidebar.getContentOverlayTransparency());
-        assertEquals(savedState.getShadowWidth(), sidebar.getShadowWidth());
-        assertEquals(savedState.getShadowColor(), sidebar.getShadowColor());
+        assertEquals(savedState.getSidebarElevation(), sidebar.getSidebarElevation());
         assertEquals(savedState.isShown(), sidebar.isShown());
     }
 
@@ -1006,8 +1007,7 @@ public class SidebarTest extends AndroidTestCase {
         boolean showOnSidebarClick = false;
         int contentOverlayColor = Color.RED;
         float contentOverlayTransparency = 0.33f;
-        int shadowWidth = 1;
-        int shadowColor = Color.BLACK;
+        int sidebarElevation = 2;
         Sidebar sidebar = new Sidebar(getContext());
         sidebar.setLocation(location);
         sidebar.setAnimationSpeed(animationSpeed);
@@ -1026,8 +1026,7 @@ public class SidebarTest extends AndroidTestCase {
         sidebar.showOnSidebarClick(showOnSidebarClick);
         sidebar.setContentOverlayColor(contentOverlayColor);
         sidebar.setContentOverlayTransparency(contentOverlayTransparency);
-        sidebar.setShadowWidth(shadowWidth);
-        sidebar.setShadowColor(shadowColor);
+        sidebar.setSidebarElevation(sidebarElevation);
         Parcelable parcelable = sidebar.onSaveInstanceState();
         Sidebar restoredSidebar = new Sidebar(getContext());
         restoredSidebar.onRestoreInstanceState(parcelable);
@@ -1048,8 +1047,7 @@ public class SidebarTest extends AndroidTestCase {
         assertEquals(showOnSidebarClick, restoredSidebar.isShownOnSidebarClick());
         assertEquals(contentOverlayColor, restoredSidebar.getContentOverlayColor());
         assertEquals(contentOverlayTransparency, restoredSidebar.getContentOverlayTransparency());
-        assertEquals(shadowWidth, restoredSidebar.getShadowWidth());
-        assertEquals(shadowColor, restoredSidebar.getShadowColor());
+        assertEquals(sidebarElevation, restoredSidebar.getSidebarElevation());
     }
 
 }

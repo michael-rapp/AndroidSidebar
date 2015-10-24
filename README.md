@@ -12,7 +12,7 @@ The library provides the following features:
 - The way, the main content is animated, when the sidebar becomes shown or hidden, can be adjusted in many ways, including the possibility to move it or to resize it.
 - The sidebar's state can be changed via drag gestures or by clicking the touch screen of the device. For each possibility multiple settings exist, e.g. it is possible to change the sensibility for recognizing drag gestures.
 - The speed of the animation, which is used to show or hide the sidebar, can be chosen freely.
-- The sidebar may render a semi-transparent shadow in front of the main content, whose appearance can be adjusted concerning size and color.
+- The sidebar allows to specify an elevation, which causes a shadow to be rendered in front of the main content.
 - It is possible to fade in a semi-transparent overlay, which is shown in front of the main content, when the sidebar becomes shown. The transparency and color of the overlay can be adjusted.
 
 ## License Agreement
@@ -27,7 +27,7 @@ Alternatively, the library can be added to your Android app as a Gradle dependen
 
 ```
 dependencies {
-    compile 'com.github.michael-rapp:android-sidebar:2.0.0'
+    compile 'com.github.michael-rapp:android-sidebar:2.1.0'
 }
 ```
 
@@ -58,8 +58,7 @@ The code below shows how to declare the view, which is provided by this library 
     android:maxSidebarOffset="100dp" 
     android:maxSidebarWidth="600dp" 
     android:scrollRatio="100%" 
-    android:shadowColor="@android:color/black" 
-    android:shadowWidth="25dp" 
+    android:sidebarElevation="8dp" 
     android:showOnSidebarClick="true" 
     android:showSidebar="true" 
     android:sidebarBackground="@drawable/sidebar_background_left_dark" 

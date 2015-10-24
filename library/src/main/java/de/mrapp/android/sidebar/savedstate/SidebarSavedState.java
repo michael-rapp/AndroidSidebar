@@ -119,14 +119,9 @@ public class SidebarSavedState extends BaseSavedState {
     private float contentOverlayTransparency;
 
     /**
-     * The saved value of the attribute "shadowWidth".
+     * The saved value of the attribute "sidebarElevation".
      */
-    private int shadowWidth;
-
-    /**
-     * The saved value of the attribute "shadowColor".
-     */
-    private int shadowColor;
+    private int sidebarElevation;
 
     /**
      * The saved value of the attribute "shown".
@@ -172,8 +167,7 @@ public class SidebarSavedState extends BaseSavedState {
         showOnSidebarClick = source.readByte() != 0;
         contentOverlayColor = source.readInt();
         contentOverlayTransparency = source.readFloat();
-        shadowWidth = source.readInt();
-        shadowColor = source.readInt();
+        sidebarElevation = source.readInt();
         shown = source.readByte() != 0;
     }
 
@@ -522,43 +516,23 @@ public class SidebarSavedState extends BaseSavedState {
     }
 
     /**
-     * Returns the saved value of the attribute "shadowWidth".
+     * Returns the saved value of the attribute "sidebarElevation".
      *
-     * @return The saved value of the attribute "shadowWidth" as an {@link Integer} value
+     * @return The saved value of the attribute "sidebarElevation" as an {@link Integer} value
      */
-    public final int getShadowWidth() {
-        return shadowWidth;
+    public final int getSidebarElevation() {
+        return sidebarElevation;
     }
 
     /**
-     * Sets the saved value of the attribute "shadowWidth".
+     * Sets the saved value of the attribute "sidebarElevation".
      *
-     * @param shadowWidth
-     *         The saved value of the attribute "shadowWidth", which should be set, as an {@link
-     *         Integer} value
+     * @param sidebarElevation
+     *         The saved value of the attribute "sidebarElevation", which should be set, as an
+     *         {@link Integer} value
      */
-    public final void setShadowWidth(final int shadowWidth) {
-        this.shadowWidth = shadowWidth;
-    }
-
-    /**
-     * Returns the saved value of the attribute "shadowColor".
-     *
-     * @return The saved value of the attribute "shadowColor" as an {@link Integer} value
-     */
-    public final int getShadowColor() {
-        return shadowColor;
-    }
-
-    /**
-     * Sets the saved value of the attribute "shadowColor".
-     *
-     * @param shadowColor
-     *         The saved value of the attribute "shadowColor", which should be set, as an {@link
-     *         Integer} value
-     */
-    public final void setShadowColor(final int shadowColor) {
-        this.shadowColor = shadowColor;
+    public final void setSidebarElevation(final int sidebarElevation) {
+        this.sidebarElevation = sidebarElevation;
     }
 
     /**
@@ -601,8 +575,7 @@ public class SidebarSavedState extends BaseSavedState {
         destination.writeByte((byte) (showOnSidebarClick ? 1 : 0));
         destination.writeInt(contentOverlayColor);
         destination.writeFloat(contentOverlayTransparency);
-        destination.writeInt(shadowWidth);
-        destination.writeInt(shadowColor);
+        destination.writeInt(sidebarElevation);
         destination.writeByte((byte) (shown ? 1 : 0));
     }
 

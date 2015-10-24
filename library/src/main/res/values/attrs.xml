@@ -55,8 +55,7 @@ not, see <http://www.gnu.org/licenses/>.
         <attr name="showOnSidebarClick" format="boolean"/>
         <attr name="contentOverlayColor" format="color"/>
         <attr name="contentOverlayTransparency" format="fraction"/>
-        <attr name="shadowColor" format="color"/>
-        <attr name="shadowWidth" format="dimension"/>
+        <attr name="sidebarElevation" format="dimension"/>
     </declare-styleable>
 
 </resources>

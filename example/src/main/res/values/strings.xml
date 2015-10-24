@@ -91,14 +91,10 @@ not, see <http://www.gnu.org/licenses/>.
     <string name="drag_mode_when_shown_preference_key">drag_mode_when_shown_preference_key</string>
     <string name="drag_mode_when_shown_preference_default_value">0</string>
     <string name="appearance_preference_category">Appearance</string>
-    <string name="shadow_color_preference_title">Shadow color</string>
-    <string name="shadow_color_preference_summary">The color of the sidebar\'s shadow</string>
-    <string name="shadow_color_preference_key">shadow_color_preference_key</string>
-    <string name="shadow_color_preference_default_value">#22000000</string>
-    <string name="shadow_width_preference_title">Shadow width</string>
-    <string name="shadow_width_preference_summary">The width of the sidebar\'s shadow in dp</string>
-    <string name="shadow_width_preference_key">shadow_width_preference_key</string>
-    <string name="shadow_width_preference_default_value">16</string>
+    <string name="sidebar_elevation_preference_title">Sidebar elevation</string>
+    <string name="sidebar_elevation_preference_summary">The elevation of the sidebar</string>
+    <string name="sidebar_elevation_preference_key">sidebar_elevation_preference_key</string>
+    <string name="sidebar_elevation_preference_default_value">16</string>
     <string name="content_overlay_color_preference_title">Content overlay color</string>
     <string name="content_overlay_color_preference_summary">The color of the overlay, which is shown when the sidebar is shown</string>
     <string name="content_overlay_color_preference_key">content_overlay_color_preference_key</string>
@@ -258,27 +254,19 @@ not, see <http://www.gnu.org/licenses/>.
         <item>2</item>
         <item>3</item>
     </string-array>
-    <string-array name="shadow_color_list_entries">
-        <item>Transparent</item>
-        <item>Gray (default)</item>
-        <item>Black</item>
-    </string-array>
-    <string-array name="shadow_color_list_values">
-        <item>#00000000</item>
-        <item>#22000000</item>
-        <item>#ff000000</item>
-    </string-array>
-    <string-array name="shadow_width_list_entries">
+    <string-array name="sidebar_elevation_list_entries">
         <item>0 dp</item>
+        <item>4 dp</item>
+        <item>8 dp</item>
+        <item>12 dp</item>
         <item>16 dp (default)</item>
-        <item>32 dp</item>
-        <item>64 dp</item>
     </string-array>
-    <string-array name="shadow_width_list_values">
+    <string-array name="sidebar_elevation_list_values">
         <item>0</item>
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
         <item>16</item>
-        <item>32</item>
-        <item>64</item>
     </string-array>
     <string-array name="content_overlay_color_list_entries">
         <item>Transparent</item>
