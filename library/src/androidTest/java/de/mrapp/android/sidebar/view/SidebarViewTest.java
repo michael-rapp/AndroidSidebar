@@ -24,6 +24,7 @@ import junit.framework.Assert;
 import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
+import de.mrapp.android.util.ElevationUtil;
 
 /**
  * Tests the functionality of the class {@link SidebarView}.
@@ -38,15 +39,13 @@ public class SidebarViewTest extends AndroidTestCase {
     public final void testConstructor() {
         Location location = Location.LEFT;
         Drawable sidebarBackground = null;
-        int shadowWidth = 1;
-        int shadowColor = Color.BLACK;
+        int sidebarElevation = 1;
         SidebarView sidebarView =
                 new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                        location, sidebarBackground, shadowWidth, shadowColor);
+                        location, sidebarBackground, sidebarElevation);
         assertEquals(location, sidebarView.getLocation());
         assertEquals(sidebarBackground, sidebarView.getSidebarBackground());
-        assertEquals(shadowWidth, sidebarView.getShadowWidth());
-        assertEquals(shadowColor, sidebarView.getShadowColor());
+        assertEquals(sidebarElevation, sidebarView.getSidebarElevation());
         assertNotNull(sidebarView.getSidebarView());
     }
 
@@ -57,7 +56,7 @@ public class SidebarViewTest extends AndroidTestCase {
     public final void testConstructorThrowsExceptionWhenContextIsNull() {
         try {
             new SidebarView(null, InflaterFactory.createInflater(R.layout.view), Location.LEFT,
-                    null, 0, Color.BLACK);
+                    null, 1);
             Assert.fail();
         } catch (NullPointerException e) {
             return;
@@ -70,7 +69,7 @@ public class SidebarViewTest extends AndroidTestCase {
      */
     public final void testConstructorThrowsExceptionWhenInflaterIsNull() {
         try {
-            new SidebarView(getContext(), null, Location.LEFT, null, 0, Color.BLACK);
+            new SidebarView(getContext(), null, Location.LEFT, null, 1);
             Assert.fail();
         } catch (NullPointerException e) {
             return;
@@ -84,7 +83,7 @@ public class SidebarViewTest extends AndroidTestCase {
     public final void testConstructorThrowsExceptionWhenLocationIsNull() {
         try {
             new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view), null, null,
-                    0, Color.BLACK);
+                    1);
             Assert.fail();
         } catch (NullPointerException e) {
             return;
@@ -92,13 +91,13 @@ public class SidebarViewTest extends AndroidTestCase {
     }
 
     /**
-     * Ensures, that an {@link IllegalArgumentException} is thrown by the constructor, if the shadow
-     * width is less than 0.
+     * Ensures, that an {@link IllegalArgumentException} is thrown by the constructor, if the
+     * elevation is less than 0.
      */
-    public final void testConstructorThrowsExceptionWhenShadowWidthIsLessThanZero() {
+    public final void testConstructorThrowsExceptionWhenElevationIsLessThan0() {
         try {
             new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                    Location.LEFT, null, -1, Color.BLACK);
+                    Location.LEFT, null, -1);
             Assert.fail();
         } catch (IllegalArgumentException e) {
             return;
@@ -106,15 +105,17 @@ public class SidebarViewTest extends AndroidTestCase {
     }
 
     /**
-     * Tests the functionality of the method, which allows to set the shadow color.
+     * Ensures, that an {@link IllegalArgumentException} is thrown by the constructor, if the
+     * elevation is greater than the maximum elevation.
      */
-    public final void testSetShadowColor() {
-        int shadowColor = Color.RED;
-        SidebarView sidebarView =
-                new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                        Location.LEFT, null, 0, Color.BLACK);
-        sidebarView.setShadowColor(shadowColor);
-        assertEquals(shadowColor, sidebarView.getShadowColor());
+    public final void testConstructorThrowsExceptionWhenElevationIsGreaterThanMaximum() {
+        try {
+            new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
+                    Location.LEFT, null, ElevationUtil.MAX_ELEVATION + 1);
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+            return;
+        }
     }
 
     /**
@@ -124,7 +125,7 @@ public class SidebarViewTest extends AndroidTestCase {
         Location location = Location.RIGHT;
         SidebarView sidebarView =
                 new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                        Location.LEFT, null, 0, Color.BLACK);
+                        Location.LEFT, null, 1);
         sidebarView.setLocation(location);
         assertEquals(location, sidebarView.getLocation());
     }
@@ -137,7 +138,7 @@ public class SidebarViewTest extends AndroidTestCase {
         try {
             SidebarView sidebarView =
                     new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                            Location.LEFT, null, 0, Color.BLACK);
+                            Location.LEFT, null, 1);
             sidebarView.setLocation(null);
             Assert.fail();
         } catch (NullPointerException e) {
@@ -146,27 +147,43 @@ public class SidebarViewTest extends AndroidTestCase {
     }
 
     /**
-     * Tests the functionality of the method, which allows to set the width of the shadow.
+     * Tests the functionality of the method, which allows to set the elevation of the sidebar.
      */
-    public final void testSetShadowWidth() {
-        int shadowWidth = 2;
+    public final void testSetSidebarElevation() {
+        int elevation = 2;
         SidebarView sidebarView =
                 new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                        Location.LEFT, null, 0, Color.BLACK);
-        sidebarView.setShadowWidth(shadowWidth);
-        assertEquals(shadowWidth, sidebarView.getShadowWidth());
+                        Location.LEFT, null, 1);
+        sidebarView.setSidebarElevation(elevation);
+        assertEquals(elevation, sidebarView.getSidebarElevation());
     }
 
     /**
      * Ensures, that an {@link IllegalArgumentException} is thrown by the method, which allows to
-     * set the width of the shadow, if the width is less than 0.
+     * set the elevation of the sidebar, if the elevation is less than 0.
      */
-    public final void testSetShadowWidthThrowsException() {
+    public final void testSetSidebarElevationThrowsExceptionWhenElevationIsLessThan0() {
         try {
             SidebarView sidebarView =
                     new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                            Location.LEFT, null, 0, Color.BLACK);
-            sidebarView.setShadowWidth(-1);
+                            Location.LEFT, null, 1);
+            sidebarView.setSidebarElevation(-1);
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+    }
+
+    /**
+     * Ensures, that an {@link IllegalArgumentException} is thrown by the method, which allows to
+     * set the elevation of the sidebar, if the elevation is greater than the maximum value.
+     */
+    public final void testSetSidebarElevationThrowsExceptionWhenElevationIsGreaterThanMaximum() {
+        try {
+            SidebarView sidebarView =
+                    new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
+                            Location.LEFT, null, 1);
+            sidebarView.setSidebarElevation(ElevationUtil.MAX_ELEVATION + 1);
             Assert.fail();
         } catch (IllegalArgumentException e) {
             return;
@@ -181,7 +198,7 @@ public class SidebarViewTest extends AndroidTestCase {
         Drawable sidebarBackground = new ColorDrawable(Color.BLACK);
         SidebarView sidebarView =
                 new SidebarView(getContext(), InflaterFactory.createInflater(R.layout.view),
-                        Location.LEFT, null, 0, Color.BLACK);
+                        Location.LEFT, null, 1);
         sidebarView.setSidebarBackground(sidebarBackground);
         assertEquals(sidebarBackground, sidebarView.getSidebarBackground());
     }

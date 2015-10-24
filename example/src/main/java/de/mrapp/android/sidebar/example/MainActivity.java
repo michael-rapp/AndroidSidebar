@@ -296,7 +296,7 @@ public class MainActivity extends Activity implements SidebarListener {
         String key = getString(R.string.shadow_color_preference_key);
         String defaultValue = getString(R.string.shadow_color_preference_default_value);
         String shadowColor = sharedPreferences.getString(key, defaultValue);
-        sidebar.setShadowColor(Color.parseColor(shadowColor));
+        //sidebar.setShadowColor(Color.parseColor(shadowColor));
     }
 
     /**
@@ -311,7 +311,7 @@ public class MainActivity extends Activity implements SidebarListener {
         String key = getString(R.string.shadow_width_preference_key);
         String defaultValue = getString(R.string.shadow_width_preference_default_value);
         int shadowWidth = Integer.valueOf(sharedPreferences.getString(key, defaultValue));
-        sidebar.setShadowWidth(shadowWidth);
+        //sidebar.setShadowWidth(shadowWidth);
     }
 
     /**
