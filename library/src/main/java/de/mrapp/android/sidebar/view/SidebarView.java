@@ -183,6 +183,7 @@ public class SidebarView extends LinearLayout {
         Bitmap shadow = createElevationShadow(getContext(), elevation,
                 getLocation() == Location.LEFT ? Orientation.RIGHT : Orientation.LEFT);
         shadowView.setImageBitmap(shadow);
+        shadowView.getLayoutParams().width = shadow.getWidth();
         setLocation(getLocation());
     }
 
@@ -267,7 +268,7 @@ public class SidebarView extends LinearLayout {
      * as an {@link Integer} value
      */
     public final int getShadowWidth() {
-        return shadowView.getWidth();
+        return shadowView.getLayoutParams().width;
     }
 
 }
