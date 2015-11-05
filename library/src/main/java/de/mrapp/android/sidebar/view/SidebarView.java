@@ -64,6 +64,11 @@ public class SidebarView extends LinearLayout {
     private int sidebarElevation;
 
     /**
+     * The width of the view, which is used to emulate the sidebar's elevation, in pixels.
+     */
+    private int shadowWidth;
+
+    /**
      * The background of the sidebar view or null, if the default background is used.
      */
     private Drawable sidebarBackground;
@@ -178,12 +183,12 @@ public class SidebarView extends LinearLayout {
     public final void setSidebarElevation(final int elevation) {
         ensureAtLeast(elevation, 0, "The sidebar elevation must be at least 0");
         ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
-                "The sidebar elevation must be at least " + ElevationUtil.MAX_ELEVATION);
+                "The sidebar elevation must be at maximum " + ElevationUtil.MAX_ELEVATION);
         this.sidebarElevation = elevation;
         Bitmap shadow = createElevationShadow(getContext(), elevation,
                 getLocation() == Location.LEFT ? Orientation.RIGHT : Orientation.LEFT);
         shadowView.setImageBitmap(shadow);
-        shadowView.getLayoutParams().width = shadow.getWidth();
+        shadowWidth = shadow.getWidth();
         setLocation(getLocation());
     }
 
@@ -268,7 +273,7 @@ public class SidebarView extends LinearLayout {
      * as an {@link Integer} value
      */
     public final int getShadowWidth() {
-        return shadowView.getLayoutParams().width;
+        return shadowWidth;
     }
 
 }
