@@ -34,6 +34,25 @@ import de.mrapp.android.sidebar.Sidebar;
 public class SidebarSavedState extends BaseSavedState {
 
     /**
+     * A creator, which allows to create instances of the class {@link SidebarSavedState} from
+     * parcels.
+     */
+    public static final Parcelable.Creator<SidebarSavedState> CREATOR =
+            new Parcelable.Creator<SidebarSavedState>() {
+
+                @Override
+                public SidebarSavedState createFromParcel(final Parcel in) {
+                    return new SidebarSavedState(in);
+                }
+
+                @Override
+                public SidebarSavedState[] newArray(final int size) {
+                    return new SidebarSavedState[size];
+                }
+
+            };
+
+    /**
      * The saved value of the attribute "location".
      */
     private Location location;
