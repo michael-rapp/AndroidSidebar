@@ -466,7 +466,7 @@ public class Sidebar extends ViewGroup {
         try {
             setSidebarView(typedArray.getResourceId(R.styleable.Sidebar_sidebarView, -1));
         } catch (NotFoundException e) {
-
+            // No need to handle
         }
     }
 
@@ -481,7 +481,7 @@ public class Sidebar extends ViewGroup {
         try {
             setContentView(typedArray.getResourceId(R.styleable.Sidebar_contentView, -1));
         } catch (NotFoundException e) {
-
+            // No need to handle
         }
     }
 
