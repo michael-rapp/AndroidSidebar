@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -1597,7 +1598,7 @@ public class Sidebar extends ViewGroup {
      *         The resource id of the view, which should be set, as an {@link Integer} value. The id
      *         must be a valid resource id
      */
-    public final void setSidebarView(final int sidebarViewId) {
+    public final void setSidebarView(@LayoutRes final int sidebarViewId) {
         inflateSidebarView(InflaterFactory.createInflater(sidebarViewId));
     }
 
@@ -1608,7 +1609,7 @@ public class Sidebar extends ViewGroup {
      *         The view, which should be set, as an instance of the class {@link View}. The view may
      *         not be null
      */
-    public final void setSidebarView(final View sidebarView) {
+    public final void setSidebarView(@NonNull final View sidebarView) {
         inflateSidebarView(InflaterFactory.createInflater(sidebarView));
     }
 
@@ -1632,7 +1633,7 @@ public class Sidebar extends ViewGroup {
      *         The resource id of the view, which should be set, as an {@link Integer} value. The id
      *         must be a valid resource id
      */
-    public final void setContentView(final int contentViewId) {
+    public final void setContentView(@LayoutRes final int contentViewId) {
         inflateContentView(InflaterFactory.createInflater(contentViewId));
     }
 
@@ -1643,7 +1644,7 @@ public class Sidebar extends ViewGroup {
      *         The view, which should be set, as an instance of the class {@link View}. The view may
      *         not be null
      */
-    public final void setContentView(final View contentView) {
+    public final void setContentView(@NonNull final View contentView) {
         inflateContentView(InflaterFactory.createInflater(contentView));
     }
 
