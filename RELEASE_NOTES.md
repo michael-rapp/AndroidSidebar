@@ -1,5 +1,12 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.2 (Jan. 4th 2016)
+
+A minor release, which introduces the following changes:
+
+- Updated dependency "AndroidUtil" to version 1.3.0.
+- Added implementation of the interface `Parcelable.Creator` to the class `SidebarSavedState`.
+
 ## Version 2.1.1 (Nov. 6th 2015)
 
 A bugfix release, which fixes the following issue:
