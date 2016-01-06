@@ -2203,7 +2203,8 @@ public class Sidebar extends ViewGroup {
      * otherwise
      */
     public final boolean isDragging() {
-        return !dragHelper.isReseted() && dragHelper.hasThresholdBeenReached();
+        return !dragHelper.isReseted() && dragHelper.hasThresholdBeenReached() &&
+                isDraggingAllowed(dragHelper.getStartPosition());
     }
 
     /**
