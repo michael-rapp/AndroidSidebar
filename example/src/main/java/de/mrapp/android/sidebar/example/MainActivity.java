@@ -26,7 +26,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import de.mrapp.android.sidebar.ContentMode;
 import de.mrapp.android.sidebar.DragMode;
@@ -366,6 +372,9 @@ public class MainActivity extends Activity implements SidebarListener {
         setContentView(R.layout.activity_main);
         initializeSidebar();
         initializeShowSidebarButton();
+
+
+
         initializeHideSidebarButton();
 
         if (savedInstanceState == null) {
