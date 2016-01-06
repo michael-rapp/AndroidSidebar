@@ -1,5 +1,11 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.3 (Jan. 6th 2016)
+
+A bugfix release, which fixes the following issue:
+
+- https://github.com/michael-rapp/AndroidSidebar/issues/5
+
 ## Version 2.1.2 (Jan. 4th 2016)
 
 A minor release, which introduces the following changes:
