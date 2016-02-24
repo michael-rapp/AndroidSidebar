@@ -25,7 +25,7 @@ The latest release of this library can be downloaded as a zip archive from the d
 
 Alternatively, the library can be added to your Android app as a Gradle dependency by adding the following to the respective module's `build.gradle` file:
 
-```
+```groovy
 dependencies {
     compile 'com.github.michael-rapp:android-sidebar:2.1.4'
 }
@@ -37,7 +37,7 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 The code below shows how to declare the view, which is provided by this library within a XML layout resource:
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?> 
 <de.mrapp.android.sidebar.Sidebar xmlns:android="http://schemas.android.com/apk/res/android" 
     xmlns:custom="http://schemas.android.com/apk/res-auto"
