@@ -1,5 +1,13 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.4 (Jan. 24th 2016)
+
+A minor release, which introduces the following changes:
+
+- The library is from now on distributed under the Apache License version 2.0. 
+- Updated dependency "AndroidUtil" to version 1.4.3.
+- Minor changes of the example app.
+
 ## Version 2.1.3 (Jan. 6th 2016)
 
 A bugfix release, which fixes the following issue:
