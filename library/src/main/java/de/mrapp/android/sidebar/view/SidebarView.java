@@ -27,6 +27,7 @@ import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ElevationUtil.Orientation;
+import de.mrapp.android.util.ViewUtil;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureAtMaximum;
@@ -241,7 +242,6 @@ public class SidebarView extends LinearLayout {
      *         The background, which should be set, as an instance of the class {@link Drawable} or
      *         null, if the default background should be used
      */
-    @SuppressWarnings("deprecation")
     public final void setSidebarBackground(@Nullable final Drawable background) {
         this.sidebarBackground = background;
 
@@ -252,7 +252,7 @@ public class SidebarView extends LinearLayout {
                 sidebarView.setBackgroundResource(R.drawable.sidebar_background_right_light);
             }
         } else {
-            sidebarView.setBackgroundDrawable(sidebarBackground);
+            ViewUtil.setBackground(sidebarView, sidebarBackground);
         }
     }
 

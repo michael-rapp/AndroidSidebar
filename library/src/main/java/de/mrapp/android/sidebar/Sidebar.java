@@ -26,6 +26,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -1679,12 +1680,11 @@ public class Sidebar extends ViewGroup {
      *         The resource id of the background, which should be set, as an {@link Integer} value.
      *         The id must be a valid resource id
      */
-    @SuppressWarnings("deprecation")
     public final void setSidebarBackground(@DrawableRes final int resourceId) {
         if (resourceId == -1) {
             this.sidebarBackground = null;
         } else {
-            this.sidebarBackground = getContext().getResources().getDrawable(resourceId);
+            this.sidebarBackground = ContextCompat.getDrawable(getContext(), resourceId);
         }
 
         if (sidebarView != null) {
