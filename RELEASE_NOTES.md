@@ -1,5 +1,15 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.5 (Mar. 18th 2016)
+
+A bugfix release, which introduces the following changes:
+
+- Fixed issue https://github.com/michael-rapp/AndroidSidebar/issues/6
+- Updated dependency "AndroidUtil" to version 1.4.5.
+- Updated AppCompat v7 support library to version 23.2.1.
+- Fixed some deprecation warnings.
+- Minor changes of the example app.
+
 ## Version 2.1.4 (Jan. 24th 2016)
 
 A minor release, which introduces the following changes:
