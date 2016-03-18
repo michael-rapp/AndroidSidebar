@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.sidebar.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -41,6 +42,7 @@ import static de.mrapp.android.util.ElevationUtil.createElevationShadow;
  * @author Michael Rapp
  * @since 1.0.0
  */
+@SuppressLint("ViewConstructor")
 public class SidebarView extends LinearLayout {
 
     /**

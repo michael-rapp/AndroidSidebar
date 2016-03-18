@@ -13,6 +13,7 @@
  */
 package de.mrapp.android.sidebar.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ import static de.mrapp.android.util.Condition.ensureNotNull;
  * @author Michael Rapp
  * @since 1.0.0
  */
+@SuppressLint("ViewConstructor")
 public class ContentView extends FrameLayout {
 
     /**
