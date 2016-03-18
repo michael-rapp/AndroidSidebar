@@ -13,67 +13,54 @@
  */
 package de.mrapp.android.sidebar.example;
 
-import android.content.SharedPreferences;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceManager;
-
-import de.mrapp.android.sidebar.ContentMode;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * An activity, which allows to adapt the settings of the example app.
  *
  * @author Michael Rapp
  */
-public class PreferenceActivity extends android.preference.PreferenceActivity {
+public class PreferenceActivity extends AppCompatActivity {
 
     /**
-     * The preference, which allows to set the scroll ratio.
+     * The fragment, which contains the preferences.
      */
-    private Preference scrollRatioPreference;
+    private Fragment preferenceFragment;
 
     /**
-     * Creates and returns a listener, which allows to enable or disable the preference, which
-     * allows to set the scroll ratio, when the content mode has been changed.
-     *
-     * @return The listener, which has been created, as an instance of the type {@link
-     * OnPreferenceChangeListener}
+     * Shows the preference fragment, which contains the activity's content.
      */
-    private OnPreferenceChangeListener createContentModeChangeListener() {
-        return new OnPreferenceChangeListener() {
+    private void showPreferenceFragment() {
+        if (preferenceFragment == null) {
+            preferenceFragment = Fragment.instantiate(this, PreferenceFragment.class.getName());
+        }
 
-            @Override
-            public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                int contentMode = Integer.valueOf((String) newValue);
-                scrollRatioPreference.setEnabled(contentMode != ContentMode.RESIZE.getValue());
-                return true;
-            }
-
-        };
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.addToBackStack("preferenceBackStack");
+        transaction.replace(R.id.fragment, preferenceFragment);
+        transaction.commit();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
+        setContentView(R.layout.activity_preference);
+
+        if (savedInstanceState != null) {
+            preferenceFragment =
+                    getFragmentManager().getFragment(savedInstanceState, "preferenceFragment");
+        }
+
+        showPreferenceFragment();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    protected final void onStart() {
-        super.onStart();
-        String scrollRatioKey = getString(R.string.scroll_ratio_preference_key);
-        scrollRatioPreference = findPreference(scrollRatioKey);
-        String contentModeKey = getString(R.string.content_mode_preference_key);
-        String contentModeDefaultValue = getString(R.string.content_mode_preference_default_value);
-        Preference contentModePreference = findPreference(contentModeKey);
-        contentModePreference.setOnPreferenceChangeListener(createContentModeChangeListener());
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int contentMode = Integer.valueOf(
-                sharedPreferences.getString(contentModeKey, contentModeDefaultValue));
-        scrollRatioPreference.setEnabled(contentMode != ContentMode.RESIZE.getValue());
+    protected final void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getFragmentManager().putFragment(outState, "preferenceFragment", preferenceFragment);
     }
 
 }
