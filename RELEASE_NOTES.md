@@ -1,5 +1,13 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.6 (Sep. 12th 2016)
+
+A minor release, which introduces the following changes:
+
+- Updated `targetSdkVersion` to API level 24 (Android 7.0).
+- Updated AppCompat support annotations library to version 24.2.0.
+- Updated dependency "AndroidUtil" to version 1.11.1.
+
 ## Version 2.1.5 (Mar. 18th 2016)
 
 A bugfix release, which introduces the following changes:
