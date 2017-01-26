@@ -1,15 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
+    buildToolsVersion project.BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "de.mrapp.android.sidebar.example"
         minSdkVersion 11
-        targetSdkVersion 24
-        versionCode versionCode
-        versionName version
+        targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
+        versionName project.VERSION_NAME
+        versionCode project.VERSION_CODE.toInteger()
     }
     buildTypes {
         release {
