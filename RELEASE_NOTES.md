@@ -1,5 +1,12 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.8 (Apr. 23th 2017)
+
+A minor release, which introduces the following changes:
+
+- Updated AppCompat support annotations library to version 25.3.0.
+- Updated dependency "AndroidUtil" to version 1.15.0. The class `DragHelper`, which is provided by the library is now used instead of implementing an own one.
+
 ## Version 2.1.7 (Jan. 26th 2017)
 
 A minor release, which introduces the following changes:
