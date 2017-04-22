@@ -48,10 +48,10 @@ import de.mrapp.android.sidebar.animation.SidebarViewAnimation;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.sidebar.inflater.InflaterFactory;
 import de.mrapp.android.sidebar.savedstate.SidebarSavedState;
-import de.mrapp.android.sidebar.util.DragHelper;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
 import de.mrapp.android.util.ElevationUtil;
+import de.mrapp.android.util.gesture.DragHelper;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
 import static de.mrapp.android.util.Condition.ensureAtMaximum;
@@ -1135,11 +1135,11 @@ public class Sidebar extends ViewGroup {
      * @return The position of the sidebar's left and right edge as an instance of the class {@link
      * Pair}
      */
-    private Pair<Integer, Integer> calculateSidebarConstraintsWhileDragging() {
+    private Pair<Float, Float> calculateSidebarConstraintsWhileDragging() {
         Pair<Integer, Integer> shownSidebarConstraints = calculateSidebarConstraints(true);
         Pair<Integer, Integer> hiddenSidebarConstraints = calculateSidebarConstraints(false);
 
-        int leftEdge = calculateSidebarConstraints().first + dragHelper.getDistance();
+        float leftEdge = calculateSidebarConstraints().first + dragHelper.getDragDistance();
 
         if (getLocation() == Location.LEFT) {
             leftEdge = Math.max(hiddenSidebarConstraints.first, leftEdge);
@@ -1149,7 +1149,7 @@ public class Sidebar extends ViewGroup {
             leftEdge = Math.min(hiddenSidebarConstraints.first, leftEdge);
         }
 
-        int rightEdge = leftEdge + mSidebarWidth + sidebarView.getShadowWidth();
+        float rightEdge = leftEdge + mSidebarWidth + sidebarView.getShadowWidth();
         return new Pair<>(leftEdge, rightEdge);
     }
 
@@ -1163,8 +1163,8 @@ public class Sidebar extends ViewGroup {
      * @return The position of the content's left and right edge as an instance of the class {@link
      * Pair}
      */
-    private Pair<Integer, Integer> calculateContentConstraintsWhileDragging(
-            final Pair<Integer, Integer> sidebarConstraints) {
+    private Pair<Float, Float> calculateContentConstraintsWhileDragging(
+            final Pair<Float, Float> sidebarConstraints) {
         if (getContentMode() == ContentMode.SCROLL) {
             return calculateScrolledContentConstraintsWhileDragging(sidebarConstraints);
         } else {
@@ -1183,10 +1183,10 @@ public class Sidebar extends ViewGroup {
      * @return The position of the content's left and right edge as an instance of the class {@link
      * Pair}
      */
-    private Pair<Integer, Integer> calculateScrolledContentConstraintsWhileDragging(
-            final Pair<Integer, Integer> sidebarConstraints) {
-        int leftEdge;
-        int rightEdge;
+    private Pair<Float, Float> calculateScrolledContentConstraintsWhileDragging(
+            final Pair<Float, Float> sidebarConstraints) {
+        float leftEdge;
+        float rightEdge;
 
         if (getLocation() == Location.LEFT) {
             leftEdge = mOffset + Math.round(
@@ -1213,10 +1213,10 @@ public class Sidebar extends ViewGroup {
      * @return The position of the content's left and right edge as an instance of the class {@link
      * Pair}
      */
-    private Pair<Integer, Integer> calculateResizedContentConstraintsWhileDragging(
-            final Pair<Integer, Integer> sidebarConstraints) {
-        int leftEdge;
-        int rightEdge;
+    private Pair<Float, Float> calculateResizedContentConstraintsWhileDragging(
+            final Pair<Float, Float> sidebarConstraints) {
+        float leftEdge;
+        float rightEdge;
 
         if (getLocation() == Location.LEFT) {
             leftEdge = sidebarConstraints.second - sidebarView.getShadowWidth();
@@ -1241,18 +1241,17 @@ public class Sidebar extends ViewGroup {
             dragHelper.update(dragPosition);
 
             if (dragHelper.hasThresholdBeenReached() &&
-                    isDraggingAllowed(dragHelper.getStartPosition())) {
-                Pair<Integer, Integer> sidebarPos = calculateSidebarConstraintsWhileDragging();
-                Pair<Integer, Integer> contentPos =
+                    isDraggingAllowed(dragHelper.getDragStartPosition())) {
+                Pair<Float, Float> sidebarPos = calculateSidebarConstraintsWhileDragging();
+                Pair<Float, Float> contentPos =
                         calculateContentConstraintsWhileDragging(sidebarPos);
-
-                sidebarView.layout(sidebarPos.first, sidebarView.getTop(), sidebarPos.second,
-                        sidebarView.getBottom());
-
+                sidebarView.layout(Math.round(sidebarPos.first), sidebarView.getTop(),
+                        Math.round(sidebarPos.second), sidebarView.getBottom());
                 contentView.setOverlayTransparency(calculateContentOverlayTransparency());
-                contentView.getLayoutParams().width = contentPos.second - contentPos.first;
-                contentView.layout(contentPos.first, contentView.getTop(), contentPos.second,
-                        contentView.getBottom());
+                contentView.getLayoutParams().width =
+                        Math.round(contentPos.second - contentPos.first);
+                contentView.layout(Math.round(contentPos.first), contentView.getTop(),
+                        Math.round(contentPos.second), contentView.getBottom());
 
                 if (getContentMode() == ContentMode.RESIZE) {
                     contentView.requestLayout();
@@ -1370,11 +1369,11 @@ public class Sidebar extends ViewGroup {
      * depending on the used drag modes, or not.
      *
      * @param dragStartPosition
-     *         The horizontal position, the drag gesture has been started at, as an {@link Integer}
+     *         The horizontal position, the drag gesture has been started at, as a {@link Float}
      *         value
      * @return True, if the drag gesture is allowed, false otherwise
      */
-    private boolean isDraggingAllowed(final int dragStartPosition) {
+    private boolean isDraggingAllowed(final float dragStartPosition) {
         DragMode currentDragMode = dragModeWhenHidden;
 
         if (isSidebarShown()) {
@@ -2202,8 +2201,8 @@ public class Sidebar extends ViewGroup {
      * otherwise
      */
     public final boolean isDragging() {
-        return !dragHelper.isReseted() && dragHelper.hasThresholdBeenReached() &&
-                isDraggingAllowed(dragHelper.getStartPosition());
+        return !dragHelper.isReset() && dragHelper.hasThresholdBeenReached() &&
+                isDraggingAllowed(dragHelper.getDragStartPosition());
     }
 
     /**
@@ -2244,7 +2243,7 @@ public class Sidebar extends ViewGroup {
                 break;
             case MotionEvent.ACTION_UP:
                 if (dragHelper.hasThresholdBeenReached() &&
-                        isDraggingAllowed(dragHelper.getStartPosition())) {
+                        isDraggingAllowed(dragHelper.getDragStartPosition())) {
                     handleRelease();
                 } else {
                     handleClick(event.getX());
@@ -2269,7 +2268,7 @@ public class Sidebar extends ViewGroup {
             case MotionEvent.ACTION_UP:
 
                 if (dragHelper.hasThresholdBeenReached() &&
-                        isDraggingAllowed(dragHelper.getStartPosition())) {
+                        isDraggingAllowed(dragHelper.getDragStartPosition())) {
                     handleRelease();
                 } else {
                     handleClick(event.getX());
