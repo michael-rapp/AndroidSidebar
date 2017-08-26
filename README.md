@@ -1,6 +1,6 @@
 # AndroidSidebar - README
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X75YSLEJV3DWE)
+[![API-Level](https://img.shields.io/badge/API-9%2B-orange.svg)](https://android-arsenal.com/api?level=9) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X75YSLEJV3DWE)
 
 "AndroidSidebar" is an Android-library, which provides a custom view implementation, which allows to show a sidebar, which overlaps the view's main content and can be shown or hidden in an animated manner. The sidebar may be located at the left or right edge of the parent view and its state can be changed by either calling methods or by dragging on the device's touch screen. Furthermore, there are a lot of attributes, which allow to specify the appearance and behavior of the sidebar.
 
