@@ -1,5 +1,13 @@
 # AndroidSidebar - RELEASE NOTES
 
+## Version 2.1.9 (Dec. 30th 2017)
+
+A minor release, which introduces the following changes:
+
+- Updated `targetSdkVersion` to API level 25 (Android 7.1). This required to increase the minimum API level to 14.
+- Updated AppCompat support annotations library to version 27.0.2.
+- Updated dependency "AndroidUtil" to version 1.18.3.
+
 ## Version 2.1.8 (Apr. 23th 2017)
 
 A minor release, which introduces the following changes:
