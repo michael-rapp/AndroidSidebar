@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements SidebarListener {
      * Initializes the sidebar.
      */
     private void initializeSidebar() {
-        sidebar = (Sidebar) findViewById(R.id.sidebar);
+        sidebar = findViewById(R.id.sidebar);
         sidebar.addSidebarListener(this);
     }
 
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements SidebarListener {
      * Initializes the button, which allows to show the sidebar.
      */
     private void initializeShowSidebarButton() {
-        Button showSidebarButton = (Button) findViewById(R.id.show_sidebar_button);
+        Button showSidebarButton = findViewById(R.id.show_sidebar_button);
         showSidebarButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements SidebarListener {
      * Initializes the button, which allows to hide the sidebar.
      */
     private void initializeHideSidebarButton() {
-        Button hideSidebarButton = (Button) findViewById(R.id.hide_sidebar_button);
+        Button hideSidebarButton = findViewById(R.id.hide_sidebar_button);
         hideSidebarButton.setOnClickListener(new OnClickListener() {
 
             @Override

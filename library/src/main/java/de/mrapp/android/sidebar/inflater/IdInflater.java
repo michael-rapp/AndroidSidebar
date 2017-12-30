@@ -48,8 +48,7 @@ public class IdInflater implements Inflater {
     @Override
     public final View inflate(@NonNull final Context context, @Nullable final ViewGroup parent,
                               final boolean attachToRoot) {
-        LayoutInflater inflater =
-                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = LayoutInflater.from(context);
         return inflater.inflate(viewId, parent, attachToRoot);
     }
 

@@ -166,7 +166,7 @@ public class SidebarSavedState extends BaseSavedState {
      *         The parcel to read read from as a instance of the class {@link Parcel}. The parcel
      *         may not be null
      */
-    public SidebarSavedState(@NonNull final Parcel source) {
+    private SidebarSavedState(@NonNull final Parcel source) {
         super(source);
         location = Location.fromValue(source.readInt());
         animationSpeed = source.readFloat();
