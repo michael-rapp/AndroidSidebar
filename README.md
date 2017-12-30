@@ -39,7 +39,7 @@ Before version 2.0.0 this project was hosted on [Sourceforge](https://sourceforg
 
 ## Examples
 
-The code below shows how to declare the view, which is provided by this library within a XML layout resource:
+The code below shows how to declare the view, which is provided by this library within a XML layout resource. This project also contains a more detailed documentation in the Wiki as well as generated Javadoc files.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?> 
