@@ -39,9 +39,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import de.mrapp.android.sidebar.animation.ContentViewResizeAnimation;
 import de.mrapp.android.sidebar.animation.ContentViewScrollAnimation;
 import de.mrapp.android.sidebar.animation.SidebarViewAnimation;
@@ -51,6 +48,7 @@ import de.mrapp.android.sidebar.savedstate.SidebarSavedState;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
 import de.mrapp.android.util.ElevationUtil;
+import de.mrapp.android.util.datastructure.ListenerList;
 import de.mrapp.android.util.gesture.DragHelper;
 
 import static de.mrapp.android.util.Condition.ensureAtLeast;
@@ -319,7 +317,7 @@ public class Sidebar extends ViewGroup {
      * A set, which contains the listeners, which have registered to be notified, when the sidebar
      * becomes shown or hidden.
      */
-    private transient Set<SidebarListener> listeners;
+    private transient ListenerList<SidebarListener> listeners;
 
     /**
      * The view, which contains the sidebar and its shadow.
@@ -359,7 +357,7 @@ public class Sidebar extends ViewGroup {
      *         {@link AttributeSet} or null, if no attributes should be obtained
      */
     private void initialize(@Nullable final AttributeSet attributeSet) {
-        this.listeners = new LinkedHashSet<>();
+        this.listeners = new ListenerList<>();
         this.shown = false;
         this.dragHelper = new DragHelper(calculateDragSensitivity());
         this.setFocusableInTouchMode(true);
