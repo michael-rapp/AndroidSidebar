@@ -19,8 +19,8 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:support-annotations:27.0.2'
-    api 'com.github.michael-rapp:android-util:1.19.0'
+    api 'com.android.support:support-annotations:27.1.1'
+    api 'com.github.michael-rapp:android-util:1.20.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'org.mockito:mockito-core:1.10.19'
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
