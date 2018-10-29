@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
 
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
@@ -19,12 +20,10 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:support-annotations:27.1.1'
+    api 'com.android.support:support-annotations:28.0.0'
     api 'com.github.michael-rapp:android-util:1.20.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'org.mockito:mockito-core:1.10.19'
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
 }
-
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
