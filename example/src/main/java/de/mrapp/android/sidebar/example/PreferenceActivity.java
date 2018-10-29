@@ -16,7 +16,7 @@ package de.mrapp.android.sidebar.example;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * An activity, which allows to adapt the settings of the example app.

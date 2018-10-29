@@ -16,8 +16,8 @@ package de.mrapp.android.sidebar.savedstate;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference.BaseSavedState;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import de.mrapp.android.sidebar.ContentMode;
 import de.mrapp.android.sidebar.DragMode;

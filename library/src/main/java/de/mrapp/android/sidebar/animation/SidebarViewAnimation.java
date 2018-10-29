@@ -13,7 +13,7 @@
  */
 package de.mrapp.android.sidebar.animation;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.animation.TranslateAnimation;
 
 import static de.mrapp.android.util.Condition.ensureNotNull;
