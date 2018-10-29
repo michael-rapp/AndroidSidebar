@@ -21,12 +21,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcelable;
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -39,6 +33,12 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import de.mrapp.android.sidebar.animation.ContentViewResizeAnimation;
 import de.mrapp.android.sidebar.animation.ContentViewScrollAnimation;
 import de.mrapp.android.sidebar.animation.SidebarViewAnimation;
@@ -48,14 +48,10 @@ import de.mrapp.android.sidebar.savedstate.SidebarSavedState;
 import de.mrapp.android.sidebar.view.ContentView;
 import de.mrapp.android.sidebar.view.SidebarView;
 import de.mrapp.android.util.ElevationUtil;
-import de.mrapp.android.util.datastructure.ListenerList;
 import de.mrapp.android.util.gesture.DragHelper;
+import de.mrapp.util.Condition;
+import de.mrapp.util.datastructure.ListenerList;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.util.Condition.ensureGreater;
-import static de.mrapp.android.util.Condition.ensureNotNull;
-import static de.mrapp.android.util.Condition.ensureSmaller;
 import static de.mrapp.android.util.DisplayUtil.dpToPixels;
 import static de.mrapp.android.util.DisplayUtil.pixelsToDp;
 
@@ -701,7 +697,8 @@ public class Sidebar extends ViewGroup {
      *         The maximum width, which should be set, in pixels as an {@link Integer} value
      */
     private void setMaxSidebarWidthInPixels(final int maxSidebarWidth) {
-        ensureAtLeast(maxSidebarWidth, -1, "The max sidebar width must be at least -1");
+        Condition.INSTANCE
+                .ensureAtLeast(maxSidebarWidth, -1, "The max sidebar width must be at least -1");
         this.maxSidebarWidth = maxSidebarWidth;
         measureSidebarWidth();
         requestLayout();
@@ -714,7 +711,8 @@ public class Sidebar extends ViewGroup {
      *         The maximum offset, which should be set, in pixels as an {@link Integer} value
      */
     private void setMaxSidebarOffsetInPixels(final int maxSidebarOffset) {
-        ensureAtLeast(maxSidebarOffset, -1, "The max sidebar offset must be at least -1");
+        Condition.INSTANCE
+                .ensureAtLeast(maxSidebarOffset, -1, "The max sidebar offset must be at least -1");
         this.maxSidebarOffset = maxSidebarOffset;
         measureSidebarOffset();
         requestLayout();
@@ -1707,7 +1705,7 @@ public class Sidebar extends ViewGroup {
      *         location may either be <code>LEFT</code> or <code>RIGHT</code>
      */
     public final void setLocation(@NonNull final Location location) {
-        ensureNotNull(location, "The location may not be null");
+        Condition.INSTANCE.ensureNotNull(location, "The location may not be null");
         this.location = location;
 
         if (sidebarView != null && contentView != null) {
@@ -1735,7 +1733,8 @@ public class Sidebar extends ViewGroup {
      *         speed must be greater than 0
      */
     public final void setAnimationSpeed(final float animationSpeed) {
-        ensureGreater(animationSpeed, 0, "The animation speed must be greater than 0");
+        Condition.INSTANCE
+                .ensureGreater(animationSpeed, 0, "The animation speed must be greater than 0");
         this.animationSpeed = dpToPixels(getContext(), animationSpeed);
     }
 
@@ -1757,9 +1756,10 @@ public class Sidebar extends ViewGroup {
      *         0 and at maximum 1
      */
     public final void setSidebarWidth(final float sidebarWidth) {
-        ensureAtLeast(sidebarWidth, 0, "The sidebar width must be at least 0");
-        ensureAtMaximum(sidebarWidth, 1, "The sidebar width must be at maximum 1");
-        ensureGreater(sidebarWidth, sidebarOffset,
+        Condition.INSTANCE.ensureAtLeast(sidebarWidth, 0, "The sidebar width must be at least 0");
+        Condition.INSTANCE
+                .ensureAtMaximum(sidebarWidth, 1, "The sidebar width must be at maximum 1");
+        Condition.INSTANCE.ensureGreater(sidebarWidth, sidebarOffset,
                 "The sidebar width must be greater than the sidebar offset");
         this.sidebarWidth = sidebarWidth;
         measureSidebarWidth();
@@ -1789,7 +1789,8 @@ public class Sidebar extends ViewGroup {
      */
     public final void setMaxSidebarWidth(final int maxSidebarWidth) {
         if (maxSidebarWidth != -1) {
-            ensureGreater(maxSidebarWidth, 0, "The maximum sidebar width must be greater than 0");
+            Condition.INSTANCE.ensureGreater(maxSidebarWidth, 0,
+                    "The maximum sidebar width must be greater than 0");
             setMaxSidebarWidthInPixels(dpToPixels(getContext(), maxSidebarWidth));
         } else {
             setMaxSidebarWidthInPixels(-1);
@@ -1816,9 +1817,10 @@ public class Sidebar extends ViewGroup {
      *         must be at least 0 and at maximum 1
      */
     public final void setSidebarOffset(final float sidebarOffset) {
-        ensureAtLeast(sidebarOffset, 0, "The sidebar offset must be at least 0");
-        ensureAtMaximum(sidebarOffset, 1, "The sidebar offset must be at maximum 1");
-        ensureSmaller(sidebarOffset, sidebarWidth,
+        Condition.INSTANCE.ensureAtLeast(sidebarOffset, 0, "The sidebar offset must be at least 0");
+        Condition.INSTANCE
+                .ensureAtMaximum(sidebarOffset, 1, "The sidebar offset must be at maximum 1");
+        Condition.INSTANCE.ensureSmaller(sidebarOffset, sidebarWidth,
                 "The sidebar offset must be less than the sidebar width");
         this.sidebarOffset = sidebarOffset;
         measureSidebarOffset();
@@ -1848,7 +1850,8 @@ public class Sidebar extends ViewGroup {
      */
     public final void setMaxSidebarOffset(final int maxSidebarOffset) {
         if (maxSidebarOffset != -1) {
-            ensureGreater(maxSidebarOffset, 0, "The maximum sidebar offset must be greater than 0");
+            Condition.INSTANCE.ensureGreater(maxSidebarOffset, 0,
+                    "The maximum sidebar offset must be greater than 0");
             setMaxSidebarOffsetInPixels(dpToPixels(getContext(), maxSidebarOffset));
         } else {
             setMaxSidebarOffsetInPixels(-1);
@@ -1875,7 +1878,7 @@ public class Sidebar extends ViewGroup {
      *         The content mode may either be <code>SCROLL</code> or <code>RESIZE</code>
      */
     public final void setContentMode(@NonNull final ContentMode contentMode) {
-        ensureNotNull(contentMode, "The content mode may not be null");
+        Condition.INSTANCE.ensureNotNull(contentMode, "The content mode may not be null");
         this.contentMode = contentMode;
         requestLayout();
     }
@@ -1904,8 +1907,8 @@ public class Sidebar extends ViewGroup {
      *         scroll ratio will only apply, if the content mode is set to <code>SCROLL</code>
      */
     public final void setScrollRatio(final float scrollRatio) {
-        ensureAtLeast(scrollRatio, 0, "The scroll ratio must be at least 0");
-        ensureAtMaximum(scrollRatio, 1, "The scroll ratio must be at maximum 1");
+        Condition.INSTANCE.ensureAtLeast(scrollRatio, 0, "The scroll ratio must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(scrollRatio, 1, "The scroll ratio must be at maximum 1");
         this.scrollRatio = scrollRatio;
         requestLayout();
     }
@@ -1932,7 +1935,7 @@ public class Sidebar extends ViewGroup {
      *         <code>DISABLED</code> or <code>EDGE</code>
      */
     public final void setDragModeWhenHidden(@NonNull final DragMode dragMode) {
-        ensureNotNull(dragMode, "The drag mode may not be null");
+        Condition.INSTANCE.ensureNotNull(dragMode, "The drag mode may not be null");
         this.dragModeWhenHidden = dragMode;
     }
 
@@ -1958,7 +1961,7 @@ public class Sidebar extends ViewGroup {
      *         <code>DISABLED</code>
      */
     public final void setDragModeWhenShown(@NonNull final DragMode dragMode) {
-        ensureNotNull(dragMode, "The drag mode may not be null");
+        Condition.INSTANCE.ensureNotNull(dragMode, "The drag mode may not be null");
 
         if (dragMode == DragMode.EDGE) {
             throw new IllegalArgumentException(
@@ -1988,8 +1991,9 @@ public class Sidebar extends ViewGroup {
      *         must be at least 0 and at maximum 1
      */
     public final void setDragThreshold(final float dragThreshold) {
-        ensureAtLeast(dragThreshold, 0, "The drag threshold must be at least 0");
-        ensureAtMaximum(dragThreshold, 1, "The drag threshold must be at maximum 1");
+        Condition.INSTANCE.ensureAtLeast(dragThreshold, 0, "The drag threshold must be at least 0");
+        Condition.INSTANCE
+                .ensureAtMaximum(dragThreshold, 1, "The drag threshold must be at maximum 1");
         this.dragThreshold = dragThreshold;
     }
 
@@ -2013,8 +2017,10 @@ public class Sidebar extends ViewGroup {
      *         sensitivity must be at lest 0 and at maximum 1
      */
     public final void setDragSensitivity(final float dragSensitivity) {
-        ensureAtLeast(dragSensitivity, 0, "The drag sensitivity must be at least 0");
-        ensureAtMaximum(dragSensitivity, 1, "The drag sensitivity must be at maximum 1");
+        Condition.INSTANCE
+                .ensureAtLeast(dragSensitivity, 0, "The drag sensitivity must be at least 0");
+        Condition.INSTANCE
+                .ensureAtMaximum(dragSensitivity, 1, "The drag sensitivity must be at maximum 1");
         this.dragSensitivity = dragSensitivity;
         this.dragHelper = new DragHelper(calculateDragSensitivity());
     }
@@ -2131,8 +2137,10 @@ public class Sidebar extends ViewGroup {
      *         completely transparent, if it is 0.0, the overlay will not be transparent at all
      */
     public final void setContentOverlayTransparency(final float contentOverlayTransparency) {
-        ensureAtLeast(contentOverlayTransparency, 0, "The transparency must be at least 0");
-        ensureAtMaximum(contentOverlayTransparency, 1, "The transparency must be at maximum 1");
+        Condition.INSTANCE.ensureAtLeast(contentOverlayTransparency, 0,
+                "The transparency must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(contentOverlayTransparency, 1,
+                "The transparency must be at maximum 1");
         this.contentOverlayTransparency = contentOverlayTransparency;
         requestLayout();
     }
@@ -2154,8 +2162,8 @@ public class Sidebar extends ViewGroup {
      *         must be at least 0 and at maximum 16
      */
     public final void setSidebarElevation(final int elevation) {
-        ensureAtLeast(elevation, 0, "The sidebar elevation must be at least 0");
-        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+        Condition.INSTANCE.ensureAtLeast(elevation, 0, "The sidebar elevation must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
                 "The sidebar elevation must be at least " + ElevationUtil.MAX_ELEVATION);
         this.sidebarElevation = elevation;
 
@@ -2175,7 +2183,7 @@ public class Sidebar extends ViewGroup {
      *         SidebarListener}. The listener may not be null
      */
     public final void addSidebarListener(@NonNull final SidebarListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         listeners.add(listener);
     }
 
@@ -2188,7 +2196,7 @@ public class Sidebar extends ViewGroup {
      *         SidebarListener}. The listener may not be null
      */
     public final void removeSidebarListener(@NonNull final SidebarListener listener) {
-        ensureNotNull(listener, "The listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The listener may not be null");
         listeners.remove(listener);
     }
 

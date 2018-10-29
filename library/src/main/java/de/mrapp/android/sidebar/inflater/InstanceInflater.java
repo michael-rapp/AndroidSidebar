@@ -14,12 +14,12 @@
 package de.mrapp.android.sidebar.inflater;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import de.mrapp.util.Condition;
 
 /**
  * An inflater, which allows to inflate views, which are present as an instance of the class {@link
@@ -44,7 +44,7 @@ public class InstanceInflater implements Inflater {
      *         view may not be null
      */
     public InstanceInflater(@NonNull final View view) {
-        ensureNotNull(view, "The view may not be null");
+        Condition.INSTANCE.ensureNotNull(view, "The view may not be null");
         this.view = view;
     }
 

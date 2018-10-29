@@ -13,10 +13,10 @@
  */
 package de.mrapp.android.sidebar.animation;
 
-import androidx.annotation.NonNull;
 import android.view.animation.TranslateAnimation;
 
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import androidx.annotation.NonNull;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which allows to move a sidebar's sidebar view, when the sidebar should be shown or
@@ -45,7 +45,7 @@ public class SidebarViewAnimation extends TranslateAnimation {
     public SidebarViewAnimation(final float distance, final long duration,
                                 @NonNull final AnimationListener listener) {
         super(0, distance, 0, 0);
-        ensureNotNull(listener, "The animation listener may not be null");
+        Condition.INSTANCE.ensureNotNull(listener, "The animation listener may not be null");
         setDuration(duration);
         setAnimationListener(listener);
     }

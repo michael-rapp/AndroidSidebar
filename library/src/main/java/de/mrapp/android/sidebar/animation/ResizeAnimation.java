@@ -13,12 +13,12 @@
  */
 package de.mrapp.android.sidebar.animation;
 
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import androidx.annotation.NonNull;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which allows to resize a view horizontally.
@@ -60,7 +60,7 @@ public class ResizeAnimation extends Animation {
      *         width will become increased
      */
     public ResizeAnimation(@NonNull final View view, final float widthOffset) {
-        ensureNotNull(view, "The view may not be null");
+        Condition.INSTANCE.ensureNotNull(view, "The view may not be null");
         this.view = view;
         this.widthOffset = Math.round(widthOffset);
         this.originalWidth = view.getWidth();

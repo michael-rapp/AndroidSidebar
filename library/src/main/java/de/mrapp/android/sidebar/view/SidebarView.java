@@ -17,22 +17,20 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.R;
 import de.mrapp.android.sidebar.inflater.Inflater;
 import de.mrapp.android.util.ElevationUtil;
 import de.mrapp.android.util.ElevationUtil.Orientation;
 import de.mrapp.android.util.ViewUtil;
+import de.mrapp.util.Condition;
 
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.util.Condition.ensureNotNull;
 import static de.mrapp.android.util.ElevationUtil.createElevationShadow;
 
 /**
@@ -157,8 +155,8 @@ public class SidebarView extends LinearLayout {
                        @NonNull final Location location, @Nullable final Drawable sidebarBackground,
                        final int sidebarElevation) {
         super(context, null);
-        ensureNotNull(location, "The location may not be null");
-        ensureNotNull(inflater, "The inflater may not be null");
+        Condition.INSTANCE.ensureNotNull(location, "The location may not be null");
+        Condition.INSTANCE.ensureNotNull(inflater, "The inflater may not be null");
         this.location = location;
         this.sidebarBackground = sidebarBackground;
         setOrientation(LinearLayout.HORIZONTAL);
@@ -183,8 +181,8 @@ public class SidebarView extends LinearLayout {
      *         must be at least 0 and at maximum 16
      */
     public final void setSidebarElevation(final int elevation) {
-        ensureAtLeast(elevation, 0, "The sidebar elevation must be at least 0");
-        ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
+        Condition.INSTANCE.ensureAtLeast(elevation, 0, "The sidebar elevation must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(elevation, ElevationUtil.MAX_ELEVATION,
                 "The sidebar elevation must be at maximum " + ElevationUtil.MAX_ELEVATION);
         this.sidebarElevation = elevation;
         Bitmap shadow = createElevationShadow(getContext(), elevation,
@@ -212,7 +210,7 @@ public class SidebarView extends LinearLayout {
      *         location may either be <code>LEFT</code> or <code>RIGHT</code>
      */
     public final void setLocation(@NonNull final Location location) {
-        ensureNotNull(location, "The location may not be null");
+        Condition.INSTANCE.ensureNotNull(location, "The location may not be null");
         this.location = location;
         removeAllViews();
 

@@ -13,15 +13,14 @@
  */
 package de.mrapp.android.sidebar.animation;
 
-import androidx.annotation.NonNull;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 
+import androidx.annotation.NonNull;
 import de.mrapp.android.sidebar.Location;
 import de.mrapp.android.sidebar.view.ContentView;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which allows to resize a sidebar's content view, when the sidebar should be shown
@@ -60,7 +59,7 @@ public class ContentViewResizeAnimation extends AnimationSet {
                                       final float distance, @NonNull final Location location,
                                       final float overlayTransparency, final boolean show) {
         super(true);
-        ensureNotNull(location, "The location may not be null");
+        Condition.INSTANCE.ensureNotNull(location, "The location may not be null");
         setDuration(duration);
 
         Animation overlayAnimation =

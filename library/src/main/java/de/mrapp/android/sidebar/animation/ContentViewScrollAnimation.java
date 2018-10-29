@@ -13,15 +13,13 @@
  */
 package de.mrapp.android.sidebar.animation;
 
-import androidx.annotation.NonNull;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 
+import androidx.annotation.NonNull;
 import de.mrapp.android.sidebar.view.ContentView;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which allows to move a sidebar's content view, when the sidebar should be shown or
@@ -62,8 +60,8 @@ public class ContentViewScrollAnimation extends AnimationSet {
                                       final float distance, final float scrollRatio,
                                       final float overlayTransparency, final boolean show) {
         super(true);
-        ensureAtLeast(scrollRatio, 0, "The scroll ratio must be at least 0");
-        ensureAtMaximum(scrollRatio, 1, "The scroll ratio must be at maximum 1");
+        Condition.INSTANCE.ensureAtLeast(scrollRatio, 0, "The scroll ratio must be at least 0");
+        Condition.INSTANCE.ensureAtMaximum(scrollRatio, 1, "The scroll ratio must be at maximum 1");
         setDuration(duration);
         Animation translateAnimation = new TranslateAnimation(0, distance * scrollRatio, 0, 0);
         addAnimation(translateAnimation);

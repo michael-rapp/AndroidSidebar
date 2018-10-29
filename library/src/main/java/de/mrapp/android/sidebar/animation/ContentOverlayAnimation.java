@@ -13,15 +13,12 @@
  */
 package de.mrapp.android.sidebar.animation;
 
-import androidx.annotation.NonNull;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+import androidx.annotation.NonNull;
 import de.mrapp.android.sidebar.view.ContentView;
-
-import static de.mrapp.android.util.Condition.ensureAtLeast;
-import static de.mrapp.android.util.Condition.ensureAtMaximum;
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * An animation, which allows to fade in or out the overlay, which is shown in front of a sidebar's
@@ -69,9 +66,11 @@ public class ContentOverlayAnimation extends Animation {
      */
     public ContentOverlayAnimation(@NonNull final ContentView contentView,
                                    final float overlayTransparency, final boolean show) {
-        ensureNotNull(contentView, "The content view may not be null");
-        ensureAtLeast(overlayTransparency, 0, "The transparency must be at least 0");
-        ensureAtMaximum(overlayTransparency, 1, "The transparency must be at maximum 1");
+        Condition.INSTANCE.ensureNotNull(contentView, "The content view may not be null");
+        Condition.INSTANCE
+                .ensureAtLeast(overlayTransparency, 0, "The transparency must be at least 0");
+        Condition.INSTANCE
+                .ensureAtMaximum(overlayTransparency, 1, "The transparency must be at maximum 1");
         this.contentView = contentView;
         this.overlayTransparency = overlayTransparency;
         this.show = show;

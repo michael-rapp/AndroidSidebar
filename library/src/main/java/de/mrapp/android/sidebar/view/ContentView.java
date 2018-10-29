@@ -15,16 +15,15 @@ package de.mrapp.android.sidebar.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import de.mrapp.android.sidebar.inflater.Inflater;
-
-import static de.mrapp.android.util.Condition.ensureNotNull;
+import de.mrapp.util.Condition;
 
 /**
  * A custom view, which contains the content view of a sidebar, as well as a view, which is used as
@@ -94,7 +93,7 @@ public class ContentView extends FrameLayout {
     public ContentView(@NonNull final Context context, @NonNull final Inflater inflater,
                        @ColorInt final int overlayColor) {
         super(context, null);
-        ensureNotNull(inflater, "The inflater may not be null");
+        Condition.INSTANCE.ensureNotNull(inflater, "The inflater may not be null");
         inflateContentView(inflater);
         inflateOverlayView();
         setOverlayColor(overlayColor);
